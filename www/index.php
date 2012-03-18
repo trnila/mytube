@@ -1,3 +1,3 @@
-<?php ini_set('display_errors', 'on');
+<?php
 include __DIR__ . '/../app/bootstrap.php';
 $container->application->run();
