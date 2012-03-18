@@ -1,0 +1,16 @@
+nette:
+	forms:
+		messages:
+			PROTECTION: 'Bezpečnostní token vypršel, odešlete formulář znovu.'
+			EQUAL: 'Vložte %s.'
+			FILLED: Vyplňte prosím povinná pole.
+			MIN_LENGTH: 'Vložte hodnotu dlouhou minimálně %d znaků.'
+			MAX_LENGTH: 'Vyplňte hodnotu kratší než %d znaků.'
+			LENGTH: 'Vložte hodnotu delší než %d a kratší než %d znaků.'
+			EMAIL: 'Prosím vložte validní emailovou adresu.'
+			URL: 'Prosím vložte validní URL adresu.'
+			INTEGER: 'Prosím vložte číslo.'
+			FLOAT: 'Prosím vložte realné číslo.'
+			RANGE: 'Prosím vložte hodnotu v rozsahu od %d dod %d.'
+			MAX_FILE_SIZE: 'Maximálni velikost uploadovaného souboru může být %d bajtů.'
+			IMAGE: 'Uploadovaný soubor musí byt obrázek ve formatu JPEG, GIF nebo PNG.'

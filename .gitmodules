@@ -1,0 +1,6 @@
+[submodule "libs/Nette"]
+	path = libs/Nette
+	url = https://github.com/nette/nette.git
+[submodule "tools"]
+	path = tools
+	url = https://trnila@github.com/trnila/tools.git

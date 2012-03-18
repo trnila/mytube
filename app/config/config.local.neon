@@ -1,0 +1,15 @@
+nette:
+	container:
+		debugger: true
+		
+	debugger:
+		browser: chromium
+
+parameters:
+	database:
+		driver: mysql
+		host: localhost
+		dbname: dbname
+		user: user
+		password: pass
+

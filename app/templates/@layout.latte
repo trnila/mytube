@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Trnila's sandbox</title>
+		<link rel="stylesheet" href="{$basePath}/static/stylesheets/site.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="{$basePath}/static/javascripts/bootstrap.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" n:href="Homepage:">Sandbox</a>
+					
+					<ul class="nav">
+						<li n:class="$presenter->isLinkCurrent('Homepage:') ? active"><a n:href="Homepage:">Home</a></li>
+					</ul>
+					
+					<ul class="nav pull-right">
+						{if $user->isLoggedIn()}
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								daniel <b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a n:href="Auth:changePassword">Změna hesla</a>
+									<a n:href="Auth:logout">Odhlásit</a>
+								</li>
+							</ul>
+						</li>
+						{else}
+							<li><a n:href="Auth:login">Přihlásit se</a></li>
+						{/if}
+					</ul>
+				</div>				
+			</div>
+		</div>
+
+		<div id="content" class="container">
+			<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
+				{$flash->message}
+			</div>
+			
+			{include #content}
+		</div>
+	</body>
+</html>
