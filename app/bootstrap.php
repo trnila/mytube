@@ -1,5 +1,6 @@
 <?php
-include __DIR__ . '/../libs/Nette/Nette/loader.php';
+include __DIR__ . '/../vendor/.composer/autoload.php';
+include __DIR__ . '/../vendor/nette/nette/Nette/loader.php';
 
 $configurator = new Nette\Config\Configurator;
 $configurator->setProductionMode(FALSE);
@@ -12,7 +13,7 @@ $configurator->addParameters(array('wwwDir' => __DIR__ . '/../www'));
 // Enable RobotLoader
 $configurator->createRobotLoader()
 	->addDirectory(__DIR__)
-	->addDirectory(__DIR__ . '/../libs/')
+	//->addDirectory(__DIR__ . '/../libs/')
 	->register();
 
 // Load Configurations
