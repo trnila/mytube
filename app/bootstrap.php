@@ -16,6 +16,11 @@ $configurator->createRobotLoader()
 	//->addDirectory(__DIR__ . '/../libs/')
 	->register();
 
+// Model repository
+$configurator->onCompile[] = function ($configurator, $compiler) {
+	$compiler->addExtension('repository', new Model\Repository\Compiler);
+};
+
 // Load Configurations
 $configurator->addConfig(__DIR__ . '/config/config.neon', FALSE);
 $configurator->addConfig(__DIR__ . '/config/config.local.neon', FALSE);
