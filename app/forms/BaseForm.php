@@ -9,5 +9,5 @@ class BaseForm extends Nette\Application\UI\Form
 		$control = new Nette\Forms\Controls\SubmitButton($caption);
 		$control->getControlPrototype()->addClass('btn btn-primary');
 		return $this[$name] = $control;
-	}	
+	}
 }
