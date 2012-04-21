@@ -21,4 +21,13 @@ class Repository extends Nette\Object
 		$name = lcfirst($name);
 		return $this->connection->table($name);
 	}
+
+	/**
+	 * @return Nette\Database\Table\Selection
+	 * @param mixed $primary
+	 */
+	public function find($primary)
+	{
+		return $this->getTable()->find($primary);
+	}
 }

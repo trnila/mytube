@@ -2,10 +2,11 @@
 
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
-	protected function createForm()
+	const FLASH_SUCCESS = 'success';
+	const FLASH_ERROR = 'error';
+
+	public function redirectHome()
 	{
-		$form = new Nette\Application\UI\Form;
-		$form->addProtection();
-		return $form;
+		$this->redirect('Homepage:');
 	}
 }

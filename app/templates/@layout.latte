@@ -13,11 +13,11 @@
 			<div class="navbar-inner">
 				<div class="container">
 					<a class="brand" n:href="Homepage:">Sandbox</a>
-					
+
 					<ul class="nav">
 						<li n:class="$presenter->isLinkCurrent('Homepage:') ? active"><a n:href="Homepage:">Home</a></li>
 					</ul>
-					
+
 					<ul class="nav pull-right">
 						{if $user->isLoggedIn()}
 						<li class="dropdown">
@@ -27,15 +27,15 @@
 							<ul class="dropdown-menu">
 								<li>
 									<a n:href="Auth:changePassword">Změna hesla</a>
-									<a n:href="Auth:logout">Odhlásit</a>
+									<a n:href="Sign:out">Odhlásit</a>
 								</li>
 							</ul>
 						</li>
 						{else}
-							<li><a n:href="Auth:login">Přihlásit se</a></li>
+							<li><a n:href="Sign:in">Přihlásit se</a></li>
 						{/if}
 					</ul>
-				</div>				
+				</div>
 			</div>
 		</div>
 
@@ -43,7 +43,7 @@
 			<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
 				{$flash->message}
 			</div>
-			
+
 			{include #content}
 		</div>
 	</body>
