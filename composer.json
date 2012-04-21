@@ -1,5 +1,6 @@
 {
 	"require": {
-		"nette/nette": "dev-master"
+		"nette/nette": "dev-master",
+		"facebook/php-sdk": "dev-master"		
 	}
 }

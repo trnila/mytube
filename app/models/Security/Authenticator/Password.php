@@ -1,10 +1,8 @@
 <?php
-namespace Model\Security;
-use Nette;
-use Model;
-use Nette\Security\AuthenticationException;
+namespace Model\Security\Authenticator;
+use Nette, Model, Nette\Security\AuthenticationException;
 
-class PasswordAuthenticator extends Nette\Object implements Nette\Security\IAuthenticator
+class Password extends Authenticator
 {
 	/**
 	 * @var Model\Repository\Users
@@ -26,10 +24,6 @@ class PasswordAuthenticator extends Nette\Object implements Nette\Security\IAuth
 			throw new AuthenticationException("Špatné uživatelské jméno nebo heslo.");
 		}
 
-		if(!$user->active) {
-			throw new AuthenticationException("Uživatelský účet není aktivní.");
-		}
-
-		return new Nette\Security\Identity($user->email, NULL, $user->toArray());
+		return $this->getIdentity($user);
 	}
 }

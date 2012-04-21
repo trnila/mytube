@@ -21,7 +21,11 @@ nette:
 
 services:
 		database: @Nette\Database\Connection
-		authenticator: Model\Security\PasswordAuthenticator
+		authenticator: Model\Security\Authenticator\Password
+		facebook: Facebook({appId: '274178996009668', secret: '8c7374433b9626254e2464021f5bb65c'})
+		facebookAuthenticator:
+			class: Model\Security\Authenticator\Facebook
+			autowired: false
 
 		#router: Nette\Application\Routers\CliRouter([action: Console::list])
 
