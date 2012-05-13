@@ -47,4 +47,19 @@ class Users extends Repository
 	{
 		return hash('sha512', md5(self::PASSWORD_SALT . $email) . sha1($password . self::PASSWORD_SALT));
 	}
+
+
+	public function changePassword($email, $oldPassword, $newPassword)
+	{
+		$oldPassword = $this->hash($email, $oldPassword);
+		$newPassword = $this->hash($email, $newPassword);
+
+		$user = $this->getUserByEmail($email)->fetch();
+
+		if($user->password != $oldPassword) {
+			throw new Exception("Aktuální heslo není správné.");
+		}
+
+		$user->update(array('password' => $newPassword));
+	}
 }

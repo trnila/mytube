@@ -4,9 +4,16 @@ use Nette;
 
 class ChangePassword extends BaseForm
 {
-	public function __construct()
+	/**
+	 * @var \Model\Repository\Users
+	 */
+	protected $users;
+
+	public function __construct(\Model\Repository\Users $users)
 	{
 		parent::__construct();
+		$this->users = $users;
+
 		$this->addPassword('oldPassword', 'Staré heslo');
 
 		$this->addPassword('password', 'Nové heslo')
@@ -16,12 +23,15 @@ class ChangePassword extends BaseForm
 				->addConditionOn($this['oldPassword'], $this::VALID)
 					->addRule($this::EQUAL, NULL, $this['password']);
 
-		$this->addSubmit('change', 'Změnit heslo');
+		$this->addPrimary('change', 'Změnit heslo');
 		$this->onSuccess[] = callback($this, 'changePassword');
 	}
 
 	public function changePassword($form)
 	{
-		
+		$values = $form->values;
+		$this->users->changePassword($this->presenter->user->id, $values->oldPassword, $values->password);
+		$this->presenter->flashMessage('Heslo bylo změněno.', 'success');
+		$this->presenter->redirectHome();
 	}
 }
