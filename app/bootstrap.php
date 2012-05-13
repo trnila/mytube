@@ -1,9 +1,9 @@
 <?php
-include __DIR__ . '/../vendor/.composer/autoload.php';
+include __DIR__ . '/../vendor/autoload.php';
 include __DIR__ . '/../vendor/nette/nette/Nette/loader.php';
 
 $configurator = new Nette\Config\Configurator;
-$configurator->setProductionMode(FALSE);
+$configurator->setDebugMode(FALSE);
 $configurator->enableDebugger(__DIR__ . '/../logs');
 $configurator->setTempDirectory(__DIR__ . '/../tmp');
 
@@ -13,7 +13,6 @@ $configurator->addParameters(array('wwwDir' => __DIR__ . '/../www'));
 // Enable RobotLoader
 $configurator->createRobotLoader()
 	->addDirectory(__DIR__)
-	//->addDirectory(__DIR__ . '/../libs/')
 	->register();
 
 // Model repository
