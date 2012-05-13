@@ -1,5 +1,6 @@
 includes:
 	- czech.neon
+	- components.neon
 
 php:
 	date.timezone: Europe/Prague
@@ -21,13 +22,12 @@ nette:
 
 services:
 		database: @Nette\Database\Connection
+		facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
+
 		authenticator: Model\Security\Authenticator\Password
-		facebook: Facebook({appId: '274178996009668', secret: '8c7374433b9626254e2464021f5bb65c'})
 		facebookAuthenticator:
 			class: Model\Security\Authenticator\Facebook
 			autowired: false
-
-		#router: Nette\Application\Routers\CliRouter([action: Console::list])
 
 		nette.database.default:
 			setup:

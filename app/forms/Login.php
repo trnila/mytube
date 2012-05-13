@@ -2,12 +2,11 @@
 namespace Form;
 use Nette;
 
-class LoginForm extends BaseForm
+class Login extends BaseForm
 {
 	public function __construct(Nette\ComponentModel\IContainer $parent = NULL,  $name = NULL)
 	{
 		parent::__construct($parent, $name);
-
 		$this->addText('email', 'E-mail')
 			->setRequired()
 			->setType('email');

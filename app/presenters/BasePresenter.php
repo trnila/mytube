@@ -9,4 +9,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	{
 		$this->redirect('Homepage:');
 	}
+
+	protected function createComponent($name) {
+		return $this->context->{'createComponents__' . $name}();
+	}
 }

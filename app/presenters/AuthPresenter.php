@@ -31,9 +31,4 @@ class SignPresenter extends BasePresenter
 		$this->flashMessage('Byl jste uspefadfadf', $this::FLASH_SUCCESS);
 		$this->redirectHome();
 	}
-
-	protected function createComponentLogin()
-	{
-		return new Form\LoginForm;
-	}
 }
