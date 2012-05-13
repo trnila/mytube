@@ -24,10 +24,14 @@ class Users extends Repository
 	 */
 	public function register(array $data)
 	{
+		$user = array();
+
 		// Validate
 		if(!Validators::isEmail($data['email'])) {
 			throw new ModelException('This is not email.');
 		}
+
+		$data['password'] = $this->hash($data['email'], $data['password']);
 
 		return $this->getTable()->insert($data);
 	}

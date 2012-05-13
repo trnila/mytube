@@ -7,9 +7,15 @@ class Facebook extends Authenticator
 	/** @var Model\Repository\Users */
 	protected $users;
 
+	protected $autoRegister = false;
+
 	public function __construct(Model\Repository\Users $users)
 	{
 		$this->users = $users;
+	}
+
+	public function setAutoRegister($autoregister = true) {
+		$this->autoRegister = (bool) $autoregister;
 	}
 
 	public function authenticate(array $credentials)
@@ -33,8 +39,13 @@ class Facebook extends Authenticator
 				}
 			}
 			else {
-				$user = $this->users->register($this->normalizeData($credentials));
-				$user->active = true;
+				if($this->autoRegister) {
+					$user = $this->users->register($this->normalizeData($credentials));
+					$user->active = true;
+				}
+				else {
+					throw new RegisterException();
+				}
 			}
 		}
 
@@ -49,4 +60,9 @@ class Facebook extends Authenticator
 		$user['fbId'] = $data['id'];
 		return $user;
 	}
+}
+
+
+class RegisterException extends Nette\Security\AuthenticationException
+{
 }

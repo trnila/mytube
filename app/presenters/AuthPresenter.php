@@ -18,17 +18,44 @@ class SignPresenter extends BasePresenter
 		));
 	}
 
+	public function actionRegistration()
+	{
+		$user = $this->getPersistentRegistration()->user;
+
+		// Fill data from facebook
+		if($user) {
+			$form = $this->getComponent('registration');
+			$form->addAdditionalData('fbId', $user['id']);
+
+			$form['email']->setValue($user['email'])
+				->getControlPrototype()
+					->readonly(true);
+		}
+	}
+
 	public function renderFacebook()
 	{
 		$facebook = $this->context->facebook;
 
-		($me = $facebook->api('/me'));
+		$me = $facebook->api('/me');
 
-		$identity = $this->context->facebookAuthenticator->authenticate($me);
-		$this->user->login($identity);
+		try {
+			$identity = $this->context->facebookAuthenticator->authenticate($me);
+			$this->user->login($identity);
 
+			$this->flashMessage('Úspěšně přihlášeno.', $this::FLASH_SUCCESS);
+			$this->redirectHome();
+		}
+		catch(\Model\Security\Authenticator\RegisterException $e) {
+			$storage = $this->getPersistentRegistration();
+			$storage->user = $me;
 
-		$this->flashMessage('Byl jste uspefadfadf', $this::FLASH_SUCCESS);
-		$this->redirectHome();
+			$this->redirect('registration');
+		}
+	}
+
+	protected function getPersistentRegistration()
+	{
+		return $this->getSession('Registration');
 	}
 }
