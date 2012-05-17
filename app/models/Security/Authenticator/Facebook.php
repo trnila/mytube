@@ -9,7 +9,7 @@ class Facebook extends Authenticator
 
 	protected $autoRegister = false;
 
-	public function __construct(Model\Repository\Users $users)
+	public function __construct(Model\Users $users)
 	{
 		$this->users = $users;
 	}

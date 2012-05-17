@@ -9,7 +9,7 @@ class ChangePassword extends BaseForm
 	 */
 	protected $users;
 
-	public function __construct(\Model\Repository\Users $users)
+	public function __construct(\Model\Users $users)
 	{
 		parent::__construct();
 		$this->users = $users;

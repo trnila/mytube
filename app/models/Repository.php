@@ -1,5 +1,5 @@
 <?php
-namespace Model\Repository;
+namespace Model;
 use Nette;
 
 class Repository extends Nette\Object
@@ -17,7 +17,7 @@ class Repository extends Nette\Object
 	 */
 	public function getTable()
 	{
-		$name = substr($this->reflection->name, 17);
+		$name = substr($this->reflection->name, 6);
 		$name = lcfirst($name);
 		return $this->connection->table($name);
 	}

@@ -1,5 +1,5 @@
 <?php
-namespace Model\Repository;
+namespace Model;
 use Nette\Utils\Validators;
 
 class Users extends Repository

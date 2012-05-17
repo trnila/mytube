@@ -9,7 +9,7 @@ class Password extends Authenticator
 	 */
 	protected $users;
 
-	public function __construct(Model\Repository\Users $users)
+	public function __construct(Model\Users $users)
 	{
 		$this->users = $users;
 	}

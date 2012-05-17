@@ -16,7 +16,7 @@ class Registration extends BaseForm
 	 */
 	protected $additionalData = array();
 
-	public function __construct(Model\Repository\Users $users)
+	public function __construct(Model\Users $users)
 	{
 		parent::__construct();
 		$this->users = $users;
