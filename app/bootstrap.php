@@ -7,7 +7,10 @@ $configurator->enableDebugger(__DIR__ . '/../logs');
 $configurator->setTempDirectory(__DIR__ . '/../tmp');
 
 // TODO: use own configurator instead of this
-$configurator->addParameters(array('wwwDir' => __DIR__ . '/../www'));
+$configurator->addParameters(array(
+	'root' => realpath(__DIR__ . '/../'),
+	'wwwDir' => __DIR__ . '/../www'
+));
 
 // Enable RobotLoader
 $configurator->createRobotLoader()
