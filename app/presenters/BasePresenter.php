@@ -11,6 +11,15 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	}
 
 	protected function createComponent($name) {
+		$component = parent::createComponent($name);
+		if($component) {
+			return $component;
+		}
+
 		return $this->context->{'createComponents__' . $name}();
+	}
+
+		protected function createForm() {
+		return new Form\BaseForm;
 	}
 }
