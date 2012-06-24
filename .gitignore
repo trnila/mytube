@@ -4,5 +4,4 @@ app/config/config.local.neon
 .buildpath
 .project
 .settings
-
-
+/www/assets/.sass-cache/
