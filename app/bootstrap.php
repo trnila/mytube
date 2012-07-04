@@ -21,7 +21,7 @@ $configurator->createRobotLoader()
 $configurator->addConfig(__DIR__ . '/config/config.neon', FALSE);
 $configurator->addConfig(__DIR__ . '/config/config.local.neon', FALSE);
 
-//http://sandbox.trnila.eu/stylesheets/application-79c2b46ce2594ecbcb5b73e928345492.css
+// Assets router
 $container = $configurator->createContainer();
 $container->router[] = new Nette\Application\Routers\Route('assets/<file .+\-[a-z0-9]{32}\.[a-z0-9]{2,4}>', function($file) use($container) {
 	$hash = Strings::match($file, '/-([a-z0-9]{32})\.[a-z0-9]{2,4}$/');
@@ -31,17 +31,17 @@ $container->router[] = new Nette\Application\Routers\Route('assets/<file .+\-[a-
 		throw new \Nette\Application\ForbiddenRequestException;
 	}
 
-	$realFile = $container->parameters['wwwDir'] . "/assets/" . str_replace($file, "-{$hash[1]}", '') . str_replace("-{$hash[1]}", '', $file);
+	$realFile = $container->parameters['wwwDir'] . "/assets/" . str_replace("-{$hash[1]}", '', $file);
 
 	// Check hash validity
 	if(md5_file($realFile) !== $hash[1]) {
 		throw new \Nette\Application\BadRequestException;
 	}
 
-	new Nette\Http\Response;
 	$httpResponse = $container->httpResponse;
 	$httpResponse->setExpiration('+1 year');
 	$httpResponse->setHeader('Pragma', 'public');
+	$httpResponse->setContentType(Nette\Utils\MimeTypeDetector::fromFile($realFile));
 
 	readfile($realFile);
 });
