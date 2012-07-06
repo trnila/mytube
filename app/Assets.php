@@ -43,7 +43,7 @@ class Assets extends Nette\Latte\Macros\MacroSet
 	public function macroJavascript()
 	{
 		$code = '';
-		$compressed = $this->wwwDir . '/assets/javascripts/application.compressed.js';
+		$compressed = $this->wwwDir . '/assets/javascripts/application.min.js';
 
 		if($this->productionMode && file_exists($compressed)) {
 			$code .= $this->formatScript($compressed);
