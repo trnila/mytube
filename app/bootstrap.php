@@ -50,13 +50,24 @@ $container->router[] = new Nette\Application\Routers\Route('assets/<file .+\-[a-
 		throw new \Nette\Application\BadRequestException;
 	}
 
+	// Get the extension of file
+	$parts = pathinfo($realFile);
+	$extension = $parts['extension'];
+
+	// detect a mime type
+	switch($extension) {
+		case 'css': $mime = 'text/css'; break;
+		case 'js': $mime = 'application/x-javascript'; break;
+		default: $mime = Nette\Utils\MimeTypeDetector::fromFile($realFile);
+	}
+
 	$httpResponse = $container->httpResponse;
 	$httpResponse->setExpiration('+1 year');
 	$httpResponse->setHeader('Pragma', 'public');
-	$httpResponse->setContentType(Nette\Utils\MimeTypeDetector::fromFile($realFile));
+	$httpResponse->setContentType($mime);
 
 	// If its a javascript file add a source map
-	if(Nette\Utils\Strings::endsWith($realFile, '.js')) {
+	if($extension == 'js') {
 		$httpResponse->addHeader('X-SourceMap', basename($realFile) . '.map');
 	}
 
