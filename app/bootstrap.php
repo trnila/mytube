@@ -55,6 +55,11 @@ $container->router[] = new Nette\Application\Routers\Route('assets/<file .+\-[a-
 	$httpResponse->setHeader('Pragma', 'public');
 	$httpResponse->setContentType(Nette\Utils\MimeTypeDetector::fromFile($realFile));
 
+	// If its a javascript file add a source map
+	if(Nette\Utils\Strings::endsWith($realFile, '.js')) {
+		$httpResponse->addHeader('X-SourceMap', basename($realFile) . '.map');
+	}
+
 	readfile($realFile);
 });
 
