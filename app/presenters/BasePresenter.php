@@ -10,7 +10,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		$this->redirect('Homepage:');
 	}
 
-	protected function createComponent($name) {
+	protected function createComponent($name)
+	{
 		$component = parent::createComponent($name);
 		if($component) {
 			return $component;
@@ -19,7 +20,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		return $this->context->{'createComponents__' . $name}();
 	}
 
-		protected function createForm() {
+	protected function createForm()
+	{
 		return new Form\BaseForm;
 	}
 }

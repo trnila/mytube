@@ -8,7 +8,7 @@ $configurator->enableDebugger(__DIR__ . '/../logs');
 $configurator->setTempDirectory(__DIR__ . '/../tmp');
 
 $configurator->addParameters(array(
-	'root' => realpath(__DIR__ . '/../'),
+	'rootDir' => realpath(__DIR__ . '/../'),
 	'wwwDir' => __DIR__ . '/../www'
 ));
 
@@ -31,10 +31,22 @@ $container->router[] = new Nette\Application\Routers\Route('assets/<file .+\-[a-
 		throw new \Nette\Application\ForbiddenRequestException;
 	}
 
-	$realFile = $container->parameters['wwwDir'] . "/assets/" . str_replace("-{$hash[1]}", '', $file);
+	$name = str_replace("-{$hash[1]}", '', $file);
+
+	// Its file from private space
+	if($name[0] === '@') {
+		$name = substr($name, 1);
+		$realFile = $container->parameters['rootDir'] . $name;
+
+		//TODO: Is it allowed resource?
+		throw new Nette\NotImplementedException;
+	}
+	else {
+		$realFile = $container->parameters['wwwDir'] . "/assets/" . $name;
+	}
 
 	// Check hash validity
-	if(md5_file($realFile) !== $hash[1]) {
+	if(!file_exists($realFile) || md5_file($realFile) !== $hash[1]) {
 		throw new \Nette\Application\BadRequestException;
 	}
 
