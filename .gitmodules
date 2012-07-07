@@ -1,6 +1,6 @@
 [submodule "tools"]
 	path = tools
-	url = git@github.com:trnila/tools.git
+	url = https://github.com/trnila/tools.git
 [submodule "www/assets/javascripts/libraries/nette.ajax.js"]
 	path = www/assets/javascripts/libraries/nette.ajax.js
 	url = https://github.com/vojtech-dobes/nette.ajax.js
