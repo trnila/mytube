@@ -24,4 +24,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	{
 		return new Form\BaseForm;
 	}
+
+	public function allowed($resource, $action = NULL)
+	{
+		if(!$this->user->isAllowed($resource, $action)) {
+			throw new \Nette\Application\ForbiddenRequestException;
+		}
+	}
 }
