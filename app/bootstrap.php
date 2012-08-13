@@ -1,7 +1,6 @@
 <?php
 use Nette\Utils\Strings;
 include __DIR__ . '/../vendor/autoload.php';
-include __DIR__ . '/../vendor/nette/nette/Nette/loader.php';
 
 $configurator = new Nette\Config\Configurator;
 $configurator->enableDebugger(__DIR__ . '/../logs');
