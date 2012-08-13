@@ -7,7 +7,7 @@ $actualVersion = (int) (@file_get_contents($versionFile));
 
 echo "\e[0;32mActual version is {$actualVersion}\e[0;0m\n";
 
-$migrations = [];
+$migrations = array();
 foreach(Nette\Utils\Finder::findFiles('*.sql')->from(__DIR__ . '/migrations') as $file) {
 	$version = Nette\Utils\Strings::match($file->getFileName(), '/^(\d+)_/');
 
