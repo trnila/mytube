@@ -23,6 +23,7 @@ class Assets extends Nette\Latte\Macros\MacroSet
 
 		$me->addMacro('stylesheet', callback($me, 'macroStylesheet'));
 		$me->addMacro('javascript', callback($me, 'macroJavascript'));
+		$me->addMacro('asset', callback($me, 'macroAsset'));
 	}
 
 	public function macroStylesheet()
@@ -57,6 +58,19 @@ class Assets extends Nette\Latte\Macros\MacroSet
 		}
 
 		return $code;
+	}
+
+	public function macroAsset($node)
+	{
+		$asset = $node->args;
+		$file = "{$this->wwwDir}/assets/{$asset}";
+		if(!file_exists($file)) {
+			throw new Exception("Asset $file does not exists!");
+		}
+
+		$parts = pathinfo($asset);
+
+		return 'echo "{$basePath}/assets/' . "{$parts['dirname']}/{$parts['filename']}-" . md5_file($file) . ".{$parts['extension']}\";";
 	}
 
 	protected function formatScript($file)
