@@ -10,6 +10,15 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		$this->redirect('Homepage:');
 	}
 
+	public function templatePrepareFilters($template)
+	{
+		parent::templatePrepareFilters($template);
+
+		if($this->context->parameters['productionMode']) {
+			$template->registerFilter('Nette\Templating\Helpers::strip');
+		}
+	}
+
 	protected function createComponent($name)
 	{
 		$component = parent::createComponent($name);
