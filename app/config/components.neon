@@ -5,3 +5,4 @@ factories:
 
 services:
 	model.users: Model\Users
+	model.videos: Model\Videos

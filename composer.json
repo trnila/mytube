@@ -1,6 +1,7 @@
 {
 	"require": {
 		"nette/nette": "dev-master",
-		"facebook/php-sdk": "dev-master"		
+		"facebook/php-sdk": "dev-master",
+		"videlalvaro/php-amqplib": "dev-master"
 	}
 }
