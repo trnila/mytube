@@ -23,9 +23,13 @@ nette:
 services:
 		database: @Nette\Database\Connection
 		facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
+		openid: LightOpenID('http://sandbox.trnila.eu')
 		authenticator: Model\Security\Authenticator\Password
 		facebookAuthenticator:
 			class: Model\Security\Authenticator\Facebook
+			autowired: false
+		openIDAuthenticator:
+			class: Model\Security\Authenticator\OpenID
 			autowired: false
 		nette.database.default:
 			setup:

@@ -41,10 +41,18 @@ class Registration extends BaseForm
 
 	public function register($form)
 	{
+		$identity = $this->additionalData['identity'];
+		unset($this->additionalData['identity']);
+
 		$values = array_merge($this->additionalData, (array) $form->values);
 		unset($values['passwordCheck']);
 
 		$user = $this->users->register($values);
+
+		// Add openid identity if any
+		if($identity) {
+			$user->related('identities')->insert(array('identity' => $identity));
+		}
 
 		$identity = new \Nette\Security\Identity($user['email'], NULL, $user);
 		$this->presenter->user->login($identity);
