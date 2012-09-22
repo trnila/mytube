@@ -18,6 +18,18 @@ class Users extends Repository
 				->where('email', $email);
 	}
 
+
+	/**
+	 * Finds a user by identity
+	 * @param string $email
+	 * @return Nette\Database\Selection
+	 */
+	public function getUserByIdentity($identity)
+	{
+		return $this->getTable()
+			->where('identities:identity', $identity);
+	}
+
 	/**
 	 * Register a user
 	 * @param array $data

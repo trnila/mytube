@@ -1,4 +1,10 @@
 {block #content}
 {control login}
 
-<a href="{$facebook}">Facebook</a>
+<a href="{$facebook}"><img src="{$basePath}/assets/images/facebook.png" width="14"> Facebook</a>
+<a n:href="openid, identity => 'https://www.google.com/accounts/o8/id'"><img src="{$basePath}/assets/images/google.png"></a>
+
+<form action="{link openid}">
+	<input type="text" name="identity">
+	<input type="submit">
+</form>

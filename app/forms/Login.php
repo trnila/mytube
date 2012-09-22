@@ -23,6 +23,16 @@ class Login extends BaseForm
 		try {
 			$presenter = $this->presenter;
 			$presenter->user->login($form['email']->value, $form['password']->value);
+
+			// save openid if any
+			if($presenter->identity) {
+				$presenter->context->database->table('identities')
+					->insert(array(
+						'user_id' => $form['email']->value,
+						'identity' => $presenter->identity
+					));
+			}
+
 			$presenter->flashMessage('Byl jste přihlášen.', $presenter::FLASH_SUCCESS);
 			$presenter->redirectHome();
 		}

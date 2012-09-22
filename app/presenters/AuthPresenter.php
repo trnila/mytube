@@ -1,6 +1,9 @@
 <?php
 class SignPresenter extends BasePresenter
 {
+	/** @persistent */
+	public $identity;
+
 	public function actionOut()
 	{
 		$this->user->logout(TRUE);
@@ -20,14 +23,20 @@ class SignPresenter extends BasePresenter
 
 	public function actionRegistration()
 	{
-		$user = $this->getPersistentRegistration()->user;
-
 		// Fill data from facebook
-		if($user) {
+		if($facebook = $this->getPersistentRegistration()->facebook) {
 			$form = $this->getComponent('registration');
-			$form->addAdditionalData('fbId', $user['id']);
+			$form->addAdditionalData('fbId', $facebook['id']);
 
-			$form['email']->setValue($user['email'])
+			$form['email']->setValue($facebook['email'])
+				->getControlPrototype()
+					->readonly(true);
+		}
+		elseif($openid = $this->getPersistentRegistration()->openid) {
+			$form = $this->getComponent('registration');
+			$form->addAdditionalData('identity', $openid['identity']);
+
+			$form['email']->setValue($openid['contact/email'])
 				->getControlPrototype()
 					->readonly(true);
 		}
@@ -48,9 +57,43 @@ class SignPresenter extends BasePresenter
 		}
 		catch(\Model\Security\Authenticator\RegisterException $e) {
 			$storage = $this->getPersistentRegistration();
-			$storage->user = $me;
+			$storage->facebook = $me;
 
 			$this->redirect('registration');
+		}
+	}
+
+	public function actionOpenID($identity)
+	{
+		$openid = $this->context->openid;
+		if(!$openid->mode) {
+			$openid->identity = $identity;
+			$openid->required = array('contact/email');
+			$this->redirectUrl($openid->authUrl());
+		}
+
+		else {
+			if($openid->validate()) {
+				try {
+					$identity = $this->context->openIDAuthenticator->authenticate(array($openid->identity, $openid->getAttributes()));
+					$this->user->login($identity);
+
+					$this->redirectHome();
+				}
+				catch(\Model\Security\Authenticator\NeedLoginException $e) {
+					$this->redirect('in', array('identity' => $openid->identity));
+				}
+				catch(\Model\Security\Authenticator\RegisterException $e) {
+					$storage = $this->getPersistentRegistration();
+					$storage->openid = $openid->getAttributes();
+					$storage->openid['identity'] = $openid->identity;
+ 
+					$this->redirect('registration');
+				}
+			}
+			else {
+				echo 'Error';
+			}
 		}
 	}
 

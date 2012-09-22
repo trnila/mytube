@@ -2,6 +2,7 @@
 	"require": {
 		"nette/nette": "dev-master",
 		"facebook/php-sdk": "dev-master",
-		"videlalvaro/php-amqplib": "dev-master"
+		"videlalvaro/php-amqplib": "dev-master",
+		"fp/lightopenid": "dev-master"
 	}
 }
