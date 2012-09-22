@@ -41,8 +41,10 @@ class Registration extends BaseForm
 
 	public function register($form)
 	{
-		$identity = $this->additionalData['identity'];
-		unset($this->additionalData['identity']);
+		if(isset($this->additionalData['identity'])) {
+			$identity = $this->additionalData['identity'];
+			unset($this->additionalData['identity']);
+		}
 
 		$values = array_merge($this->additionalData, (array) $form->values);
 		unset($values['passwordCheck']);
@@ -50,7 +52,7 @@ class Registration extends BaseForm
 		$user = $this->users->register($values);
 
 		// Add openid identity if any
-		if($identity) {
+		if(isset($identity)) {
 			$user->related('identities')->insert(array('identity' => $identity));
 		}
 
