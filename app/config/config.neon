@@ -23,7 +23,7 @@ nette:
 services:
 		database: @Nette\Database\Connection
 		facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
-		openid: LightOpenID('http://sandbox.trnila.eu')
+		openid: LightOpenID(http://%host%)
 		authenticator: Model\Security\Authenticator\Password
 		facebookAuthenticator:
 			class: Model\Security\Authenticator\Facebook
