@@ -57,6 +57,7 @@ class SignPresenter extends BasePresenter
 		}
 		catch(\Model\Security\Authenticator\RegisterException $e) {
 			$storage = $this->getPersistentRegistration();
+			unset($storage->openid);
 			$storage->facebook = $me;
 
 			$this->redirect('registration');
@@ -85,6 +86,7 @@ class SignPresenter extends BasePresenter
 				}
 				catch(\Model\Security\Authenticator\RegisterException $e) {
 					$storage = $this->getPersistentRegistration();
+					unset($storage->facebook);
 					$storage->openid = $openid->getAttributes();
 					$storage->openid['identity'] = $openid->identity;
  
@@ -99,6 +101,7 @@ class SignPresenter extends BasePresenter
 
 	protected function getPersistentRegistration()
 	{
-		return $this->getSession('Registration');
+		return $this->getSession('Registration')
+			->setExpiration('+15 minutes');
 	}
 }
