@@ -4,6 +4,7 @@ class HomepagePresenter extends BasePresenter
 {
 	public function renderDefault()
 	{
+		$this->template->videos = $this->context->database->table('videos');
 	}
 
 	public function createComponentUpload()
