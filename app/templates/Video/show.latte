@@ -1,5 +1,7 @@
 {#content}
 <h1>{$video->title}</h1>
 
-<video src="{$basePath}/videos/{$video->path}" controls autoplay></video>
+<video src="{$basePath}/videos/{$video->path}" controls></video>
 {$video->description}
+
+{control ratings}
