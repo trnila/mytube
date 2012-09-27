@@ -29,7 +29,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		return $this->context->{'createComponents__' . $name}();
 	}
 
-	protected function createForm()
+	public function createForm()
 	{
 		return new Form\BaseForm;
 	}
