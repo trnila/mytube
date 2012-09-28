@@ -33,4 +33,11 @@ class VideoPresenter extends BasePresenter
 		$component->setVideo($this->video);
 		return $component;
 	}
+
+	public function createComponentComments()
+	{
+		$component = $this->context->createComponents__comments();
+		$component->setVideo($this->video);
+		return $component;
+	}
 }

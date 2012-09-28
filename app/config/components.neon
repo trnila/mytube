@@ -3,6 +3,7 @@ factories:
 	components.login: Form\Login
 	components.registration: Form\Registration
 	components.ratings: Component\Ratings
+	components.comments: Component\Comments
 
 services:
 	model.users: Model\Users

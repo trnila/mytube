@@ -1,0 +1,10 @@
+<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
+	{$flash->message}
+	<a class="close" data-dismiss="alert" href="#">&times;</a>
+</div>
+
+{foreach $comments as $comment}
+	{$comment->user_id} - {$comment->text}<br>
+{/foreach}
+
+{control form}
