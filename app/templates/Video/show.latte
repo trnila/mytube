@@ -2,10 +2,12 @@
 <div id="video-detail">
 	<h1>{$video->title}</h1>
 	<div class="container">
-		<!--<video src="{$basePath}/videos/{$video->path}" controls></video>-->
-		<audio id="music" src="{$basePath}/videos/{$video->path}" preload="auto" controls></audio>
-		<canvas style="width: 100%"></canvas>
-
+		{if $video->video}
+			<video src="{$basePath}/videos/{$video->path}" controls></video>
+		{else}
+			<canvas></canvas>
+			<audio id="music" src="{$basePath}/videos/{$video->path}" controls></audio>
+		{/if}
 	</div>
 	{$video->description}
 	{$video->views}
@@ -14,5 +16,3 @@
 
 	{control comments}
 </div>
-
-<!--<script src="http://themaninblue.com/experiment/webAudioAPI/js/main.js"></script>-->
