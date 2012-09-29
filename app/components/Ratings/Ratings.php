@@ -1,6 +1,6 @@
 <?php
 namespace Component;
-use Nette, DateTime;
+use Nette, DateTime, \Nette\Application\ForbiddenRequestException;
 
 class Ratings extends BaseControl 
 {
@@ -13,6 +13,10 @@ class Ratings extends BaseControl
 
 	public function handleRate($positive = true)
 	{
+		if(!$this->presenter->user->isLoggedIn()) {
+			throw new ForbiddenRequestException;
+		}
+
 		$this->video->related('ratings')
 			->where('user_id', $this->presenter->user->id)
 			->delete();
@@ -23,6 +27,8 @@ class Ratings extends BaseControl
 				'user_id' => $this->presenter->user->id,
 				'created' => new DateTime
 			));
+
+		$this->redirect('this');
 	}
 
 	public function render()
@@ -34,10 +40,12 @@ class Ratings extends BaseControl
 		$template->negative = $this->video->related('ratings')->where('positive', false)->count('*');
 		$template->total = $template->positive + $template->negative;
 
-		$rate = $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->fetch();
+		if($this->presenter->user->isLoggedIn()) {
+			$rate = $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->fetch();
 
-		$template->positiveRate = $rate ? $rate->positive == true : false;
-		$template->negativeRate = $rate ? $rate->positive == false : false;
+			$template->positiveRate = $rate ? $rate->positive == true : false;
+			$template->negativeRate = $rate ? $rate->positive == false : false;
+		}
 
 		echo $template;
 	}	

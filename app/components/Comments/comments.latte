@@ -1,10 +1,23 @@
-<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
-	{$flash->message}
-	<a class="close" data-dismiss="alert" href="#">&times;</a>
+<div id="video-comments">
+	<h2>Komentáře</h2>
+	<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
+		{$flash->message}
+		<a class="close" data-dismiss="alert" href="#">&times;</a>
+	</div>
+
+	{foreach $comments as $comment}
+	<div class="comment">
+		{$comment->text}
+		<div class="footer">
+			<a href="{plink Account:show, $comment->user_id}">{$comment->user_id}</a> {$comment->created|timeAgo}
+		</div>
+	</div>
+	{/foreach}
+
+	{if $user->isLoggedIn()}
+		{form form}
+			{input text}
+			<input n:input="add" class="btn btn-primary">
+		{/form}
+	{/if}
 </div>
-
-{foreach $comments as $comment}
-	{$comment->user_id} - {$comment->text}<br>
-{/foreach}
-
-{control form}

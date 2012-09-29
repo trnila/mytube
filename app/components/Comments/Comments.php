@@ -1,6 +1,6 @@
 <?php
 namespace Component;
-use Nette, DateTime;
+use Nette, DateTime, \Nette\Application\ForbiddenRequestException;
 
 class Comments extends BaseControl
 {
@@ -23,6 +23,10 @@ class Comments extends BaseControl
 
 	public function addComment($form)
 	{
+		if(!$this->presenter->user->isLoggedIn()) {
+			throw new ForbiddenRequestException;
+		}
+
 		$this->video->related('comments')
 			->insert(array(
 				'user_id' => $this->presenter->user->id,

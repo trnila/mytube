@@ -1,9 +1,12 @@
 {#content}
-<h1>{$video->title}</h1>
+<div id="video-detail">
+	<h1>{$video->title}</h1>
+	<div class="container">
+		<video src="{$basePath}/videos/{$video->path}" controls></video>
+	</div>
+	{$video->description}
 
-<video src="{$basePath}/videos/{$video->path}" controls></video>
-{$video->description}
+	{control ratings}
 
-{control ratings}
-
-{control comments}
+	{control comments}
+</div>

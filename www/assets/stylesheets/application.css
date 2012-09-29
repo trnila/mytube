@@ -63,3 +63,40 @@ body {
 .video:hover {
   text-decoration: none;
 }
+
+/* line 48, ../sass/application.sass */
+#video-detail {
+  position: relative;
+}
+/* line 51, ../sass/application.sass */
+#video-detail .container {
+  width: 70%;
+}
+/* line 54, ../sass/application.sass */
+#video-detail .container video {
+  width: 100%;
+}
+/* line 58, ../sass/application.sass */
+#video-detail .ratings {
+  position: absolute;
+  right: 0px;
+}
+
+/* line 64, ../sass/application.sass */
+#video-comments form textarea {
+  height: 60px;
+  width: 400px;
+}
+/* line 68, ../sass/application.sass */
+#video-comments form input[type=submit] {
+  display: block;
+}
+/* line 72, ../sass/application.sass */
+#video-comments .comment .footer {
+  color: #999999;
+  font-size: 11px;
+}
+/* line 76, ../sass/application.sass */
+#video-comments .comment .footer a {
+  color: #999999;
+}
