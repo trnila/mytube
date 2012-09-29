@@ -25,6 +25,7 @@ class VideoPresenter extends BasePresenter
 	public function renderShow($id)
 	{
 		$this->template->video = $this->video;
+		$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
 	}
 
 	public function createComponentRatings()
