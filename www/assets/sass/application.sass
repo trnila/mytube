@@ -22,3 +22,25 @@ body
 
 	.progress
 		height: 10px
+
+.video
+	display: inline-block
+	border: 1px solid black
+
+	img
+		float: left
+		margin-right: 5px
+
+		&:not(:first-of-type)
+			display: none
+
+	.title
+		color: black
+		font-weight: bold
+
+	.duration
+		color: #999
+
+
+	&:hover
+		text-decoration: none

@@ -8,4 +8,10 @@ class TemplateHelpers extends Nette\Object
 		}
 		return NULL;
 	}
+
+	public static function duration($seconds)
+	{
+		$result = gmdate("G:i:s", $seconds);
+		return preg_replace('#^0:0*#', '', $result);
+	}
 }
