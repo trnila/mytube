@@ -100,3 +100,9 @@ body {
 #video-comments .comment .footer a {
   color: #999999;
 }
+
+/* line 79, ../sass/application.sass */
+canvas {
+  border-bottom: 1px solid black;
+  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, 0.2)));
+}
