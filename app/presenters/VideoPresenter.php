@@ -25,7 +25,21 @@ class VideoPresenter extends BasePresenter
 	public function renderShow($id)
 	{
 		$this->template->video = $this->video;
-		$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
+
+		if($this->user->isLoggedIn()) {
+			// increment views count only if last video is not same as actual
+			$lastVideo = $this->video->related('history')->order('created DESC')->fetch();
+			if(!$lastVideo || $lastVideo->video_id != $id) {
+				$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
+				$this->video->related('history')->insert(array(
+					'created' => new DateTime,
+					'user_id' => $this->user->id
+				));
+			}
+		}
+		else {
+			$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
+		}
 	}
 
 	public function createComponentRatings()
