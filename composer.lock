@@ -90,21 +90,30 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/nette/nette",
-                "reference": "3ca13b6490db9811d999088a96b1df27aa0be43e"
+                "reference": "891714b8fc6c562f2a6853977ebea0d37bccc011"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nette/nette/zipball/3ca13b6490db9811d999088a96b1df27aa0be43e",
-                "reference": "3ca13b6490db9811d999088a96b1df27aa0be43e",
+                "url": "https://github.com/nette/nette/zipball/891714b8fc6c562f2a6853977ebea0d37bccc011",
+                "reference": "891714b8fc6c562f2a6853977ebea0d37bccc011",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.3.0",
+                "ext-iconv": "*",
+                "ext-tokenizer": "*"
             },
             "require-dev": {
                 "nette/tester": "@dev"
             },
-            "time": "1348054153",
+            "suggest": {
+                "ext-mbstring": "*",
+                "ext-pdo": "*",
+                "ext-memcache": "*",
+                "ext-gd": "*",
+                "ext-fileinfo": "*"
+            },
+            "time": "1350584003",
             "type": "library",
             "extra": {
                 "branch-alias": {

@@ -1,6 +1,6 @@
 <?php
 use Nette\Utils\Html;
-use Nette\Utils\PhpGenerator\Helpers;
+use Nette\PhpGenerator\Helpers;
 use Nette\Utils\PhpGenerator\PhpLiteral;
 
 class Assets extends Nette\Latte\Macros\MacroSet
