@@ -17,9 +17,15 @@ class Ratings extends BaseControl
 			throw new ForbiddenRequestException;
 		}
 
-		$this->video->related('ratings')
+		//TODO: there is a bug in nette
+		/*$this->video->related('ratings')
 			->where('user_id', $this->presenter->user->id)
-			->delete();
+			->delete();*/
+
+		$rating = $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->fetch();
+		if($rating) {
+			$rating->delete();
+		}
 
 		$this->video->related('ratings')
 			->insert(array(
