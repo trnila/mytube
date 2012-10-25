@@ -20,9 +20,7 @@ class Facebook extends Authenticator
 
 	public function authenticate(array $credentials)
 	{
-		$user = $this->users->getTable()
-					->where('fbId', $credentials['id'])
-					->fetch();
+		$user = $this->users->find(array('fbId' => $credentials['id']));
 
 		if(!$user) {
 			$user = $this->users

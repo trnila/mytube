@@ -21,7 +21,7 @@ class OpenID extends Authenticator
 			return $this->getIdentity($user);
 		}
 
-		if($this->users->getUserByEmail($attributes['contact/email'])->fetch()) {
+		if($this->users->findBy(array('email' => $attributes['contact/email']))) {
 			throw new NeedLoginException;
 		}
 

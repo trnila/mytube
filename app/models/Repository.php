@@ -1,33 +1,7 @@
 <?php
 namespace Model;
-use Nette;
+use Nette, Database;
 
-class Repository extends Nette\Object
+class Repository extends Database\Table
 {
-	/** @var Nette\Database\Connection */
-	protected $connection;
-
-	public function __construct(Nette\Database\Connection $connection)
-	{
-		$this->connection = $connection;
-	}
-
-	/**
-	 * @return Nette\Database\Table\Selection
-	 */
-	public function getTable()
-	{
-		$name = substr($this->reflection->name, 6);
-		$name = lcfirst($name);
-		return $this->connection->table($name);
-	}
-
-	/**
-	 * @return Nette\Database\Table\Selection
-	 * @param mixed $primary
-	 */
-	public function find($primary)
-	{
-		return $this->getTable()->find($primary);
-	}
 }

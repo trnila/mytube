@@ -1,6 +1,47 @@
 {
-    "hash": "310e1caf8dfe4c74a11f1476437ceed0",
+    "hash": "7a2198ba1bd15542c92b003af9eaa7a0",
     "packages": [
+        {
+            "name": "fabik/database",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/fabik/database.git",
+                "reference": "d23bc23ff362a63da48c314ccbdd0274bf2dd433"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/fabik/database/zipball/d23bc23ff362a63da48c314ccbdd0274bf2dd433",
+                "reference": "d23bc23ff362a63da48c314ccbdd0274bf2dd433",
+                "shasum": ""
+            },
+            "require": {
+                "nette/nette": "dev-master"
+            },
+            "time": "1350393403",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "files": [
+                    "Database/loader.php"
+                ]
+            },
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jan-Sebastian Fabík",
+                    "email": "honza@fabik.org"
+                }
+            ],
+            "description": "Database layer for Nette Framework.",
+            "homepage": "http://github.com/fabik/database",
+            "keywords": [
+                "database",
+                "nette"
+            ]
+        },
         {
             "name": "facebook/php-sdk",
             "version": "dev-master",
@@ -90,12 +131,12 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/nette/nette",
-                "reference": "891714b8fc6c562f2a6853977ebea0d37bccc011"
+                "reference": "f2bdae3b1fdf6f4b1cc1b706b63593b8ae926599"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nette/nette/zipball/891714b8fc6c562f2a6853977ebea0d37bccc011",
-                "reference": "891714b8fc6c562f2a6853977ebea0d37bccc011",
+                "url": "https://github.com/nette/nette/zipball/f2bdae3b1fdf6f4b1cc1b706b63593b8ae926599",
+                "reference": "f2bdae3b1fdf6f4b1cc1b706b63593b8ae926599",
                 "shasum": ""
             },
             "require": {
@@ -113,7 +154,7 @@
                 "ext-gd": "*",
                 "ext-fileinfo": "*"
             },
-            "time": "1350584003",
+            "time": "1350745479",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -167,6 +208,7 @@
     "stability-flags": {
         "nette/nette": 20,
         "facebook/php-sdk": 20,
-        "fp/lightopenid": 20
+        "fp/lightopenid": 20,
+        "fabik/database": 20
     }
 }
