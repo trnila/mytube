@@ -1,6 +1,47 @@
 {
-    "hash": "3ab0fdd47e88d6b728f74e09bfc0440e",
+    "hash": "eb8a075d93ffde8ac67f62c145e333fe",
     "packages": [
+        {
+            "name": "fabik/database",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/fabik/database.git",
+                "reference": "d23bc23ff362a63da48c314ccbdd0274bf2dd433"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/fabik/database/zipball/d23bc23ff362a63da48c314ccbdd0274bf2dd433",
+                "reference": "d23bc23ff362a63da48c314ccbdd0274bf2dd433",
+                "shasum": ""
+            },
+            "require": {
+                "nette/nette": "dev-master"
+            },
+            "time": "1350393403",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "files": [
+                    "Database/loader.php"
+                ]
+            },
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jan-Sebastian Fabík",
+                    "email": "honza@fabik.org"
+                }
+            ],
+            "description": "Database layer for Nette Framework.",
+            "homepage": "http://github.com/fabik/database",
+            "keywords": [
+                "database",
+                "nette"
+            ]
+        },
         {
             "name": "facebook/php-sdk",
             "version": "dev-master",
@@ -20,7 +61,6 @@
                 "ext-curl": "*",
                 "ext-json": "*"
             },
-            "time": "1344965300",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -42,7 +82,8 @@
             "keywords": [
                 "facebook",
                 "sdk"
-            ]
+            ],
+            "time": "1344965300"
         },
         {
             "name": "fp/lightopenid",
@@ -175,7 +216,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1348350119",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -194,7 +234,8 @@
                 "queue",
                 "rabbitmq",
                 "message"
-            ]
+            ],
+            "time": "1348350119"
         }
     ],
     "packages-dev": null,
@@ -206,6 +247,7 @@
         "nette/nette": 20,
         "facebook/php-sdk": 20,
         "videlalvaro/php-amqplib": 20,
-        "fp/lightopenid": 20
+        "fp/lightopenid": 20,
+        "fabik/database": 20
     }
 }

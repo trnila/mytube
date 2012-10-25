@@ -4,4 +4,5 @@ use Nette\Utils\Validators;
 
 class Videos extends Repository
 {
+	protected $name = 'videos';
 }

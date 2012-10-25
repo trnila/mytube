@@ -4,6 +4,8 @@ use Nette\Utils\Validators;
 
 class Users extends Repository
 {
+	protected $name = 'users';
+
 	/** static password hashing salt */
 	const PASSWORD_SALT = 'ho5Dei3aLi';
 

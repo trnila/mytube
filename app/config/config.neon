@@ -38,6 +38,12 @@ services:
 		queue:
 			class: PhpAmqpLib\Connection\AMQPConnection(localhost, 5672, youtube, hesloheslo, "youtube")
 
+		authorizator: Model\Security\Authorizator
+
+		modelManager: Database\ModelManager
+		rowFactory: Database\RowFactory({
+			users: ActiveRow\User
+		})
 
 factories:
 	nette.latte:
