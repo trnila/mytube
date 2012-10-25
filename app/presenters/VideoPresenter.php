@@ -37,7 +37,7 @@ class VideoPresenter extends BasePresenter
 				$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
 				$this->video->related('history')->insert(array(
 					'created' => new DateTime,
-					'user_id' => $this->user->id
+					'user_email' => $this->user->id
 				));
 			}
 		}

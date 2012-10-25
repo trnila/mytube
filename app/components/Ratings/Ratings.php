@@ -22,7 +22,7 @@ class Ratings extends BaseControl
 			->where('user_id', $this->presenter->user->id)
 			->delete();*/
 
-		$rating = $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->fetch();
+		$rating = $this->video->related('ratings')->where('user_email', $this->presenter->user->id)->fetch();
 		if($rating) {
 			$rating->delete();
 		}
@@ -30,7 +30,7 @@ class Ratings extends BaseControl
 		$this->video->related('ratings')
 			->insert(array(
 				'positive' => (bool) $positive,
-				'user_id' => $this->presenter->user->id,
+				'user_email' => $this->presenter->user->id,
 				'created' => new DateTime
 			));
 
@@ -47,7 +47,7 @@ class Ratings extends BaseControl
 		$template->total = $template->positive + $template->negative;
 
 		if($this->presenter->user->isLoggedIn()) {
-			$rate = $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->fetch();
+			$rate = $this->video->related('ratings')->where('user_email', $this->presenter->user->id)->fetch();
 
 			$template->positiveRate = $rate ? $rate->positive == true : false;
 			$template->negativeRate = $rate ? $rate->positive == false : false;

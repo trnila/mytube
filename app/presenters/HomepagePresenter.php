@@ -30,7 +30,7 @@ class HomepagePresenter extends BasePresenter
 			'description' => 'blablabla',
 			'created' => new DateTime,
 			'processed' => 0,
-			'user_id' => 'admin@example.com'
+			'user_email' => 'admin@example.com'
 		));
 
 

@@ -9,7 +9,7 @@
 	<div class="comment">
 		{$comment->text}
 		<div class="footer">
-			<a href="{plink Account:show, $comment->user_id}">{$comment->user_id}</a> {$comment->created|timeAgo}
+			<a href="{plink Account:show, $comment->user_email}">{$comment->user_email}</a> {$comment->created|timeAgo}
 		</div>
 	</div>
 	{/foreach}
