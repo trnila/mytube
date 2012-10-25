@@ -18,7 +18,11 @@ class VideoPresenter extends BasePresenter
 		parent::startup();
 
 		if($this->getParameter('id')) {
-			$this->video = $this->videos->find($this->getParameter('id'))->fetch();
+			$this->video = $this->videos->find($this->getParameter('id'));
+
+			if(!$this->user->isAllowed($this->video, 'show')) {
+				throw new Nette\Application\ForbiddenRequestException;
+			}
 		}
 	}
 
