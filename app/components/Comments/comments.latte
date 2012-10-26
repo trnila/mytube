@@ -10,6 +10,7 @@
 		{$comment->text}
 		<div class="footer">
 			<a href="{plink Account:show, $comment->user_email}">{$comment->user_email}</a> {$comment->created|timeAgo}
+			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id"><i class="icon-trash"></i></a>{/if}
 		</div>
 	</div>
 	{/foreach}

@@ -43,7 +43,8 @@ services:
 		modelManager: Database\ModelManager
 		rowFactory: Database\RowFactory({
 			users: ActiveRow\User,
-			videos: ActiveRow\Video
+			videos: ActiveRow\Video,
+			comments: ActiveRow\Comment
 		})
 
 factories:

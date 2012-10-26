@@ -1,14 +1,34 @@
 <?php
 namespace Component;
-use Nette, DateTime, \Nette\Application\ForbiddenRequestException;
+use Nette, DateTime, Nette\Application\ForbiddenRequestException, Nette\Application\BadRequestException, ActiveRow;
 
 class Comments extends BaseControl
 {
 	protected $video;
 
-	public function setVideo(Nette\Database\Table\ActiveRow $video)
+	public function setVideo(ActiveRow\Video $video)
 	{
 		$this->video = clone $video;
+	}
+
+	public function handleDelete($id)
+	{
+		$comment = $this->video
+			->related('comment')
+			->find($id)
+			->fetch();
+
+		if(!$comment) {
+			throw new BadRequestException;
+		}
+
+		if(!$this->presenter->user->isAllowed($comment, 'delete')) {
+			throw new ForbiddenRequestException;
+		}
+
+		$comment->delete();
+		$this->flashMessage('Váš komentář byl smazán.', 'success');
+		$this->redirect('this');
 	}
 
 	public function render()
