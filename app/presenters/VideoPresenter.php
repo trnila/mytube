@@ -20,6 +20,10 @@ class VideoPresenter extends BasePresenter
 		if($this->getParameter('id')) {
 			$this->video = $this->videos->find($this->getParameter('id'));
 
+			if(!$this->video) {
+				throw new Nette\Application\BadRequestException;
+			}
+
 			if(!$this->user->isAllowed($this->video, 'show')) {
 				throw new Nette\Application\ForbiddenRequestException;
 			}
