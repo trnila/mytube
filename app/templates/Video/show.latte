@@ -2,7 +2,12 @@
 <div id="video-detail">
 	<h1>{$video->title}</h1>
 	<div class="container">
-		<video src="{$basePath}/videos/{$video->path}" controls></video>
+		{if $video->video}
+			<video src="{$basePath}/videos/{$video->path}" controls></video>
+		{else}
+			<canvas></canvas>
+			<audio id="music" src="{$basePath}/videos/{$video->path}" controls></audio>
+		{/if}
 	</div>
 	{$video->description}<br>
 	Pocet zhlednuti: {$video->views}
