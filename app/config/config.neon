@@ -21,31 +21,38 @@ nette:
 			password: %database.password%
 
 services:
-		database: @Nette\Database\Connection
-		facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
-		openid: LightOpenID(http://%host%)
-		authenticator: Model\Security\Authenticator\Password
-		facebookAuthenticator:
-			class: Model\Security\Authenticator\Facebook
-			autowired: false
-		openIDAuthenticator:
-			class: Model\Security\Authenticator\OpenID
-			autowired: false
-		nette.database.default:
-			setup:
-				- query('SET sql_mode=STRICT_ALL_TABLES')
+	# Database
+	database: @Nette\Database\Connection
+	modelManager: Database\ModelManager
+	rowFactory: Database\RowFactory({
+		users: ActiveRow\User,
+		videos: ActiveRow\Video,
+		comments: ActiveRow\Comment
+	})
+	nette.database.default:
+		setup:
+			- query('SET sql_mode=STRICT_ALL_TABLES')
 
-		queue:
-			class: PhpAmqpLib\Connection\AMQPConnection(localhost, 5672, youtube, hesloheslo, "youtube")
+	# Authentications + Authorizations
+	facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
+	openid: LightOpenID(http://%host%)
+	authenticator: Model\Security\Authenticator\Password
+	authorizator: Model\Security\Authorizator
+	facebookAuthenticator:
+		class: Model\Security\Authenticator\Facebook
+		autowired: false
+	openIDAuthenticator:
+		class: Model\Security\Authenticator\OpenID
+		autowired: false
+	
+	# Work queue
+	queue:
+		class: PhpAmqpLib\Connection\AMQPConnection(%workqueue.host%, %workqueue.port%, %workqueue.user%, %workqueue.password%, %workqueue.domain%)
 
-		authorizator: Model\Security\Authorizator
-
-		modelManager: Database\ModelManager
-		rowFactory: Database\RowFactory({
-			users: ActiveRow\User,
-			videos: ActiveRow\Video,
-			comments: ActiveRow\Comment
-		})
+	workqueue.proccessVideo:
+		factory: @queue::channel()
+		setup:
+			- queue_declare('proccessVideo', false, true, false, false)
 
 factories:
 	nette.latte:
