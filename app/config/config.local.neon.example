@@ -1,0 +1,22 @@
+parameters:
+	productionMode: TRUE
+
+	host: youtube.local
+
+	database:
+		driver: mysql
+		host: localhost
+		dbname: youtube
+		user: user
+		password: pass
+
+	facebook:
+		appId: 0
+		secret: 0
+
+	workqueue:
+		host: localhost
+		port: 5672
+		user: user
+		password: pass
+		domain: domain
