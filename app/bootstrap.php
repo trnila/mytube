@@ -14,7 +14,12 @@ $configurator->addParameters(array(
 // Enable RobotLoader
 $configurator->createRobotLoader()
 	->addDirectory(__DIR__)
+	->addDirectory(__DIR__ . '/../www/assets/javascripts/libraries/') //TODO: temporary solution
 	->register();
+
+$configurator->onCompile[] = function ($configurator, $compiler) {
+	$compiler->addExtension('ajax', new VojtechDobes\NetteAjax\Extension);
+};
 
 // Load Configurations
 $configurator->addConfig(__DIR__ . '/config/config.neon', FALSE);

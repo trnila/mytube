@@ -28,6 +28,11 @@ class VideoPresenter extends BasePresenter
 				throw new Nette\Application\ForbiddenRequestException;
 			}
 		}
+
+		if($this->isAjax()) {
+			$this->invalidateControl('title');
+			$this->invalidateControl('content');
+		}
 	}
 
 	public function renderShow($id)

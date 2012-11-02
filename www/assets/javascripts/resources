@@ -1,2 +1,6 @@
+libraries/nette.ajax.js/nette.ajax.js
+libraries/nette.ajax.js/extensions/diagnostics.dumps.ajax.js
+libraries/nette.ajax.js/extensions/scrollTo.ajax.js
+libraries/nette.ajax.js/history/history.ajax.js
 visualizer.js
 application.js

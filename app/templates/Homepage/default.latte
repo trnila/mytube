@@ -4,7 +4,7 @@
 {control upload}
 
 {foreach $videos as $video}
-<a n:href="Video:show, $video->id" class="video">
+<a n:href="Video:show, $video->id" class="video ajax">
 	<span class="title">{$video->title}</span>
 	<img src="{$basePath}/thumbnails/{$thumbnail->path}" n:foreach="$video->related('thumbnails') as $thumbnail">
 	<span class="duration">{$video->duration|duration}</span>
