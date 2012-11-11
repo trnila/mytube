@@ -53,17 +53,50 @@ class VideoPresenter extends BasePresenter
 		}
 	}
 
-	public function createComponentRatings()
+	protected function createComponentRatings()
 	{
 		$component = $this->context->createComponents__ratings();
 		$component->setVideo($this->video);
 		return $component;
 	}
 
-	public function createComponentComments()
+	protected function createComponentComments()
 	{
 		$component = $this->context->createComponents__comments();
 		$component->setVideo($this->video);
 		return $component;
+	}
+
+	protected function createComponentAddVideo()
+	{
+		$form = $this->createForm();
+		$form->addText('title', 'Titulek')
+			->setRequired();
+
+		$form->addTextArea('description', 'Popisek');
+
+		$form->addUpload('video');
+
+		$form->addSubmit('upload', 'Nahrát');
+		$form->addProtection();
+		$form->onSuccess[] = array($this, 'addVideo');
+
+		return $form;
+	}
+
+	public function addVideo($form)
+	{
+		$video = array(
+			'title' => $form['title']->value,
+			'description' => $form['description']->value,
+			'created' => new DateTime,
+			'processed' => 0,
+			'user_email' => $this->user->id
+		);
+
+		$this->videos->addVideoToProcess($video, $form['video']->value);
+
+		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
+		$this->redirectHome();
 	}
 }

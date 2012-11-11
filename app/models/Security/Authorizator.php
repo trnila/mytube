@@ -20,6 +20,22 @@ class Authorizator extends Nette\Security\Permission
 			return $acl->queriedResource->user_email == $user->id;
 		});
 
-		$this->allow('authenticated', 'video', 'show');
+		$this->allow($this::ALL, 'video', 'show', function($acl) use($user) {
+			$video = $acl->queriedResource;
+
+			if(!$video->processed) {
+				return false;
+			}
+
+			if($video->enabled) {
+				return true;
+			}
+
+			if($video->user_email == $user->id) {
+				return true;
+			}
+
+			return false;
+		});
 	}
 }

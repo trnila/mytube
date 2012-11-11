@@ -1,8 +1,6 @@
 {block #content}
 <h1>Trnila's nette sandbox</h1>
 
-{control upload}
-
 {foreach $videos as $video}
 <a n:href="Video:show, $video->id" class="video">
 	<span class="title">{$video->title}</span>

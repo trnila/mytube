@@ -7,4 +7,7 @@ factories:
 
 services:
 	model.users: Model\Users
-	model.videos: Model\Videos
+	model.videos: 
+		class: Model\Videos
+		setup:
+			- $incomingDir(%appDir%/../incoming)
