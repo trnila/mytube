@@ -34,7 +34,12 @@ class Ratings extends BaseControl
 				'created' => new DateTime
 			));
 
-		$this->redirect('this');
+		if($this->presenter->isAjax()) {
+			$this->invalidateControl();
+		}
+		else {
+			$this->redirect('this');
+		}
 	}
 
 	public function render()

@@ -1,6 +1,9 @@
 <?php
 class VideoPresenter extends BasePresenter
 {
+	/** @persistent */
+	public $id;
+
 	/**
 	 * @var Model\Videos
 	 */
@@ -27,11 +30,6 @@ class VideoPresenter extends BasePresenter
 			if(!$this->user->isAllowed($this->video, 'show')) {
 				throw new Nette\Application\ForbiddenRequestException;
 			}
-		}
-
-		if($this->isAjax()) {
-			$this->invalidateControl('title');
-			$this->invalidateControl('content');
 		}
 	}
 

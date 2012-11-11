@@ -20,7 +20,7 @@
 					<a class="brand" n:href="Homepage:">Sandbox</a>
 					
 					<ul class="nav">
-						<li n:class="$presenter->isLinkCurrent('Homepage:') ? active"><a n:href="Homepage:" class="ajax">Home</a></li>
+						<li n:class="$presenter->isLinkCurrent('Homepage:') ? active"><a n:href="Homepage:">Home</a></li>
 					</ul>
 
 					<ul class="nav pull-right">
@@ -48,8 +48,8 @@
 			<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
 				{$flash->message}
 			</div>
-
-			{snippet content}
+			
+			{snippet}
 				{include #content}
 			{/snippet}
 		</div>

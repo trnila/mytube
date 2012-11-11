@@ -5,20 +5,22 @@
 		<a class="close" data-dismiss="alert" href="#">&times;</a>
 	</div>
 
-	{foreach $comments as $comment}
-	<div class="comment">
+	{snippet comments}
+	<div class="comment" n:foreach="$comments as $comment">
 		{$comment->text}
 		<div class="footer">
 			<a href="{plink Account:show, $comment->user_email}">{$comment->user_email}</a> {$comment->created|timeAgo}
-			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id"><i class="icon-trash"></i></a>{/if}
+			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="icon-trash"></i></a>{/if}
 		</div>
 	</div>
-	{/foreach}
+	{/snippet}
 
+	{snippet form}
 	{if $user->isLoggedIn()}
-		{form form}
+		{form form class => ajax}
 			{input text}
 			<input n:input="add" class="btn btn-primary">
 		{/form}
 	{/if}
+	{/snippet}
 </div>

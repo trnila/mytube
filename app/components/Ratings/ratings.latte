@@ -1,9 +1,11 @@
+{snippet}
 <div class="ratings">
-	<a{if isset($positiveRate) && !$positiveRate} href="{link rate!, positive => true}"{/if} n:class="btn, isset($positiveRate) && $positiveRate ? active"><i class="icon-thumbs-up"></i> like</a>
-	<a{if isset($negativeRate) && !$negativeRate} href="{link rate!, positive => false}"{/if} n:class="btn, isset($negativeRate) && $negativeRate ? active"><i class="icon-thumbs-down"></i> dislike</a>
+	<a{if isset($positiveRate) && !$positiveRate} href="{link rate!, positive => true}"{/if} n:class="ajax, btn, isset($positiveRate) && $positiveRate ? active"><i class="icon-thumbs-up"></i> like</a>
+	<a{if isset($negativeRate) && !$negativeRate} href="{link rate!, positive => false}"{/if} n:class="ajax, btn, isset($negativeRate) && $negativeRate ? active"><i class="icon-thumbs-down"></i> dislike</a>
 
 	<div class="progress" n:if="$total > 0">
 		<div class="bar bar-success" style="width: {!$positive / ($total) * 100}%"></div>
 		<div class="bar bar-danger" style="width: {!$negative / ($total) * 100}%"></div>
 	</div>
 </div>
+{/snippet}

@@ -26,6 +26,7 @@ function setupWebAudio() {
 
 	// Get the <audio> element started	
 	audio.play();
+	console.log(analyser);
 }
 
 // Draw the audio frequencies to screen

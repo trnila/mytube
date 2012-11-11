@@ -28,7 +28,13 @@ class Comments extends BaseControl
 
 		$comment->delete();
 		$this->flashMessage('Váš komentář byl smazán.', 'success');
-		$this->redirect('this');
+
+		if($this->presenter->isAjax()) {
+			$this->invalidateControl('comments');
+		}
+		else {
+			$this->redirect('this');
+		}
 	}
 
 	public function render()
@@ -56,7 +62,16 @@ class Comments extends BaseControl
 			));
 
 		$this->flashMessage('Komentář byl přidán.', 'success');
-		$this->redirect('this');
+		
+		if($this->presenter->isAjax()) {
+			$this->invalidateControl('comments');
+
+			$this['form']['text']->value = '';
+			$this->invalidateControl('form');
+		}
+		else {
+			$this->redirect('this');
+		}
 	}
 
 	public function createComponentForm()
