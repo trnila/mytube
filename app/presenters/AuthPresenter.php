@@ -20,7 +20,7 @@ class SignPresenter extends BasePresenter
 			'redirect_uri' => $this->link('//facebook')
 		));
 
-		$this['login']['email']->value = $this->getParameter('email');
+		$this['login']['nickname']->value = $this->getParameter('nickname');
 	}
 
 	public function actionRegistration()
@@ -29,6 +29,10 @@ class SignPresenter extends BasePresenter
 		if($facebook = $this->getPersistentRegistration()->facebook) {
 			$form = $this->getComponent('registration');
 			$form->addAdditionalData('fbId', $facebook['id']);
+
+			if(isset($facebook['username'])) {
+				$form['nickname']->setDefaultValue($facebook['username']);
+			}
 
 			$form['email']->setValue($facebook['email'])
 				->getControlPrototype()

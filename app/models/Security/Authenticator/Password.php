@@ -16,10 +16,10 @@ class Password extends Authenticator
 
 	public function authenticate(array $credentials)
 	{
-		list($email, $password) = $credentials;
-		$password = $this->users->hash($email, $password);
+		list($username, $password) = $credentials;
+		$password = $this->users->hash($username, $password);
 
-		$user = $this->users->find($email);
+		$user = $this->users->find($username);
 		if(!$user || $user->password != $password) {
 			throw new AuthenticationException("Špatné uživatelské jméno nebo heslo.");
 		}

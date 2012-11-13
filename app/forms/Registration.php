@@ -26,6 +26,9 @@ class Registration extends BaseForm
 				->setType('email')
 				->addRule($this::EMAIL);
 
+		$this->addText('nickname', 'Nickname')
+			->setRequired();
+
 		$this->addPassword('password', 'Heslo')
 				->setRequired()
 				->addRule($this::MIN_LENGTH, 'Minimální delka hesla je %d znaků', 5);
@@ -56,7 +59,7 @@ class Registration extends BaseForm
 			$user->related('identities')->insert(array('identity' => $identity));
 		}
 
-		$identity = new \Nette\Security\Identity($user['email'], NULL, $user);
+		$identity = new \Nette\Security\Identity($user['nickname'], NULL, $user);
 		$this->presenter->user->login($identity);
 
 		$this->presenter->flashMessage('Registrace dokončena.', 'success');

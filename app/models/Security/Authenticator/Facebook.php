@@ -24,8 +24,7 @@ class Facebook extends Authenticator
 
 		if(!$user) {
 			$user = $this->users
-						->getUserByEmail($credentials['email'])
-						->fetch();
+						->find(array('email' => $credentials['email']));
 
 			// If user by email exists assign fbId if not already exists
 			if($user) {

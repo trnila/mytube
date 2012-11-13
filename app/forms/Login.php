@@ -7,9 +7,8 @@ class Login extends BaseForm
 	public function __construct(Nette\ComponentModel\IContainer $parent = NULL,  $name = NULL)
 	{
 		parent::__construct($parent, $name);
-		$this->addText('email', 'E-mail')
-			->setRequired()
-			->setType('email');
+		$this->addText('nickname', 'E-mail')
+			->setRequired();
 
 		$this->addPassword('password', 'Heslo')
 			->setRequired();
@@ -22,13 +21,13 @@ class Login extends BaseForm
 	{
 		try {
 			$presenter = $this->presenter;
-			$presenter->user->login($form['email']->value, $form['password']->value);
+			$presenter->user->login($form['nickname']->value, $form['password']->value);
 
 			// save openid if any
 			if($presenter->identity) {
 				$presenter->context->database->table('identities')
 					->insert(array(
-						'user_id' => $form['email']->value,
+						'user_nickname' => $form['nickname']->value,
 						'identity' => $presenter->identity
 					));
 			}
