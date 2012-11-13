@@ -15,13 +15,13 @@ class OpenID extends Authenticator
 	public function authenticate(array $credentials)
 	{
 		list($identity, $attributes) = $credentials;
-		$user = $this->users->getUserByIdentity($identity)->fetch();
+		$user = $this->users->findByIdentity($identity)->fetch();
 
 		if($user) {
 			return $this->getIdentity($user);
 		}
 
-		if($this->users->findBy(array('email' => $attributes['contact/email']))) {
+		if($this->users->find(array('email' => $attributes['contact/email']))) {
 			throw new NeedLoginException;
 		}
 

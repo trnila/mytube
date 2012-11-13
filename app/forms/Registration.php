@@ -1,7 +1,7 @@
 <?php
 namespace Form;
 use Model;
-
+use \Nette\Utils\Strings;
 
 class Registration extends BaseForm
 {
@@ -26,6 +26,9 @@ class Registration extends BaseForm
 				->setType('email')
 				->addRule($this::EMAIL);
 
+		$this->addText('nickname', 'Nickname')
+			->setRequired();
+
 		$this->addPassword('password', 'Heslo')
 				->setRequired()
 				->addRule($this::MIN_LENGTH, 'Minimální delka hesla je %d znaků', 5);
@@ -49,14 +52,20 @@ class Registration extends BaseForm
 		$values = array_merge($this->additionalData, (array) $form->values);
 		unset($values['passwordCheck']);
 
-		$user = $this->users->register($values);
+		try {
+			$user = $this->users->register($values);
+		}
+		catch(Model\DuplicateException $e) {
+			$form->addError($e->getMessage());
+			return;
+		}
 
 		// Add openid identity if any
 		if(isset($identity)) {
 			$user->related('identities')->insert(array('identity' => $identity));
 		}
 
-		$identity = new \Nette\Security\Identity($user['email'], NULL, $user);
+		$identity = new \Nette\Security\Identity($user['nickname'], NULL, $user);
 		$this->presenter->user->login($identity);
 
 		$this->presenter->flashMessage('Registrace dokončena.', 'success');

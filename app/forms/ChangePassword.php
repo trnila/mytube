@@ -30,8 +30,13 @@ class ChangePassword extends BaseForm
 	public function changePassword($form)
 	{
 		$values = $form->values;
-		$this->users->changePassword($this->presenter->user->id, $values->oldPassword, $values->password);
-		$this->presenter->flashMessage('Heslo bylo změněno.', 'success');
-		$this->presenter->redirectHome();
+		try {
+			$this->users->changePassword($this->presenter->user->id, $values->oldPassword, $values->password);
+			$this->presenter->flashMessage('Heslo bylo změněno.', 'success');
+			$this->presenter->redirectHome();
+		}
+		catch(\Model\Exception $e) {
+			$this->addError($e->getMessage());
+		}
 	}
 }
