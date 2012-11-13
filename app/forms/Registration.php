@@ -1,7 +1,7 @@
 <?php
 namespace Form;
 use Model;
-
+use \Nette\Utils\Strings;
 
 class Registration extends BaseForm
 {
@@ -52,7 +52,13 @@ class Registration extends BaseForm
 		$values = array_merge($this->additionalData, (array) $form->values);
 		unset($values['passwordCheck']);
 
-		$user = $this->users->register($values);
+		try {
+			$user = $this->users->register($values);
+		}
+		catch(Model\DuplicateException $e) {
+			$form->addError($e->getMessage());
+			return;
+		}
 
 		// Add openid identity if any
 		if(isset($identity)) {

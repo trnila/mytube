@@ -1,6 +1,7 @@
 <?php
 namespace Model;
 use Nette\Utils\Validators;
+use Nette\Utils\Strings;
 
 class Users extends Repository
 {
@@ -36,7 +37,23 @@ class Users extends Repository
 
 		$data['password'] = $this->hash($data['nickname'], $data['password']);
 
-		return $this->getTable()->insert($data);
+		try {
+			return $this->create($data);
+		}
+		catch(\Database\DuplicateEntryException $e) {
+			$found = Strings::match($e->getMessage(), "#for key '([^']+)'#");
+
+			if($found && isset($found[1])) {
+				if($found[1] == 'PRIMARY') { // nickname is duplicated
+					throw new DuplicateException("Uživatel s tímto uživatelským jménem už existuje.");
+				}
+				elseif($found[1] == 'email') {
+					throw new DuplicateException("Uživatel s tímto emailem už existuje.");	
+				}
+			}
+
+			throw $e;
+		}
 	}
 
 
