@@ -30,8 +30,10 @@ $(document).ready(function() {
 });
 </script>
 
+{var $canEdit = $user->isAllowed($video, 'edit')}
+
 <div id="video-detail">
-	<h1 class="editable" id="video-title">{$video->title}</h1>
+	<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
 	<div class="container">
 		{if $video->video}
 			<video src="{$basePath}/videos/{$video->path}" controls></video>
@@ -41,7 +43,7 @@ $(document).ready(function() {
 		{/if}
 	</div>
 
-	<p class="editable" data-type="textarea" id="video-description">{!$video->description|escape|nl2br}</p>
+	<p{if $canEdit} class="editable" data-type="textarea" {/if}id="video-description">{!$video->description|escape|nl2br}</p>
 
 	Pocet zhlednuti: {$video->views}
 

@@ -35,6 +35,10 @@ class VideoPresenter extends BasePresenter
 
 	public function handleEdit()
 	{
+		if(!$this->user->isAllowed($this->video, 'edit')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
 		$type = $this->getHttpRequest()->getPost('id');
 		if($type == 'video-title') {
 			$title = $this->getHttpRequest()->getPost('value');

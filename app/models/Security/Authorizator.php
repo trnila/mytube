@@ -13,7 +13,7 @@ class Authorizator extends Nette\Security\Permission
 		$this->addResource('comment');
 
 		$this->allow('authenticated', 'video', 'edit', function($acl) use($user) {
-			return $acl->queriedResource->user_id == $user->id;
+			return $acl->queriedResource->user_nickname == $user->id;
 		});
 
 		$this->allow('authenticated', 'comment', 'delete', function($acl) use($user) {
