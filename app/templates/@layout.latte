@@ -21,6 +21,11 @@
 					
 					<ul class="nav">
 						<li n:class="$presenter->isLinkCurrent('Homepage:') ? active"><a n:href="Homepage:">Home</a></li>
+						<li>
+							<form action="{$basePath}/search">
+								<input type="text" name="query" placeholder="Hledání">
+							</form>
+						</li>
 					</ul>
 
 					<ul class="nav pull-right">
