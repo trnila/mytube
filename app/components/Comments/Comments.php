@@ -55,7 +55,7 @@ class Comments extends BaseControl
 
 		$this->video->related('comments')
 			->insert(array(
-				'user_email' => $this->presenter->user->id,
+				'user_nickname' => $this->presenter->user->id,
 				'created' => new DateTime,
 				'text' => $form['text']->value,
 				'name' => 'test'

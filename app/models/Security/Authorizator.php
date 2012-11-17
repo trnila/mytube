@@ -17,7 +17,7 @@ class Authorizator extends Nette\Security\Permission
 		});
 
 		$this->allow('authenticated', 'comment', 'delete', function($acl) use($user) {
-			return $acl->queriedResource->user_email == $user->id;
+			return $acl->queriedResource->user_nickname == $user->id;
 		});
 
 		$this->allow($this::ALL, 'video', 'show', function($acl) use($user) {
@@ -31,7 +31,7 @@ class Authorizator extends Nette\Security\Permission
 				return true;
 			}
 
-			if($video->user_email == $user->id) {
+			if($video->user_nickname == $user->id) {
 				return true;
 			}
 
