@@ -1,2 +1,10 @@
 {#content}
+
+<img src="https://www.gravatar.com/avatar/{? echo md5($profile->email)}">
+
 {$profile->email}
+
+
+{foreach $myVideos as $video}
+	{$video->title}
+{/foreach}

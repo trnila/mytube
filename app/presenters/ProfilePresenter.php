@@ -9,8 +9,9 @@ class ProfilePresenter extends BasePresenter
 		$this->users = $users;
 	}
 
-	public function renderShow($email)
+	public function renderShow($nickname)
 	{
-		$this->template->profile = $this->users->find($email);
+		$user = $this->template->profile = $this->users->find($nickname);
+		$this->template->myVideos = $user->related('videos');
 	}
 }
