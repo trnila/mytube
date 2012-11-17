@@ -1,5 +1,9 @@
 {#content}
 
-{foreach $videos as $video}
-	{$video->title}
-{/foreach}
+{if}
+	{foreach $videos as $video}
+		{$video->title}
+	{/foreach}
+{else}
+	Nic nenalezeno
+{/if $iterations}
