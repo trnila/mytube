@@ -14,7 +14,7 @@ $configurator->addParameters(array(
 // Enable RobotLoader
 $configurator->createRobotLoader()
 	->addDirectory(__DIR__)
-	->addDirectory(__DIR__ . '/../www/assets/javascripts/libraries/') //TODO: temporary solution
+	->addDirectory(__DIR__ . '/../www/assets/javascripts/libraries/nette.ajax.js') //TODO: temporary solution
 	->register();
 
 $configurator->onCompile[] = function ($configurator, $compiler) {

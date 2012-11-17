@@ -33,6 +33,33 @@ class VideoPresenter extends BasePresenter
 		}
 	}
 
+	public function handleEdit()
+	{
+		$type = $this->getHttpRequest()->getPost('id');
+		if($type == 'video-title') {
+			$title = $this->getHttpRequest()->getPost('value');
+			$this->video->update(array(
+				'title' => $title
+			));
+
+			$this->payload->value = $this->template->escapeHtml($title);
+			$this->payload->saved = TRUE;
+		}
+		elseif($type == 'video-description') {
+			$description = $this->getHttpRequest()->getPost('value');
+			$description = Nette\Utils\Strings::replace($description, '#<br[^>]*>#', '');
+
+			$this->video->update(array(
+				'description' => $description
+			));
+
+			$this->payload->value = $this->template->nl2br($this->template->escapeHtml($description));
+			$this->payload->saved = TRUE;
+		}
+
+		$this->terminate();
+	}
+
 	public function renderShow($id)
 	{
 		$this->template->video = $this->video;

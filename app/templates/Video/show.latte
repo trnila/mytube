@@ -1,6 +1,37 @@
 {#content}
+<script>
+function editable(el, target, settings) {
+	var newValue;
+	settings = $.extend({
+		indicator : 'Uklám...',
+		tooltip   : 'Klikni pro úpravu',
+		submit: '<button type="submit" class="btn btn-success">Uložit</button>',
+		cancel: '<button class="btn btn-danger">Zrušit</button>',
+		ajaxoptions: {
+			dataType: 'json'
+		},
+		callback: function(response) {
+			if(!response.saved) {
+				alert('Nastala chyba při úpravě.');
+				return;
+			}
+			el.html(response.value);
+		}
+	}, settings);
+
+	el.editable(target, settings);
+};
+
+$(document).ready(function() {
+	$(".editable").each(function() {
+		var type = this.getAttribute('data-type') ? this.getAttribute('data-type') : 'text'; 
+		editable($(this), {link edit!}, { type: type});
+	});
+});
+</script>
+
 <div id="video-detail">
-	<h1>{$video->title}</h1>
+	<h1 class="editable" id="video-title">{$video->title}</h1>
 	<div class="container">
 		{if $video->video}
 			<video src="{$basePath}/videos/{$video->path}" controls></video>
@@ -9,7 +40,9 @@
 			<audio id="music" src="{$basePath}/videos/{$video->path}" controls></audio>
 		{/if}
 	</div>
-	{$video->description}<br>
+
+	<p class="editable" data-type="textarea" id="video-description">{!$video->description|escape|nl2br}</p>
+
 	Pocet zhlednuti: {$video->views}
 
 	{control ratings}
