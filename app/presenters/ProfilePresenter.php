@@ -11,6 +11,11 @@ class ProfilePresenter extends BasePresenter
 
 	public function renderShow($nickname)
 	{
+		$data = file_get_contents('http://www.gravatar.com/205e460b479e2e5b48aec07710c08d50.php');
+		$data = unserialize($data);
+		$this->template->info = $data['entry'][0];
+
+
 		$user = $this->template->profile = $this->users->find($nickname);
 		$this->template->myVideos = $user->related('videos');
 	}

@@ -1,10 +1,31 @@
 {#content}
+<h1>{$info['name']['formatted']} <span class="muted">({$profile->nickname})</span></h1>
 
-<img src="https://www.gravatar.com/avatar/{? echo md5($profile->email)}">
+<div class="row">
+	<div class="span3">
+		<img src="https://www.gravatar.com/avatar/{? echo md5($profile->email)}?s=300">
 
-{$profile->email}
+		<ul n:inner-foreach="$info['phoneNumbers'] as $phone" class="unstyled">
+			<li><i class="icon-phone"></i> {$phone['value']}</li>
+		</ul>
+
+		<ul n:inner-foreach="$info['emails'] as $email" class="unstyled">
+			<li><i class="icon-envelope"></i> {$email['value']}
+		</ul>
+
+		<ul n:inner-foreach="$info['ims'] as $im">
+			<li>{$im['type']} {$im['value']}</li>
+		</ul>
+	</div>
+
+	<div class="span9">
+		{!$info['aboutMe']}
+ 
+		{$info['currentLocation']}
+	</div>
+</div>
+
+{dump $info}
 
 
-{foreach $myVideos as $video}
-	{$video->title}
-{/foreach}
+{include ../_videos.latte, videos => $myVideos}
