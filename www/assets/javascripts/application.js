@@ -5,6 +5,7 @@ $(function () {
 	$.nette.init();
 });
 
+// Searching
 $(function() {
 	var timer;
 	$("#video-search input").keyup(function(evt) {
@@ -21,3 +22,31 @@ $(function() {
 		}, 100);
 	});
 });
+
+// show map on profile
+$(document).ready(function() {
+	$("[data-map-location]").each(function() {
+		var el = $(this);
+		var geocoder = new google.maps.Geocoder();
+		var mapOptions = {
+			zoom: 8,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var map = new google.maps.Map(this, mapOptions);
+
+		// Geocode address
+		geocoder.geocode({'address': el.attr('data-map-location')}, function(results, status) {
+			if(status == google.maps.GeocoderStatus.OK) {
+				map.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location,
+					icon: el.attr('data-map-marker') ? el.attr('data-map-marker') : null
+				});
+			}
+			else {
+				el.fadeOut();
+			}
+		});
+	});
+})
