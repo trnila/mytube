@@ -9,6 +9,6 @@ class HomepagePresenter extends BasePresenter
 			$this->invalidateControl('content');
 		}
 
-		$this->template->videos = $this->context->database->table('videos');
+		$this->template->videos = $this->context->model__videos->findAll();
 	}
 }
