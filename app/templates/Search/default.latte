@@ -1,9 +1,7 @@
 {#content}
 
-{if}
-	{foreach $videos as $video}
-		{$video->title}
-	{/foreach}
+{if $videos->count()}
+	{include ../_videos.latte}
 {else}
 	Nic nenalezeno
-{/if $iterations}
+{/if}
