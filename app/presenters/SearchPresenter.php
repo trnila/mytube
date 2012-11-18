@@ -12,7 +12,7 @@ class SearchPresenter extends BasePresenter
 
 	public function renderDefault($query)
 	{
-		$this->invalidateControl();
+		$query .= '*'; // to enable searching of non-completely typed words
 
 		$result = $this->context->modelManager->connection->table('videoSearch')
 			->where("MATCH(title, description) AGAINST (? IN BOOLEAN MODE)", $query, $query, $query)
@@ -24,5 +24,6 @@ class SearchPresenter extends BasePresenter
 		}
 
 		$this->template->videos = $this->videos->findBy(array('id' => $ids));
+		$this->invalidateControl();
 	}
 }
