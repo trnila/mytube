@@ -1,0 +1,22 @@
+{#content}
+<h1>Seznam uživatelů</h1>
+<table class="table table-hover table-bordered table-striped table-condensed">
+	<thead>
+		<tr>
+			<th>Nickname</th>
+			<th>E-mail</th>
+			<th>Role</th>
+			<th>Aktivní?</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr n:foreach="$users as $u">
+			<td>{$u->nickname}</td>
+			<td>{$u->email}</td>
+			<td>{$u->role}</td>
+			<td>{$u->active}</td>
+			<td><a n:if="$user->isAllowed($u, 'delete')" n:href="delete! $u->nickname" class="btn btn-danger">Smazat</a></td>
+		</tr>
+	</tbody>
+</table>
