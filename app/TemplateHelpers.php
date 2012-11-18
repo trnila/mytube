@@ -15,6 +15,11 @@ class TemplateHelpers extends Nette\Object
 		return preg_replace('#^0:0*#', '', $result);
 	}
 
+	public static function json($data)
+	{
+		return json_encode($data);
+	}
+
 	public static function timeAgo($time)
 	{
 		if (!$time) {

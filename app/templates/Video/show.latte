@@ -1,38 +1,7 @@
 {#content}
-<script>
-function editable(el, target, settings) {
-	var newValue;
-	settings = $.extend({
-		indicator : 'Uklám...',
-		tooltip   : 'Klikni pro úpravu',
-		submit: '<button type="submit" class="btn btn-success">Uložit</button>',
-		cancel: '<button class="btn btn-danger">Zrušit</button>',
-		ajaxoptions: {
-			dataType: 'json'
-		},
-		callback: function(response) {
-			if(!response.saved) {
-				alert('Nastala chyba při úpravě.');
-				return;
-			}
-			el.html(response.value);
-		}
-	}, settings);
-
-	el.editable(target, settings);
-};
-
-$(document).ready(function() {
-	$(".editable").each(function() {
-		var type = this.getAttribute('data-type') ? this.getAttribute('data-type') : 'text'; 
-		editable($(this), {link edit!}, { type: type});
-	});
-});
-</script>
-
 {var $canEdit = $user->isAllowed($video, 'edit')}
 
-<div id="video-detail">
+<div id="video-detail"{if $canEdit} data-editable-action="{link edit!}"{/if}>
 	<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
 	<div class="container">
 		{if $video->video}
@@ -43,7 +12,7 @@ $(document).ready(function() {
 		{/if}
 	</div>
 
-	<p{if $canEdit} class="editable" data-type="textarea" {/if}id="video-description">{!$video->description|escape|nl2br}</p>
+	<p{if $canEdit} class="editable" data-editable-type="textarea" {/if}id="video-description">{!$video->description|escape|nl2br}</p>
 
 	Pocet zhlednuti: {$video->views}
 

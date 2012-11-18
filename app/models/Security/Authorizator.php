@@ -6,17 +6,19 @@ class Authorizator extends Nette\Security\Permission
 {
 	public function __construct(Nette\Security\User $user)
 	{
-		$this->addRole('authenticated');
+		$this->addRole('guest');
+		$this->addRole('user');
+		$this->addRole('admin');
 
 		// Resources
 		$this->addResource('video');
 		$this->addResource('comment');
 
-		$this->allow('authenticated', 'video', 'edit', function($acl) use($user) {
+		$this->allow('user', 'video', 'edit', function($acl) use($user) {
 			return $acl->queriedResource->user_nickname == $user->id;
 		});
 
-		$this->allow('authenticated', 'comment', 'delete', function($acl) use($user) {
+		$this->allow('user', 'comment', 'delete', function($acl) use($user) {
 			return $acl->queriedResource->user_nickname == $user->id;
 		});
 
@@ -36,6 +38,17 @@ class Authorizator extends Nette\Security\Permission
 			}
 
 			return false;
+		});
+		
+		$this->addResource('user');
+
+		$this->allow('admin', 'user', $this::ALL);
+		$this->deny('admin', 'user', 'delete', function($acl) use($user) {
+			return $acl->queriedResource->nickname == $user->id;
+		});
+
+		$this->deny('admin', 'user', 'activation', function($acl) use($user) {
+			return $acl->queriedResource->nickname == $user->id;
 		});
 	}
 }
