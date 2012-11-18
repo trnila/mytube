@@ -15,7 +15,7 @@
 			<td>{$u->nickname}</td>
 			<td class="editable" data-editable-name="email">{$u->email}</td>
 			<td class="editable" data-editable-type="select" data-editable-data="{$roles|json}" data-editable-name="role">{$roles[$u->role]}</td>
-			<td>{$u->active}</td>
+			<td><a n:tag-if="$user->isAllowed($u, 'activation')" n:href="activate! $u->nickname, !$u->active"><i class="icon-check{$u->active ? '' : '-empty'}"></i></a></td>
 			<td><a n:if="$user->isAllowed($u, 'delete')" n:href="delete! $u->nickname" class="btn btn-danger">Smazat</a></td>
 		</tr>
 	</tbody>

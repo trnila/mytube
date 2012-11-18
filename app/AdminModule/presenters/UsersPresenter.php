@@ -64,6 +64,25 @@ class UsersPresenter extends BasePresenter
 		$this->terminate();
 	}
 
+	public function handleActivate($nickname, $activate = TRUE)
+	{
+		$user = $this->users->find($nickname);
+		if(!$user) {
+			throw new Nette\Application\BadRequestException;
+		}
+
+		// Check if we can edit this user
+		if(!$this->user->isAllowed($user, 'activation')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
+		$user->update(array(
+			'active' => $activate
+		));
+
+		$this->flashMessage('Uživatel byl ' . ($activate ? 'povolen.' : 'zakázán.'), 'success');
+		$this->redirect('this');
+	}
 
 	public function renderList()
 	{

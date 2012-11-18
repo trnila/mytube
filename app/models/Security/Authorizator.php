@@ -15,5 +15,9 @@ class Authorizator extends \Nette\Security\Permission
 		$this->deny('admin', 'user', 'delete', function($acl) use($user) {
 			return $acl->queriedResource->nickname == $user->id;
 		});
+
+		$this->deny('admin', 'user', 'activation', function($acl) use($user) {
+			return $acl->queriedResource->nickname == $user->id;
+		});
 	}
 }
