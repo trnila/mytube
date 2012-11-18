@@ -1,1 +1,34 @@
-body{background-color:#eee}@media(min-width:980px){body{margin-top:60px;margin-bottom:60px}}#content{background-color:#fff;padding:10px;border:1px solid #d5d5d5;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}
+/* line 3, ../sass/application.sass */
+body {
+  background-color: #eeeeee;
+}
+
+@media(min-width:980px) {
+  /* line 7, ../sass/application.sass */
+  body {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+}
+
+/* line 11, ../sass/application.sass */
+#content {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #d5d5d5;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/* line 19, ../sass/application.sass */
+table .editable form {
+  margin: 0px;
+}
+/* line 22, ../sass/application.sass */
+table .editable form input {
+  height: inherit;
+  padding: inherit;
+}

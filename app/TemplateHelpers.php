@@ -9,6 +9,11 @@ class TemplateHelpers extends Nette\Object
 		return NULL;
 	}
 
+	public static function json($data)
+	{
+		return json_encode($data);
+	}
+
 	public static function timeAgo($time)
 	{
 		if (!$time) {
