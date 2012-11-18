@@ -11,28 +11,27 @@ class Ratings extends BaseControl
 		$this->video = clone $video;
 	}
 
-	public function handleRate($positive = true)
+	public function handleRate($positive = TRUE, $takeBack = FALSE)
 	{
 		if(!$this->presenter->user->isLoggedIn()) {
 			throw new ForbiddenRequestException;
 		}
 
-		//TODO: there is a bug in nette
-		/*$this->video->related('ratings')
-			->where('user_id', $this->presenter->user->id)
-			->delete();*/
+		// TODO: workaround, because of this issue https://github.com/nette/nette/pull/799
+		// $this->video->related('ratings')->where('user_nickname', $this->presenter->user->id)->delete();
+		$this->presenter->context->database->table('ratings')
+			->where('user_nickname', $this->presenter->user->id)
+			->where('video_id', $this->video->id)
+			->delete();
 
-		$rating = $this->video->related('ratings')->where('user_nickname', $this->presenter->user->id)->fetch();
-		if($rating) {
-			$rating->delete();
+		if(!$takeBack) {
+			$this->video->related('ratings')
+				->insert(array(
+					'positive' => (bool) $positive,
+					'user_nickname' => $this->presenter->user->id,
+					'created' => new DateTime
+				));
 		}
-
-		$this->video->related('ratings')
-			->insert(array(
-				'positive' => (bool) $positive,
-				'user_nickname' => $this->presenter->user->id,
-				'created' => new DateTime
-			));
 
 		if($this->presenter->isAjax()) {
 			$this->invalidateControl();
@@ -47,15 +46,18 @@ class Ratings extends BaseControl
 		$template = $this->createTemplate();
 		$template->setFile(__DIR__ . '/ratings.latte');
 
-		$template->positive = $this->video->related('ratings')->where('positive', true)->count('*');
-		$template->negative = $this->video->related('ratings')->where('positive', false)->count('*');
+		$template->positive = $this->video->related('ratings')->where('positive', TRUE)->count('*');
+		$template->negative = $this->video->related('ratings')->where('positive', FALSE)->count('*');
 		$template->total = $template->positive + $template->negative;
 
 		if($this->presenter->user->isLoggedIn()) {
 			$rate = $this->video->related('ratings')->where('user_nickname', $this->presenter->user->id)->fetch();
 
-			$template->positiveRate = $rate ? $rate->positive == true : false;
-			$template->negativeRate = $rate ? $rate->positive == false : false;
+			$template->positiveRate = $rate ? $rate->positive == TRUE : FALSE;
+			$template->negativeRate = $rate ? $rate->positive == FALSE : FALSE;
+		}
+		else {
+			$template->positiveRate = $template->negativeRate = FALSE;
 		}
 
 		echo $template;
