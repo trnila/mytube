@@ -10,6 +10,6 @@ abstract class Authenticator extends Nette\Object implements Nette\Security\IAut
 			throw new AuthenticationException("Uživatelský účet není aktivní.");
 		}
 
-		return new Nette\Security\Identity($user->nickname, NULL, $user->toArray());
+		return new Nette\Security\Identity($user->nickname, $user->role, $user->toArray());
 	}
 }
