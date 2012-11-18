@@ -27,6 +27,10 @@ class UsersPresenter extends BasePresenter
 
 	public function renderList()
 	{
+		if(!$this->user->isAllowed('user', 'list')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
 		$users = $this->users->findAll();
 
 		$this->template->users = $users;
