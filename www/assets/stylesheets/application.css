@@ -26,9 +26,19 @@ body {
 /* line 19, ../sass/application.sass */
 table .editable form {
   margin: 0px;
-}
-/* line 22, ../sass/application.sass */
-table .editable form input {
+  padding: 0px;
+  display: inherit;
+  width: 100%;
   height: inherit;
-  padding: inherit;
+}
+/* line 26, ../sass/application.sass */
+table .editable form input, table .editable form select {
+  height: inherit;
+  margin: inherit;
+  width: 100%;
+}
+
+/* line 33, ../sass/application.sass */
+#admin-users-list tr td {
+  width: 20%;
 }
