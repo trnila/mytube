@@ -64,6 +64,8 @@ class Authorizator extends Nette\Security\Permission
 
 			return false;
 		});
+
+		$this->allow('admin', 'video', $this::ALL);
 	}
 
 	protected function permitComments($user)
@@ -71,5 +73,7 @@ class Authorizator extends Nette\Security\Permission
 		$this->allow('user', 'comment', 'delete', function($acl) use($user) {
 			return $acl->queriedResource->user_nickname == $user->id;
 		});
+
+		$this->allow('admin', 'comment', $this::ALL);
 	}
 }
