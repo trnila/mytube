@@ -37,7 +37,7 @@ function editable(el, target, settings) {
 			el.popover('destroy');
 
 			el.html(response.value);
-		},
+		}
 	}, settings);
 
 	el.editable(target, settings);
@@ -56,7 +56,7 @@ $(document).ready(function() {
 				id: el.closest('[data-editable-id]').data('editable-id')
 			},
 			submit: withButtons ? '<button type="submit" class="btn btn-success">Uložit</button>' : null,
-			cancel: withButtons ? '<button class="btn btn-danger">Zrušit</button>' : null,
+			cancel: withButtons ? '<button class="btn btn-danger">Zrušit</button>' : null
 		});
 	});
 });
