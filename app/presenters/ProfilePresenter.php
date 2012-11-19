@@ -13,6 +13,7 @@ class ProfilePresenter extends BasePresenter
 	{
 		$user = $this->template->profile = $this->users->find($nickname);
 		$this->template->myVideos = $user->related('videos');
+		$this->template->likedVideos = $user->related('videos')->where('ratings:user_nickname = ? AND ratings:positive = 1', $this->user->id)->order('created DESC');
 
 		$this->template->info = $this->context->nette->createCache('Profiles.Gravatar')->load($nickname, function(&$cache) use($user) {
 			$cache = array(
