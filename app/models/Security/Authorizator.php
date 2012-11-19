@@ -6,6 +6,7 @@ class Authorizator extends Nette\Security\Permission
 {
 	public function __construct(Nette\Security\User $user)
 	{
+		// Add roles
 		$this->addRole('guest');
 		$this->addRole('user');
 		$this->addRole('admin');
@@ -13,12 +14,36 @@ class Authorizator extends Nette\Security\Permission
 		// Resources
 		$this->addResource('video');
 		$this->addResource('comment');
+		
+		// Add resources
+		$this->addResource('user');
 
-		$this->allow('user', 'video', 'edit', function($acl) use($user) {
-			return $acl->queriedResource->user_nickname == $user->id;
+		// Call all setup methods
+		foreach($this->reflection->methods as $method) {
+			if(Nette\Utils\Strings::startsWith($method->name, 'permit')) {
+				$this->{$method->name}($user);
+			}
+		}
+	}
+
+	/**
+	 * All admins could do everything with user, but they can't deactivate or delete themselves 
+	 */
+	protected function permitUser($user)
+	{
+		$this->allow('admin', 'user', $this::ALL);
+		$this->deny('admin', 'user', 'delete', function($acl) use($user) {
+			return $acl->queriedResource->nickname == $user->id;
 		});
 
-		$this->allow('user', 'comment', 'delete', function($acl) use($user) {
+		$this->deny('admin', 'user', 'activation', function($acl) use($user) {
+			return $acl->queriedResource->nickname == $user->id;
+		});
+	}
+
+	protected function permitVideo($user)
+	{
+		$this->allow('user', 'video', 'edit', function($acl) use($user) {
 			return $acl->queriedResource->user_nickname == $user->id;
 		});
 
@@ -39,16 +64,12 @@ class Authorizator extends Nette\Security\Permission
 
 			return false;
 		});
-		
-		$this->addResource('user');
+	}
 
-		$this->allow('admin', 'user', $this::ALL);
-		$this->deny('admin', 'user', 'delete', function($acl) use($user) {
-			return $acl->queriedResource->nickname == $user->id;
-		});
-
-		$this->deny('admin', 'user', 'activation', function($acl) use($user) {
-			return $acl->queriedResource->nickname == $user->id;
+	protected function permitComments($user)
+	{
+		$this->allow('user', 'comment', 'delete', function($acl) use($user) {
+			return $acl->queriedResource->user_nickname == $user->id;
 		});
 	}
 }
