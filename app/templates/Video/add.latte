@@ -1,2 +1,75 @@
 {#content}
-	{control addVideo}
+
+<div id="video-upload">
+	<h1>Přidání nového videa</h1>
+	<div class="progress progress-striped active" hidden>
+		<div class="bar"></div>
+	</div>
+
+	{form addVideo}
+		{foreach $form->errors as $error}
+			{$error}
+		{/foreach}
+
+		{input title, placeholder => 'Název'}
+		{input description, placeholder => 'Popisek'}
+
+		{input video, accept => 'audio/*,video/*'}
+		<span class="btn btn-primary" id="video-upload-pickfile">Vybrat video nebo hudbu</span>
+		<input type="submit" class="btn btn" value="Nahrát">
+	{/form}
+</div>
+
+<script>
+$(document).ready(function() {
+	var picker = $("#frm-addVideo-video");
+	var progress = $("#video-upload .progress");
+
+	$("#video-upload-pickfile").click(function() {
+		picker.click();
+	});
+
+	$("#frm-addVideo").submit(function() {
+		if($(this).data('submitting')) {
+			return;
+		}
+
+
+		$(this).data('submitting', true).find('[type=submit]').attr('disabled', 'disabled');
+
+		var file = picker[0].files[0];
+		if(!file) {
+			picker.click();
+			return false;
+		}
+
+		progress.show();
+		var xhr = new XMLHttpRequest();
+		xhr.upload.addEventListener("progress", function(evt){
+			var percent = evt.loaded / evt.total * 100;
+			progress.find(".bar").css('width', percent + '%');
+		}, false);
+
+		$(xhr).bind('load', function(evt){
+			var response = $.parseJSON(xhr.responseText);
+			if(response.videoUrl) {
+				document.location.href = response.videoUrl;
+			}
+		});
+
+		var data = new FormData;
+		$("#video-upload form input, #video-upload form textarea").each(function() {
+			var el = $(this);
+			data.append(el.attr('name'), el.val());
+		})
+
+		data.append("video", file);
+
+		xhr.open("POST", picker.closest('form').attr('action'));
+		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		xhr.send(data);
+
+		return false;
+	});
+});
+</script>

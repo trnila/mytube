@@ -129,6 +129,10 @@ class VideoPresenter extends BasePresenter
 
 	public function addVideo($form)
 	{
+		if(!$this->user->isLoggedIn()) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
 		$video = array(
 			'title' => $form['title']->value,
 			'description' => $form['description']->value,
@@ -137,9 +141,15 @@ class VideoPresenter extends BasePresenter
 			'user_nickname' => $this->user->id
 		);
 
-		$this->videos->addVideoToProcess($video, $form['video']->value);
+		$video = $this->videos->addVideoToProcess($video, $form['video']->value);
 
 		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
-		$this->redirectHome();
+
+		if($this->isAjax()) {
+			$this->payload->videoUrl = $this->link('show', $video['id']);
+			$this->terminate();
+		}
+
+		$this->redirect('show', $video['id']);
 	}
 }
