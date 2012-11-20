@@ -10,4 +10,6 @@ services:
 	model.videos: 
 		class: Model\Videos
 		setup:
-			- $incomingDir(%appDir%/../incoming)
+			- $incomingDir(%appDir%/../incoming/)
+			- $videosDir(%wwwDir%/videos/)
+			- $thumbnailsDir(%wwwDir%/thumbnails/)

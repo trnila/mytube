@@ -64,6 +64,18 @@ class VideoPresenter extends BasePresenter
 		$this->terminate();
 	}
 
+	public function handleDelete($id)
+	{
+		if(!$this->user->isAllowed($this->video, 'delete')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
+		$this->videos->deleteVideo($this->video);
+
+		$this->flashMessage('Video bylo smazáno.', 'success');
+		$this->redirectHome();
+	}
+
 	public function renderShow($id)
 	{
 		$this->template->video = $this->video;

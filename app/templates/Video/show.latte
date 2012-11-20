@@ -5,6 +5,9 @@
 
 <div id="video-detail"{if $canEdit} data-editable-action="{link edit!}"{/if}>
 	<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
+
+	<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')"><i class="icon-trash"></i></a>
+
 	<div class="container">
 		{if $video->video}
 			<video src="{$basePath}/videos/{$video->path}" controls></video>

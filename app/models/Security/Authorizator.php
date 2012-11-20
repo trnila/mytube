@@ -47,6 +47,10 @@ class Authorizator extends Nette\Security\Permission
 			return $acl->queriedResource->user_nickname == $user->id;
 		});
 
+		$this->allow('user', 'video', 'delete', function($acl) use($user) {
+			return $acl->queriedResource->user_nickname == $user->id;
+		});
+
 		$this->allow($this::ALL, 'video', 'show', function($acl) use($user) {
 			$video = $acl->queriedResource;
 
