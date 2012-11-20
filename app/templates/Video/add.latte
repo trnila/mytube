@@ -58,7 +58,7 @@ $(document).ready(function() {
 		});
 
 		var data = new FormData;
-		$("#video-upload form input, #video-upload form textarea").each(function() {
+		$("#video-upload form input:not([type=file]), #video-upload form textarea").each(function() {
 			var el = $(this);
 			data.append(el.attr('name'), el.val());
 		})

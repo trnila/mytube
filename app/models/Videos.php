@@ -32,6 +32,7 @@ class Videos extends Repository
 					break;
 				}
 				catch(\Database\DuplicateEntryException $e) {
+					dump($e);
 				}
 			}
 
@@ -53,6 +54,7 @@ class Videos extends Repository
 			if($video) {
 				@unlink($this->incomingDir . "/{$video['id']}");
 			}
+			dump($e);
 		}
 
 		$this->manager->connection->commit();
