@@ -56,9 +56,6 @@ class Ratings extends BaseControl
 			$template->positiveRate = $rate ? $rate->positive == TRUE : FALSE;
 			$template->negativeRate = $rate ? $rate->positive == FALSE : FALSE;
 		}
-		else {
-			$template->positiveRate = $template->negativeRate = FALSE;
-		}
 
 		echo $template;
 	}	
