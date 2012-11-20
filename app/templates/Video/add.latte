@@ -30,18 +30,17 @@ $(document).ready(function() {
 	});
 
 	$("#frm-addVideo").submit(function() {
-		if($(this).data('submitting')) {
-			return;
-		}
-
-
-		$(this).data('submitting', true).find('[type=submit]').attr('disabled', 'disabled');
-
 		var file = picker[0].files[0];
 		if(!file) {
 			picker.click();
 			return false;
 		}
+
+		if($(this).data('submitting')) {
+			return;
+		}
+
+		$(this).data('submitting', true).find('[type=submit]').attr('disabled', 'disabled');
 
 		progress.show();
 		var xhr = new XMLHttpRequest();
