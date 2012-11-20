@@ -5,12 +5,11 @@
 			<div class="information">
 				<span class="title">{$video->title}</span>
 
-				{var $thumbnail => $video->getCoverThumbnail()}
-				{if $thumbnail}
-					<img src="{$basePath}/thumbnails/{$thumbnail->path}">
+				{if}
+					<img src="{$basePath}/thumbnails/{$thumbnail->path}" n:foreach="$video->related('thumbnails') as $thumbnail">
 				{else}
 					<i class="icon-music"></i>
-				{/if}
+				{/if $iterations}
 
 				<span class="duration">{$video->duration|duration}</span>
 			</div>

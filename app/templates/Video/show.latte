@@ -4,6 +4,8 @@
 {var $canEdit = $user->isAllowed($video, 'edit')}
 
 <div id="video-detail"{if $canEdit} data-editable-action="{link edit!}"{/if}>
+	<div class="alert" n:if="!$video->processed">Toto video neni stále zkonvertováno.</div>
+
 	<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
 
 	<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="icon-trash"></i></a>

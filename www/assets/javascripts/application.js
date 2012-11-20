@@ -51,7 +51,26 @@ $(document).ready(function() {
 	});
 });
 
-
+// Data confirms
 $(document).on('click', '[data-confirm]', function() {
 	return confirm($(this).data('confirm'));
+});
+
+// Thumbnails changes
+$(document).on('mouseenter', '.video img', function() {
+	var video = $(this).parent();
+
+	var timer = setInterval(function() {
+		var img = video.find("img:visible");
+		var next = img.next('img').length ? img.next('img') : img.parent().find("img").first();
+
+		img.hide();
+		next.show();
+	}, 350);
+
+	$(this).mouseleave(function() {
+		clearInterval(timer);
+		video.find("img").hide();
+		video.find("img:first").show();
+	});	
 });

@@ -54,7 +54,7 @@ class Authorizator extends Nette\Security\Permission
 		$this->allow($this::ALL, 'video', 'show', function($acl) use($user) {
 			$video = $acl->queriedResource;
 
-			if(!$video->processed) {
+			if(!$video->processed && $acl->queriedResource->user_nickname != $user->id) {
 				return false;
 			}
 
