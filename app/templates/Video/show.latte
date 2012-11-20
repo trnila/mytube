@@ -10,7 +10,7 @@
 
 	<div class="container">
 		{if $video->video}
-			<video src="{$basePath}/videos/{$video->path}" controls></video>
+			<video src="{$basePath}/videos/{$video->path}" controls autoplay></video>
 		{else}
 			<canvas></canvas>
 			<audio id="music" src="{$basePath}/videos/{$video->path}" controls></audio>
