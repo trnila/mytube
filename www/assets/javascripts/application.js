@@ -49,4 +49,9 @@ $(document).ready(function() {
 			}
 		});
 	});
-})
+});
+
+
+$(document).on('click', '[data-confirm]', function() {
+	return confirm($(this).data('confirm'));
+});
