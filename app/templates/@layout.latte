@@ -36,6 +36,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li>
+									<a n:href=":Video:add">Přidat video</a>
 									<a n:href=":Profile:show, $user->id">Můj profil</a>
 									<a n:href=":Account:changePassword">Změna hesla</a>
 									<a n:href=":Admin:Users:list" n:if="$user->isAllowed('user', 'list')">Správa uživatelů</a>
