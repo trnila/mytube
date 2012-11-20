@@ -65,7 +65,7 @@ class Registration extends BaseForm
 			$user->related('identities')->insert(array('identity' => $identity));
 		}
 
-		$identity = new \Nette\Security\Identity($user['nickname'], NULL, $user);
+		$identity = new \Nette\Security\Identity($user['nickname'], 'user', $user);
 		$this->presenter->user->login($identity);
 
 		$this->presenter->flashMessage('Registrace dokončena.', 'success');
