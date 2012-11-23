@@ -29,17 +29,22 @@
 
 <script>
 if(window.localStorage) {
-	var namespace = 'video-last-';
 	var video = $("[data-video-id]");
+	var key = 'video-last-' + video.data('video-id');
 
-	// Save a current time of video on page unload
+	// Save a current time of video on page unload only if its smaller than duration - 1% of duration
 	window.onbeforeunload = function() {
-		window.localStorage.setItem(namespace + video.data('video-id'), video[0].currentTime)
+		if((video[0].currentTime + video[0].duration * 0.01) < video[0].duration) {
+			window.localStorage.setItem(key, video[0].currentTime)
+		}
+		else {
+			window.localStorage.removesetItem(key);
+		}
 	};
 
 	// Reload saved time of last video playback
 	video.one('loadeddata', function() {
-		var last = window.localStorage.getItem(namespace + video.data('video-id'));
+		var last = window.localStorage.getItem(key);
 		if(last) {
 			video[0].currentTime = last;
 		}	
