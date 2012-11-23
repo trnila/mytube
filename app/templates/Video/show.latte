@@ -19,7 +19,7 @@
 		{/if}
 	</div>
 
-	<p{if $canEdit} class="editable" data-editable-type="textarea" {/if}id="video-description">{!$video->description|escape|nl2br}</p>
+	<p{if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{!$video->description|escape|nl2br}</p>
 
 	Pocet zhlednuti: {$video->views}
 
@@ -34,11 +34,11 @@ if(window.localStorage) {
 
 	// Save a current time of video on page unload only if its smaller than duration - 1% of duration
 	window.onbeforeunload = function() {
-		if((video[0].currentTime + video[0].duration * 0.01) < video[0].duration) {
+		if(video[0].currentTime < video[0].duration) {
 			window.localStorage.setItem(key, video[0].currentTime)
 		}
 		else {
-			window.localStorage.removesetItem(key);
+			window.localStorage.removeItem(key);
 		}
 	};
 
