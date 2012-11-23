@@ -78,6 +78,6 @@ $container->router[] = new Nette\Application\Routers\Route('assets/<file .+\-[a-
 	readfile($realFile);
 });
 
-$container->router[] = new Nette\Application\Routers\Route('<presenter>/<action>', 'Homepage:default');
+include __DIR__ . '/router.php';
 
 return $container;

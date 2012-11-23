@@ -47,10 +47,19 @@ $(document).ready(function() {
 	$(".editable").each(function() {
 		var el = $(this);
 		var withButtons = typeof(el.data('editable-buttons')) != 'undefined';
+		var data = el.data('editable-data');
+		var type = el.data('editable-type') || 'text';
+
+		// Replace <br> with newline if its textarea
+		if(!data && type == 'textarea') {
+			data = function(value) {
+				return value.replace(/\s*<br[\s\/]?>\s*/gi, '\n');
+			};
+		}
 
 		editable(el, el.closest('[data-editable-action]').attr('data-editable-action'), {
-			type: el.data('editable-type') || 'text',
-			data: el.data('editable-data'),
+			type: type,
+			data: data,
 			name: el.data('editable-name'),
 			submitdata: {
 				id: el.closest('[data-editable-id]').data('editable-id')
