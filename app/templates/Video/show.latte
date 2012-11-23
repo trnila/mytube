@@ -12,10 +12,10 @@
 
 	<div class="container">
 		{if $video->video}
-			<video src="{$basePath}/videos/{$video->path}" controls autoplay></video>
+			<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls autoplay></video>
 		{else}
 			<canvas></canvas>
-			<audio id="music" src="{$basePath}/videos/{$video->path}" controls></audio>
+			<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls></audio>
 		{/if}
 	</div>
 
@@ -26,3 +26,23 @@
 	{control ratings}
 	{control comments}
 </div>
+
+<script>
+if(window.localStorage) {
+	var namespace = 'video-last-';
+	var video = $("[data-video-id]");
+
+	// Save a current time of video on page unload
+	window.onbeforeunload = function() {
+		window.localStorage.setItem(namespace + video.data('video-id'), video[0].currentTime)
+	};
+
+	// Reload saved time of last video playback
+	video.one('loadeddata', function() {
+		var last = window.localStorage.getItem(namespace + video.data('video-id'));
+		if(last) {
+			video[0].currentTime = last;
+		}	
+	});
+}
+</script>
