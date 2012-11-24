@@ -58,6 +58,15 @@ if(window.localStorage) {
 	});
 }
 
+var tagitPlaceholder = 	function() {
+	console.log('OK');
+	var tagit = $(this);
+	console.log(tagit.find('li'));
+	if(tagit.find('li.tagit-choice').length < 1) {
+		tagit.html('<span class="muted">Klepnutím přidejte tagy</span>');
+	}
+};
+
 var tagItEditable = function() {
 	var tagit = $(this);
 	tagit.off('click');
@@ -83,6 +92,8 @@ var tagItEditable = function() {
 		cancel.remove();
 		tagit.one('click', tagItEditable);
 		tagit.tagit('destroy');
+
+		tagitPlaceholder.apply(tagit);
 	};
 
 	submit.one('click', function() {
@@ -107,5 +118,5 @@ var tagItEditable = function() {
 	});
 };
 
-$("[data-tagit-enable]").one('click', tagItEditable);
+$("[data-tagit-enable]").one('click', tagItEditable).each(tagitPlaceholder);
 </script>
