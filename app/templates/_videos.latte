@@ -1,30 +1,7 @@
 {foreach $videos as $video}
 	{if $iterator->isFirst(4)}<div class="row">{/if}
 	<div class="span3">
-		<a n:href="Video:show, $video->id" class="video">
-			<div class="information">
-				<span class="title">{$video->title}</span>
-
-				{if}
-					<img src="{$basePath}/thumbnails/{$thumbnail->path}" n:foreach="$video->related('thumbnails') as $thumbnail">
-				{else}
-					<i class="icon-music"></i>
-				{/if $iterations}
-
-				<span class="duration">{$video->duration|duration}</span>
-			</div>
-
-			<div class="ratings">
-				<i class="icon-thumbs-up"></i> {$video->related('ratings')->where('positive', true)->count('*')}
-				<i class="icon-thumbs-down"></i> {$video->related('ratings')->where('positive', false)->count('*')}
-			</div>
-
-			<div class="views">
-				{$video->views} zhlédnutí
-			</div>
-
-			{*<video src="{$basePath}/videos/{$video->path}" controls poster="{? $thumbnail = $video->related('thumbnails')->fetch(); if($thumbnail){ echo $thumbnail->path}"></video>*}
-		</a>
+		{include _video.latte, video => $video}
 	</div>
 	{if $iterator->isLast(4)}</div>{/if}
 {/foreach}

@@ -76,6 +76,10 @@ $width: 1170px
 			display: block
 			font-size: 150px
 
+	&.reversed
+		img, .icon-music
+			float: right
+
 	.ratings, .views
 		color: black
 
@@ -83,7 +87,7 @@ $width: 1170px
 		text-decoration: none
 		background: whiteSmoke
 
-#video-detail
+#video
 	position: relative
 
 	#video-delete
@@ -96,29 +100,52 @@ $width: 1170px
 		&:hover
 			color: red
 
-
-	.container
-		width: 70%
-
-		video
-			width: 100%
-
-
-	.ratings-interact
+	#video-detail
 		position: absolute
-		right: 0px
+		top: 0
+		z-index: 2
+		width: 1170px
+		@extend #content
 
-	.tagit
-		border: none
+		.container
+			width: 70%
 
-	canvas
-		width: 100%
-		border-bottom: 1px solid black
-		-webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255,255,255,0.25)))
+			video, audio
+				width: 100%
 
-	audio
-		width: 100%
 
+		.ratings-interact
+			position: absolute
+			right: 0px
+
+		.tagit
+			border: none
+
+		canvas
+			width: 100%
+			border-bottom: 1px solid black
+			-webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255,255,255,0.25)))
+
+	#left-suggested-videos
+		position: relative
+		left: -100px
+
+	#right-suggested-videos
+		position: absolute
+		right: -120px
+
+	[id$=-suggested-videos]
+		top: 30px
+
+		.video
+			position: relative
+			width: 300px
+			display: block
+			z-index: 0
+			+box-shadow(2px 2px 3px #eee)
+
+			&:hover
+				z-index: 3
 
 #video-comments
 	form

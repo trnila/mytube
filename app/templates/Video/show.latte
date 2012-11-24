@@ -1,37 +1,52 @@
 {var $title => $video->title}
-
-{#content}
 {var $canEdit = $user->isAllowed($video, 'edit')}
 
-<div id="video-detail"{if $canEdit} data-editable-action="{link edit!}"{/if}>
-	<div class="alert" n:if="!$video->processed">Toto video neni stále zkonvertováno.</div>
+{#raw}
+<div class="container">
+	<div id="video">
+		<div id="left-suggested-videos">
+			{for $x = 0; $x < 4; $x++}
+				{include ../_video.latte, video => $videos[$x]}
+			{/for}
+		</div>
 
-	<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
+		<div id="right-suggested-videos">
+			{for ; $x < 8; $x++}
+				{include ../_video.latte, video => $videos[$x], reversed => TRUE}
+			{/for}
+		</div>
 
-	<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="icon-trash"></i></a>
+		<div id="video-detail"{if $canEdit} data-editable-action="{link edit!}"{/if}>
+			<div class="alert" n:if="!$video->processed">Toto video neni stále zkonvertováno.</div>
 
-	<div class="container">
-		{if $video->video}
-			<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls autoplay></video>
-		{else}
-			<canvas></canvas>
-			<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls></audio>
-		{/if}
+			<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
+
+			<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="icon-trash"></i></a>
+
+			<div class="container">
+				{if $video->video}
+					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls autoplay></video>
+				{else}
+					<canvas></canvas>
+					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls></audio>
+				{/if}
+			</div>
+
+			<p {if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{!$video->description|escape|nl2br}</p>
+
+			Pocet zhlednuti: {$video->views} {$video->user}
+
+			<ul n:attr="data-tagit-enable => $user->isAllowed($video, 'edit')" class="tagit" n:inner-foreach="$video->related('video_tags')->order('position') as $tag">
+				<li class="tagit-choice">
+					<span class="tagit-text">{$tag->tag}</span>
+				</li>
+			</ul>
+
+
+			{control ratings}
+			{control comments}
+		</div>
 	</div>
-
-	<p{if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{!$video->description|escape|nl2br}</p>
-
-	Pocet zhlednuti: {$video->views} {$video->user}
-
-	<ul n:attr="data-tagit-enable => $user->isAllowed($video, 'edit')" class="tagit" n:inner-foreach="$video->related('video_tags')->order('position') as $tag">
-		<li class="tagit-choice">
-			<span class="tagit-text">{$tag->tag}</span>
-		</li>
-	</ul>
-
-
-	{control ratings}
-	{control comments}
 </div>
 
 <script>

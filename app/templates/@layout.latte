@@ -53,14 +53,19 @@
 			</div>
 		</div>
 
-		<div id="content" class="container">
-			<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
-				{$flash->message}
+		{ifset #content}
+			<div id="content" class="container">
+				<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
+					{$flash->message}
+				</div>
+				
+				{snippet}	
+					{include #content}
+				{/snippet}
 			</div>
-			
-			{snippet}
-				{include #content}
-			{/snippet}
-		</div>
+		{/ifset}
+		{ifset #raw}
+			{include #raw}
+		{/ifset}
 	</body>
 </html>

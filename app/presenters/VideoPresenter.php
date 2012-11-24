@@ -117,6 +117,12 @@ class VideoPresenter extends BasePresenter
 		else {
 			$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
 		}
+
+		$videos = $this->videos->findAll();
+		$this->template->videos = [];
+		foreach($videos as $video) {
+			$this->template->videos[] = $video;
+		}
 	}
 
 	protected function createComponentRatings()
