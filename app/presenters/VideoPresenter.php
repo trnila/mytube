@@ -66,9 +66,11 @@ class VideoPresenter extends BasePresenter
 
 			$tags = $this->getHttpRequest()->getPost('value');
 			if($tags) {
+				$position = 0;
 				foreach($tags as &$tag) {
 					$tag = array(
-						'tag' => trim($tag)
+						'tag' => trim($tag),
+						'position' => $position++
 					);
 				}
 

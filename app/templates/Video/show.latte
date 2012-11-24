@@ -23,7 +23,7 @@
 
 	Pocet zhlednuti: {$video->views} {$video->user}
 
-	<ul n:attr="data-tagit-enable => $user->isAllowed($video, 'edit')" class="tagit" n:inner-foreach="$video->related('video_tags') as $tag">
+	<ul n:attr="data-tagit-enable => $user->isAllowed($video, 'edit')" class="tagit" n:inner-foreach="$video->related('video_tags')->order('position') as $tag">
 		<li class="tagit-choice">
 			<span class="tagit-text">{$tag->tag}</span>
 		</li>
@@ -74,7 +74,8 @@ var tagItEditable = function() {
 	tagit.tagit({
 		select: true,
 		editOnClick: true,
-		triggerKeys: ['enter']
+		triggerKeys: ['enter'],
+		sortable: true
 	});
 
 	tagit.find("input:first").focus();
