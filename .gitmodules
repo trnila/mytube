@@ -4,3 +4,6 @@
 [submodule "www/assets/javascripts/libraries/jquery_jeditable"]
 	path = www/assets/javascripts/libraries/jquery_jeditable
 	url = https://github.com/tuupola/jquery_jeditable.git
+[submodule "www/assets/javascripts/libraries/Widen-Jquery-Tagit"]
+	path = www/assets/javascripts/libraries/Widen-Jquery-Tagit
+	url = https://github.com/Widen/jQuery-Tagit.git

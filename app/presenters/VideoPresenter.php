@@ -60,6 +60,27 @@ class VideoPresenter extends BasePresenter
 			$this->payload->value = $this->template->nl2br($this->template->escapeHtml($description));
 			$this->payload->saved = TRUE;
 		}
+		elseif($type == 'video-tags') {
+			$this->video->related('video_tags')
+				->delete();
+
+			$tags = $this->getHttpRequest()->getPost('value');
+			if($tags) {
+				foreach($tags as &$tag) {
+					$tag = array(
+						'tag' => trim($tag)
+					);
+				}
+
+				$this->video->related('video_tags')
+					->insert($tags);
+			}
+
+			$this->payload->saved = TRUE;
+		}
+		else {
+			throw new BadRequestException(Nette\Http\Request::S_400_BAD_REQUEST);
+		}
 
 		$this->terminate();
 	}

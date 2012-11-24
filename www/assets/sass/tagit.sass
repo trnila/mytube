@@ -1,0 +1,133 @@
+ul
+	input
+		box-shadow: none !important
+	&.tagit li.tagit-choice .tagit-text
+		padding-left: 10px
+		padding-right: 10px
+
+.ui-autocomplete
+	position: absolute
+	cursor: default
+	list-style: none
+	margin: 25px 0 0
+	padding: 0
+	border: 1px solid #E5E5E5
+	border-top: none
+	-moz-border-radius: 0 0 10px 10px
+	border-radius: 0 0 10px 10px
+	-moz-box-shadow: 0 3px 5px #888
+	-webkit-box-shadow: 0 3px 5px #888
+	box-shadow: 0 3px 5px #888
+	font-size: 12px
+
+	.ui-menu-item
+		padding: 0
+		margin: 0
+		a
+			display: block
+			padding: 4px 6px
+			margin: 0
+			text-decoration: none
+			line-height: 12px
+			border-bottom: 1px solid #E5E5E5
+			border-top: 1px solid #fff
+			color: #789d7a
+			&.ui-state-hover, &.ui-state-active
+				background-color: #c0e2c0
+				color: #555
+				border-color: #a6f7aa
+
+.ui-autocomplete-loading
+	background: white url(ui-anim_basic_16x16.gif) right center no-repeat
+
+ul.tagit
+	cursor: text
+	overflow: auto
+	font-size: 14px
+	width: 400px
+	padding: 3px
+	margin-top: 2px
+	margin-right: 6px
+	margin-bottom: 16px
+	margin-left: 0px
+	border: 1px solid #E5E5E5
+	background: #fff
+	color: #555
+
+	li
+		+border-radius(3px)
+		display: inline-block
+		margin: 2px 5px 2px 0
+		position: relative
+		font-size: 11.844px
+		font-weight: bold
+		line-height: 14px
+		color: white
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25)
+		white-space: nowrap
+		vertical-align: baseline
+
+	&.ui-sortable li.tagit-choice a.ui-icon.ui-icon-grip-dotted-vertical
+		background: url(icon-drag.gif) center left no-repeat
+		float: left
+		width: 12px
+		margin-left: -5px
+		cursor: move
+
+	li
+		&.tagit-choice
+			background-color: #3A87AD
+			border: 0px
+			padding: 2px 13px 3px 4px
+
+			&.selected
+				background-color: #B94A48
+				border-color: #f76464
+
+			&:hover
+				background-color: #3F87AF
+				border-color: #6de072
+
+		&.tagit-new
+			padding: 2px 4px 3px
+			padding: 2px 4px 1px
+			padding: 2px 4px 1px 0
+
+		&.tagit-choice
+			input
+				display: block
+				float: left
+				margin: 0 5px 0 0
+				padding-top: 2px
+				padding-bottom: 2px
+
+			a.tagit-close
+				color: white
+				cursor: pointer
+				font-size: 12px
+				font-weight: bold
+				outline: medium none
+				padding: 2px 7px 2px 3px
+				text-decoration: none
+				position: absolute
+				display: block
+				top: 0
+				right: 3px
+				text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.7)
+
+				&:hover
+					color: #535353
+
+	input[type="text"]
+		-moz-box-sizing: border-box
+		border: none !important
+		margin: 0 !important
+		padding: 0 !important
+		outline: none
+		width: 10px
+
+	.ui-helper-hidden-accessible
+		display: none
+
+.tagit-hiddenSelect
+	display: none

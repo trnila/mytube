@@ -1,5 +1,9 @@
 {#content}
-
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+<script src="https://raw.github.com/Widen/jQuery-Tagit/master/js/autogrowinput.js"></script>
+<script src="https://raw.github.com/Widen/jQuery-Tagit/master/js/jquery.ba-outside-events.js"></script>
+<script src="https://raw.github.com/Widen/jQuery-Tagit/master/js/tagit.js"></script>
+<link rel="stylesheet" href="http://widen.github.com/jQuery-Tagit/css/tagit.css">
 <div id="video-upload">
 	<h1>Přidání nového videa</h1>
 	<div class="progress progress-striped active" hidden>
@@ -13,6 +17,10 @@
 
 		{input title, placeholder => 'Název'}
 		{input description, placeholder => 'Popisek'}
+
+		<ul id="a" name="a">
+			<li>test</li>
+		</ul>
 
 		{input video, accept => 'audio/*,video/*'}
 		<span class="btn btn-primary" id="video-upload-pickfile">Vybrat video nebo hudbu</span>
@@ -69,6 +77,11 @@ $(document).ready(function() {
 		xhr.send(data);
 
 		return false;
+	});
+
+	$("#a").tagit({
+		        select:true,
+        triggerKeys:['comma', 'enter', 'space', 'semicolon', 'tab'],
 	});
 });
 </script>
