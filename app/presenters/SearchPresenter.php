@@ -15,8 +15,8 @@ class SearchPresenter extends BasePresenter
 		$query .= '*'; // to enable searching of non-completely typed words
 
 		$result = $this->context->modelManager->connection->table('videoSearch')
-			->where("MATCH(title, description) AGAINST (? IN BOOLEAN MODE)", $query, $query, $query)
-			->order("5 * MATCH(title) AGAINST (?) + MATCH(description) AGAINST (?) DESC");
+			->where("MATCH(title, description, tags) AGAINST (? IN BOOLEAN MODE)", $query, $query, $query, $query)
+			->order("5 * MATCH(title) AGAINST (?) + MATCH(tags) AGAINST (?) + 2 * MATCH(description) AGAINST (?) DESC");
 
 		$ids = array();
 		foreach($result as $row) {
