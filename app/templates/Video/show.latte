@@ -25,7 +25,7 @@
 
 			<div class="container">
 				{if $video->video}
-					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls autoplay></video>
+					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls fautoplay></video>
 				{else}
 					<canvas></canvas>
 					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls></audio>

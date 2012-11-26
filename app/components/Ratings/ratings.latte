@@ -1,8 +1,8 @@
 {snippet}
 <div class="ratings-interact">
 	{if $user->isLoggedIn()}
-	<a href="{link rate!, positive => true, takeBack => $positiveRate}" n:class="ajax, btn, $positiveRate ? active"><i class="icon-thumbs-up"></i> like</a>
-	<a href="{link rate!, positive => false, takeBack => $negativeRate}" n:class="ajax, btn, $negativeRate ? active"><i class="icon-thumbs-down"></i> dislike</a>
+	<a href="{link rate!, positive => true, takeBack => $positiveRate}" n:class="like, btn, $positiveRate ? active"><i class="icon-thumbs-up"></i> like</a>
+	<a href="{link rate!, positive => false, takeBack => $negativeRate}" n:class="dislike, btn, $negativeRate ? active"><i class="icon-thumbs-down"></i> dislike</a>
 	{/if}
 
 	<div class="progress" n:if="$total > 0">
@@ -10,4 +10,45 @@
 		<div class="bar bar-danger" style="width: {!$negative / ($total) * 100}%"></div>
 	</div>
 </div>
+
+<script>
+	$(".ratings-interact a").click(function(evt) {
+		var anchor = $(this);
+		$.nette.ajax({
+			url: anchor.attr('href'),
+			//off: ['snippets']
+		}).complete(function() {
+			var el;
+			if(anchor.hasClass('like')) {
+				el = $(".ratings-interact a.like");
+			}
+			else if(anchor.hasClass('dislike')) {
+				el = $(".ratings-interact a.dislike");
+			}
+			else {
+				return;
+			}
+
+			var number = $("<div></div>").css({
+				color: anchor.hasClass('like') ? 'green' : 'red',
+				position: 'absolute',
+				top: evt.pageY + 'px',
+				left: evt.pageX + 'px',
+				fontSize: '30px',
+				zIndex: 10
+			})
+			.html(anchor.hasClass('active') ? '-1' : '+1')
+			.appendTo("body")
+			.animate({
+				top: (anchor.hasClass('like') ? '-' : '+') + '=50px',
+				opacity: 0.5
+			}, function() {
+				$(this).remove();
+			});
+		});
+
+		return false;
+	});
+</script>	
+
 {/snippet}
