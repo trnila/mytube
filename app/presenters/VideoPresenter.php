@@ -170,7 +170,23 @@ class VideoPresenter extends BasePresenter
 			'user_nickname' => $this->user->id
 		);
 
+		// Add video to process
 		$video = $this->videos->addVideoToProcess($video, $form['video']->value);
+
+
+		// Addd tags to video
+		$tags = $this->getHttpRequest()->getPost('tags');
+		if(is_array($tags)) {
+			$position = 0;
+			foreach($tags as &$tag) {
+				$tag = [
+					'tag' => trim($tag),
+					'position' => $position++
+				];
+			}
+
+			$video->related('video_tags')->insert($tags);
+		}
 
 		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
 

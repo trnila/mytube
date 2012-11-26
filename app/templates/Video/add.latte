@@ -1,9 +1,4 @@
 {#content}
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-<script src="https://raw.github.com/Widen/jQuery-Tagit/master/js/autogrowinput.js"></script>
-<script src="https://raw.github.com/Widen/jQuery-Tagit/master/js/jquery.ba-outside-events.js"></script>
-<script src="https://raw.github.com/Widen/jQuery-Tagit/master/js/tagit.js"></script>
-<link rel="stylesheet" href="http://widen.github.com/jQuery-Tagit/css/tagit.css">
 <div id="video-upload">
 	<h1>Přidání nového videa</h1>
 	<div class="progress progress-striped active" hidden>
@@ -18,8 +13,7 @@
 		{input title, placeholder => 'Název'}
 		{input description, placeholder => 'Popisek'}
 
-		<ul id="a" name="a">
-			<li>test</li>
+		<ul name="tags[]">
 		</ul>
 
 		{input video, accept => 'audio/*,video/*'}
@@ -32,6 +26,7 @@
 $(document).ready(function() {
 	var picker = $("#frm-addVideo-video");
 	var progress = $("#video-upload .progress");
+	var tags = $("ul[name='tags[]']");
 
 	$("#video-upload-pickfile").click(function() {
 		picker.click();
@@ -65,10 +60,14 @@ $(document).ready(function() {
 		});
 
 		var data = new FormData;
-		$("#video-upload form input:not([type=file]), #video-upload form textarea").each(function() {
+		$("form input:not([type=file]), form textarea", "#video-upload").each(function() {
 			var el = $(this);
 			data.append(el.attr('name'), el.val());
 		})
+
+		tags.tagit('tags').map(function(el) {
+			data.append("tags[]", el.value);
+		});
 
 		data.append("video", file);
 
@@ -79,9 +78,9 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$("#a").tagit({
-		        select:true,
-        triggerKeys:['comma', 'enter', 'space', 'semicolon', 'tab'],
+	tags.tagit({
+		select:true,
+		triggerKeys:['comma', 'enter', 'space', 'semicolon', 'tab'],
 	});
 });
 </script>
