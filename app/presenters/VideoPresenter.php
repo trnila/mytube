@@ -118,7 +118,7 @@ class VideoPresenter extends BasePresenter
 			$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
 		}
 
-		$videos = $this->videos->findAll()->limit(8);
+		$videos = $this->videos->findAll()->limit(8)->order('RAND()');
 		$this->template->videos = [];
 		foreach($videos as $video) {
 			$this->template->videos[] = $video;
