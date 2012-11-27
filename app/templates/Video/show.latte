@@ -25,7 +25,7 @@
 
 			<div class="container">
 				{if $video->video}
-					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls fautoplay></video>
+					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls autoplay></video>
 				{else}
 					<canvas></canvas>
 					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls></audio>
@@ -34,9 +34,17 @@
 
 			{control ratings}
 			<div>
+				<dl class="dl-horizontal">
+					<dt>Pocet zhlédnutí:</dt>
+					<dd>{$video->views}</dd>
+
+					<dt>Nahrál:</dt>
+					<dd><a n:href="Profile:show, $video->user_nickname">{$video->user}</a></dd>
+				</dl>
+
 				<p {if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{!$video->description|escape|nl2br}</p>
 
-				Pocet zhlednuti: {$video->views} {$video->user}
+
 
 				<ul n:attr="data-tagit-enable => $user->isAllowed($video, 'edit')" class="tagit" n:inner-foreach="$video->related('video_tags')->order('position') as $tag">
 					<li class="tagit-choice">
