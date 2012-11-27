@@ -1,12 +1,20 @@
 {var $title => Přihlášení}
 
 {#content}
+
+<h1>Přihlášení pomoci hesla</h1>
 {control login}
+
+<h2>nebo přes</h2>
 
 <a href="{$facebook}"><img src="{$basePath}/assets/images/facebook.png" width="14"> Facebook</a>
 <a n:href="openid, identity => 'https://www.google.com/accounts/o8/id'"><img src="{$basePath}/assets/images/google.png"></a>
 
 <form action="{link openid}">
-	<input type="text" name="identity">
-	<input type="submit">
+	<div class="input-append">
+		<input type="text" name="identity" placeholder="OpenID" required>
+		<input type="submit" class="btn" value="Přihlásit">
+	</div>
 </form>
+
+<h3>nebo <a class="btn btn-primary" n:href="registration">vytvořit ůčet manualně?</a></h3>
