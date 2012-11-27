@@ -13,6 +13,7 @@ function editable(el, target, settings) {
 	settings = $.extend({
 		indicator : 'Ukládam...',
 		tooltip   : 'Klikni pro úpravu',
+		placeholder: 'Klikni pro úpravu',
 		ajaxoptions: {
 			dataType: 'json'
 		},
