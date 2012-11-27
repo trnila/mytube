@@ -16,7 +16,7 @@
 			{/for}
 		</div>
 
-		<div id="video-detail"{if $canEdit} data-editable-action="{link edit!}"{/if}>
+		<div id="video-detail" class="container"{if $canEdit} data-editable-action="{link edit!}"{/if}>
 			<div class="alert" n:if="!$video->processed">Toto video neni stále zkonvertováno.</div>
 
 			<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
