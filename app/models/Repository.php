@@ -1,7 +1,7 @@
 <?php
 namespace Model;
-use Nette, Database;
+use Fabik;
 
-class Repository extends Database\Table
+class Repository extends Fabik\Database\Table
 {
 }
