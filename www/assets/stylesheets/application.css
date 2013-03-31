@@ -1,17 +1,19 @@
-/* line 3, ../sass/application.sass */
+@import url(../components/bootstrap/docs/assets/css/bootstrap.css);
+@import url(../components/font-awesome/css/font-awesome.css);
+/* line 5, ../sass/application.sass */
 body {
   background-color: #eeeeee;
 }
 
 @media(min-width:980px) {
-  /* line 7, ../sass/application.sass */
+  /* line 9, ../sass/application.sass */
   body {
     margin-top: 60px;
     margin-bottom: 60px;
   }
 }
 
-/* line 11, ../sass/application.sass */
+/* line 13, ../sass/application.sass */
 #content {
   background-color: white;
   padding: 10px;
@@ -21,24 +23,4 @@ body {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-}
-
-/* line 19, ../sass/application.sass */
-table .editable form {
-  margin: 0px;
-  padding: 0px;
-  display: inherit;
-  width: 100%;
-  height: inherit;
-}
-/* line 26, ../sass/application.sass */
-table .editable form input, table .editable form select {
-  height: inherit;
-  margin: inherit;
-  width: 100%;
-}
-
-/* line 33, ../sass/application.sass */
-#admin-users-list tr td {
-  width: 20%;
 }

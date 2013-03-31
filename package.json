@@ -1,0 +1,11 @@
+{
+  "name": "sandbox.trnila.eu",
+  "version": "0.0.0",
+  "description": "ERROR: No README.md file found!",
+  "author": "Daniel Trnka",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-compass": "~0.1.3"
+  }
+}
