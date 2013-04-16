@@ -6,26 +6,25 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/fabik/database.git",
-                "reference": "d23bc23ff362a63da48c314ccbdd0274bf2dd433"
+                "url": "https://github.com/fabik/database.git",
+                "reference": "5fec19859b4de618e9dbad511b29d0c53c23ed00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabik/database/zipball/d23bc23ff362a63da48c314ccbdd0274bf2dd433",
-                "reference": "d23bc23ff362a63da48c314ccbdd0274bf2dd433",
+                "url": "https://api.github.com/repos/fabik/database/zipball/5fec19859b4de618e9dbad511b29d0c53c23ed00",
+                "reference": "5fec19859b4de618e9dbad511b29d0c53c23ed00",
                 "shasum": ""
             },
             "require": {
-                "nette/nette": "dev-master"
+                "nette/nette": "@dev"
             },
-            "time": "1350393403",
             "type": "library",
-            "installation-source": "source",
             "autoload": {
                 "files": [
                     "Database/loader.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -40,35 +39,35 @@
             "keywords": [
                 "database",
                 "nette"
-            ]
+            ],
+            "time": "2013-01-28 15:40:44"
         },
         {
             "name": "facebook/php-sdk",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/facebook/facebook-php-sdk.git",
-                "reference": "v3.2.0"
+                "url": "https://github.com/facebook/facebook-php-sdk.git",
+                "reference": "v3.2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/facebook/facebook-php-sdk/zipball/v3.2.0",
-                "reference": "v3.2.0",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk/zipball/v3.2.2",
+                "reference": "v3.2.2",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.0",
                 "ext-curl": "*",
-                "ext-json": "*"
+                "ext-json": "*",
+                "php": ">=5.2.0"
             },
-            "time": "1344965300",
             "type": "library",
-            "installation-source": "source",
             "autoload": {
                 "classmap": [
                     "src"
                 ]
             },
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "Apache2"
             ],
@@ -83,7 +82,8 @@
             "keywords": [
                 "facebook",
                 "sdk"
-            ]
+            ],
+            "time": "2013-01-15 21:37:15"
         },
         {
             "name": "fp/lightopenid",
@@ -102,9 +102,7 @@
             "require": {
                 "php": ">=5.2"
             },
-            "time": "1333528791",
             "type": "library",
-            "installation-source": "source",
             "autoload": {
                 "classmap": [
                     "openid.php",
@@ -120,53 +118,53 @@
             "description": "A PHP 5 library for easy openid authentication",
             "homepage": "https://github.com/formapro/LightOpenID",
             "keywords": [
-                "security",
+                "Authentication",
                 "OpenId",
-                "Authentication"
-            ]
+                "security"
+            ],
+            "time": "2012-04-04 08:39:51"
         },
         {
             "name": "nette/nette",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "http://github.com/nette/nette",
-                "reference": "f2bdae3b1fdf6f4b1cc1b706b63593b8ae926599"
+                "url": "https://github.com/nette/nette.git",
+                "reference": "cbe3b3852d2be9d7a1626bf7b3dd84b1bcb81dd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nette/nette/zipball/f2bdae3b1fdf6f4b1cc1b706b63593b8ae926599",
-                "reference": "f2bdae3b1fdf6f4b1cc1b706b63593b8ae926599",
+                "url": "https://api.github.com/repos/nette/nette/zipball/cbe3b3852d2be9d7a1626bf7b3dd84b1bcb81dd6",
+                "reference": "cbe3b3852d2be9d7a1626bf7b3dd84b1bcb81dd6",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
                 "ext-iconv": "*",
-                "ext-tokenizer": "*"
+                "ext-tokenizer": "*",
+                "php": ">=5.3.0"
             },
             "require-dev": {
                 "nette/tester": "@dev"
             },
             "suggest": {
-                "ext-mbstring": "*",
-                "ext-pdo": "*",
-                "ext-memcache": "*",
+                "ext-fileinfo": "*",
                 "ext-gd": "*",
-                "ext-fileinfo": "*"
+                "ext-mbstring": "*",
+                "ext-memcache": "*",
+                "ext-pdo": "*"
             },
-            "time": "1350745479",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "source",
             "autoload": {
                 "files": [
                     "Nette/loader.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause",
                 "GPL-2.0",
@@ -185,22 +183,25 @@
             "description": "Nette Framework - innovative framework for fast and easy development of secured web applications in PHP. Write less, have cleaner code and your work will bring you joy.",
             "homepage": "http://nette.org",
             "keywords": [
-                "templating",
-                "framework",
+                "Forms",
                 "database",
                 "dbal",
                 "debugging",
-                "mvc",
-                "micro",
-                "Forms",
+                "framework",
+                "images",
                 "latte",
-                "neon",
                 "mailing",
-                "images"
-            ]
+                "micro",
+                "mvc",
+                "neon",
+                "templating"
+            ],
+            "time": "2013-04-16 14:43:58"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
@@ -210,5 +211,11 @@
         "facebook/php-sdk": 20,
         "fp/lightopenid": 20,
         "fabik/database": 20
-    }
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
 }

@@ -1,6 +1,6 @@
 <?php
 namespace ActiveRow;
-use Database;
+use Fabik\Database;
 
 class ActiveRow extends Database\ActiveRow
 {

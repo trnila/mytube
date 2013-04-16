@@ -25,7 +25,7 @@ services:
 		facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
 		openid: LightOpenID(http://%host%)
 		authenticator: Model\Security\Authenticator\Password
-		authorizator: Model\Security\Authorizator
+		#authorizator: Model\Security\Authorizator
 		facebookAuthenticator:
 			class: Model\Security\Authenticator\Facebook
 			autowired: false
