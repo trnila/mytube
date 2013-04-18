@@ -6,8 +6,7 @@ module.exports = function(grunt) {
 			dist: {
 				options: {
 					config: 'www/assets/config.rb',
-					sassDir: 'www/assets/sass',
-					cssDir: 'www/assets/stylesheets',
+					basePath: 'www/assets/',
 					environment: 'production',
 					force: true
 				}
