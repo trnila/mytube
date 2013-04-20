@@ -89,9 +89,11 @@ class SignPresenter extends BasePresenter
 				}
 				catch(\Model\Security\Authenticator\NeedLoginException $e) {
 					$this->flashMessage('Účet s tímto emailem už existuje. Pro spárování účtu se přihlašte.');
+					$email = $openid->getAttributes();
+
 					$this->redirect('in', array(
 						'identity' => $openid->identity,
-						'email' => $openid->getAttributes()['contact/email']
+						'email' => $attrs['contact/email']
 					));
 				}
 				catch(\Model\Security\Authenticator\RegisterException $e) {
