@@ -25,6 +25,7 @@ nette:
 
 services:
 		authenticator: Model\Security\Authenticator\Password
+		database: @nette.database.default
 
 		modelManager: Fabik\Database\ModelManager
 		rowFactory: Fabik\Database\RowFactory({
