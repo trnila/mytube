@@ -41,13 +41,14 @@ class Migrate extends Nette\Object {
 					throw new Exception("Unknown migration");
 			}
 
-			$this->database->query('INSERT INTO schema_migrations(migration) VALUES(?)', $version);
+			$this->database->query('INSERT INTO schema_migrations(migration, file) VALUES(?, ?)', $version, $migration->getFileName());
 		}
 	}
 
 	protected function createMigrationTable() {
 		$this->database->query("CREATE TABLE IF NOT EXISTS`schema_migrations` (
   								 `migration` int NOT NULL,
+  								 `file` VARCHAR(255) NOT NULL,
   								 PRIMARY KEY(migration)
 								) COMMENT='' ENGINE='InnoDB'");
 	}
