@@ -4,5 +4,4 @@ app/config/config.local.neon
 .project
 .settings
 www/assets/.sass-cache/
-www/assets/components/
 node_modules
