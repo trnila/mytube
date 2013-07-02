@@ -33,7 +33,7 @@ class UserStorage extends Nette\Http\UserStorage
 				$this->identity = NULL;
 			}
 			else {
-				$this->identity = new Identity($user->email, NULL, iterator_to_array($user));
+				$this->identity = new Identity($user->nickname, NULL, iterator_to_array($user));
 			}
 		}
 	}
