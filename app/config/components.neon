@@ -2,6 +2,7 @@ factories:
 	components.ChangePassword: Form\ChangePassword
 	components.login: Form\Login
 	components.registration: Form\Registration
+	components.changeDetails: Form\ChangeDetails
 
 services:
 	model.users: Model\Users
