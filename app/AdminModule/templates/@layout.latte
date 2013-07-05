@@ -22,7 +22,7 @@
 					
 					<ul class="nav">
 						<li n:class="$presenter->isLinkCurrent('Dashboard:') ? active"><a n:href="Dashboard:">Home</a></li>
-						<li n:class="$presenter->isLinkCurrent('Dashboard:') ? active"><a n:href="Dashboard:">Uživatelé</a></li>
+						<li n:class="$presenter->isLinkCurrent('Users:list') ? active" n:if="$user->isAllowed('user', 'list')"><a n:href="Users:list">Uživatelé</a></li>
 					</ul>
 
 					<ul class="nav pull-right">
