@@ -8,6 +8,7 @@ class Authorizator extends \Nette\Security\Permission
 	{
 		// Add roles
 		$this->addRole('guest');
+		$this->addRole('authenticated');
 		$this->addRole('user');
 		$this->addRole('admin');
 		

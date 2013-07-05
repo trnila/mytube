@@ -24,9 +24,16 @@ nette:
 				lazy: true
 
 services:
-		authenticator: Model\Security\Authenticator\Password
 		database: @nette.database.default
-		nette.userStorage: Model\Security\UserStorage
+
+		user:
+			class: Nette\Security\User
+			arguments: 
+				- Model\Security\UserStorage()
+
+			setup:
+				- setAuthenticator(Model\Security\Authenticator\Password())
+				- setAuthorizator(Model\Security\Authorizator())
 
 		modelManager: Fabik\Database\ModelManager
 		rowFactory: Fabik\Database\RowFactory({
