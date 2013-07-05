@@ -34,10 +34,6 @@ services:
 		})
 
 factories:
-	nette.latte:
-		setup:
-			- Assets::installMacros(@self::getCompiler(), %wwwDir%, %rootDir%, %productionMode%, ...)
-
 	nette.template:
 		setup:
 			- registerHelperLoader('TemplateHelpers::loader')

@@ -4,8 +4,11 @@
 		<meta charset="UTF-8">
 		<title n:snippet="title">{ifset $title}{$title} - {/ifset}Trnila's sandbox</title>
 		
-		{stylesheet}
-		{javascript}
+		<link rel="stylesheet" href="{$basePath}/assets/stylesheets/application.css">
+
+		<script src="{$basePath}/assets/components/jquery/jquery.js"></script>
+		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+		<script src="{$basePath}/assets/javascripts/application.js"></script>				
 		
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
