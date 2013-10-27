@@ -1,50 +1,87 @@
 <?php
 $container = include __DIR__ . '/../app/bootstrap.php';
 Nette\Diagnostics\Debugger::$productionMode = FALSE;
+$database = $container->database;
 
-$versionFile = __DIR__ . '/.version';
-$actualVersion = (int) (@file_get_contents($versionFile));
+class Migrate extends Nette\Object {
+	protected $database;
 
-echo "\e[0;32mActual version is {$actualVersion}\e[0;0m\n";
+	protected $migrations = array();
 
-$migrations = array();
-foreach(Nette\Utils\Finder::findFiles('*.sql')->from(__DIR__ . '/migrations') as $file) {
-	$version = Nette\Utils\Strings::match($file->getFileName(), '/^(\d+)_/');
+	public function __construct(Nette\Database\Connection $database) {
+		$this->database = $database;
 
-	if(!isset($version[1])) {
-		continue;
+		$this->createMigrationTable();
+		$this->obtainMigrations();
 	}
 
-	$version = (int) $version[1];
-	if($version <= $actualVersion) {
-		continue;
+	public function migrate() {
+		$migrations = array();
+
+		foreach(Nette\Utils\Finder::findFiles('*.sql', '*.php')->from(__DIR__ . '/migrations') as $file) {
+			list($migration) = explode('_', $file->getFileName(), 2);
+
+			if(!in_array($migration, $this->migrations)) {
+				$migrations[$migration] = $file;
+			}
+		}
+
+		ksort($migrations);
+
+		foreach($migrations as $version => $migration) {
+			echo "\e[0;32mMigrating {$migration->getFileName()}\e[0;0m\n";
+
+			$pathinfo = pathinfo($migration->getBaseName());
+			switch ($pathinfo['extension']) {
+				case 'sql': {
+					$this->migrateSql($migration);
+					break;
+				}
+				default:
+					throw new Exception("Unknown migration");
+			}
+
+			$this->database->query('INSERT INTO schema_migrations(migration, file) VALUES(?, ?)', $version, $migration->getFileName());
+		}
 	}
 
-	$migrations[$version] = $file;
+	protected function createMigrationTable() {
+		$this->database->query("CREATE TABLE IF NOT EXISTS`schema_migrations` (
+  								 `migration` int NOT NULL,
+  								 `file` VARCHAR(255) NOT NULL,
+  								 PRIMARY KEY(migration)
+								) COMMENT='' ENGINE='InnoDB'");
+	}
+
+	protected function obtainMigrations() {
+		$migrations = $this->database->query('SELECT * FROM schema_migrations');
+		foreach($migrations as $migration) {
+			$this->migrations[] = $migration->migration;
+		}
+	}
+
+	protected function migrateSql($file) {
+		$sql = file_get_contents($file);
+		foreach(preg_split("/;\s*\n/", $sql) as $query) {
+			$query = trim($query);
+			if(empty($query)) {
+				continue;
+			}
+
+			echo $query . "\n";
+			try {
+				$this->database->query($query);
+			}
+			catch(PDOException $e) {
+				echo "\e[0;31m" . $e->getMessage() . "\e[0;0m\n";
+				exit;
+				Nette\Diagnostics\Debugger::log($e);
+			}
+		}
+	}
+
+
 }
 
-// Sort by versions
-ksort($migrations);
-
-foreach($migrations as $version => $file) {
-	echo "\e[0;32mMigrating to {$version}\e[0;0m\n";
-
-	$sql = file_get_contents($file);
-	foreach(preg_split("/;\s*\n/", $sql) as $query) {
-		$query = trim($query);
-		if(empty($query)) {
-			continue;
-		}
-
-		echo $query . "\n";
-		try {
-			$container->database->query($query);
-		}
-		catch(PDOException $e) {
-			echo "\e[0;31m" . $e->getMessage() . "\e[0;0m\n";
-			Nette\Diagnostics\Debugger::log($e);
-		}
-	}
-
-	file_put_contents($versionFile, $version);
-}
+$m = new Migrate($database);
+$m->migrate();

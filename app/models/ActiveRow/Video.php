@@ -1,6 +1,6 @@
 <?php
 namespace ActiveRow;
-use Database, Nette;
+use Fabik\Database, Nette;
 
 class Video extends Database\ActiveRow implements Nette\Security\IResource
 {

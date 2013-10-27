@@ -12,6 +12,19 @@ class UsersPresenter extends BasePresenter
 		$this->users = $users;
 	}
 
+	public function actionEdit($nickname)
+	{
+		$user = $this->users->find($nickname);
+		if(!$this->user->isAllowed($user, 'edit')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
+		$form = $this['userForm'];
+		$form->setDefaults($user);
+		$form['nickname']->setDisabled();
+		$form['password']->setRequired(FALSE)->setDefaultValue('');
+	}
+
 	public function handleDelete($nickname)
 	{
 		$user = $this->users->find($nickname);
@@ -22,46 +35,6 @@ class UsersPresenter extends BasePresenter
 		$user->delete();
 		$this->flashMessage('Uživatel byl smazán.', 'success');
 		$this->redirect('this');
-	}
-
-	public function handleEdit()
-	{
-		$post = $this->getHttpRequest()->getPost();
-		if(!isset($post['id']) || !($user = $this->users->find($post['id']))) {
-			throw new Nette\Application\BadRequestException;
-		}
-
-		// Check if we can edit this user
-		if(!$this->user->isAllowed($user, 'edit')) {
-			throw new Nette\Application\ForbiddenRequestException;
-		}
-
-		if(isset($post['email'])) {
-			if(!Validators::isEmail($post['email'])) {
-				$this->payload->error = 'Zadejte email ve správném formátu.';
-				$this->payload->original = $post['email'];
-				$this->terminate();
-			}
-
-			$user->update(array(
-				'email' => $post['email']
-			));
-
-			$this->payload->value = $post['email'];
-		}
-		elseif(isset($post['role']) && in_array($post['role'], array_keys($this->getRoles()))) {
-			$user->update(array(
-				'role' => $post['role']
-			));
-
-			$this->payload->value = $this->getRoles()[$post['role']];
-		}
-		else {
-			throw new Nette\Application\BadRequestException('', Nette\Http\Response::S400_BAD_REQUEST);
-		}
-
-
-		$this->terminate();
 	}
 
 	public function handleActivate($nickname, $activate = TRUE)
@@ -92,14 +65,74 @@ class UsersPresenter extends BasePresenter
 
 		$users = $this->users->findAll();
 		$this->template->users = $users;
-		$this->template->roles = $this->getRoles();
 	}
 
-	protected function getRoles()
+	protected function createComponentUserForm()
 	{
-		return array(
-			'user' => 'Uživatel',
-			'admin' => 'Administrator'
-		);
+		$form = $this->createForm();
+
+		$form->addText('nickname', 'Nickname');
+
+		$form->addText('email', 'E-mail')
+			->setRequired()
+			->addRule($form::EMAIL);
+
+		$form->addPassword('password', 'Heslo')
+			->setRequired();
+
+
+		$form->addPassword('passwordAgain', 'Heslo znovu')
+			->addConditionOn($form['password'], $form::FILLED)
+				->addRule($form::EQUAL, 'Hesla se musí shodovat', $form['password']);
+
+
+		$form->addSelect('role', 'Role')
+			->setRequired()
+			->setPrompt('Vyberte roli')
+			->setItems(array(
+				'user' => 'user',
+				'admin' => 'admin'
+			));
+
+		$form->addSubmit('submit', 'Upravit');
+
+
+		$form->onSuccess[] = array($this, 'processUserForm');
+
+		return $form;
+	}
+
+	public function processUserForm($form)
+	{
+		$values = $form->values;
+		unset($values['passwordAgain']);
+
+		if(empty($values['password'])) {
+			unset($values['password']);
+		}
+
+		if($nickname = $this->getParameter('nickname')) {
+			$user = $this->users->find($nickname);
+			if(!$this->user->isAllowed($user, 'edit')) {
+				throw new Nette\Application\ForbiddenRequestException;
+			}
+
+			if(isset($values['password'])) {
+				$values['password'] = $this->users->hash($nickname, $values['password']);
+			}
+
+			unset($values['nickname']);
+
+			$user->update($values);
+			$this->flashMessage('Uživatel byl upraven.', 'success');
+			$this->redirect('this');
+		}
+		else {
+			$values['password'] = $this->users->hash($values['nickname'], $values['password']);
+			$this->users->create($values);
+
+			$this->flashMessage('Uživatel byl vytvořen.', 'success');
+			$this->redirect('edit', $values['nickname']);
+		}
 	}
 }

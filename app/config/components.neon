@@ -4,10 +4,11 @@ factories:
 	components.registration: Form\Registration
 	components.ratings: Component\Ratings
 	components.comments: Component\Comments
+	components.changeDetails: Form\ChangeDetails
 
 services:
 	model.users: Model\Users
-	model.videos: 
+	model.videos:
 		class: Model\Videos
 		setup:
 			- $incomingDir(%appDir%/../incoming/)

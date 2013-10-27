@@ -23,22 +23,12 @@ class Videos extends Repository
 			$video = FALSE;
 			$tries = 15;
 
-			$this->manager->connection->beginTransaction();
+			//$this->manager->connection->beginTransaction();
+//TODO: fix
+			$data['id'] = Nette\Utils\Strings::random(8, 'a-z0-9A-Z');
+			$this->create($data);
 
-			for($x = 0; $x < $tries; $x++) {
-				$data['id'] = Nette\Utils\Strings::random(8, 'a-z0-9A-Z');
-				try {
-					$video = $this->create($data);
-					break;
-				}
-				catch(\Database\DuplicateEntryException $e) {
-					dump($e);
-				}
-			}
-
-			if(!$video) {
-				throw new \RuntimeException('Could not generate unique ID for new video.');
-			}
+			$video = $this->find($data['id']);
 
 			// save file to incoming location for further process
 			@$file->move($this->incomingDir . "/{$video['id']}");
@@ -57,7 +47,7 @@ class Videos extends Repository
 			dump($e);
 		}
 
-		$this->manager->connection->commit();
+		//$this->manager->connection->commit();
 
 		return $video;
 	}

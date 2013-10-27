@@ -4,13 +4,13 @@
 {#raw}
 <div class="container">
 	<div id="video">
-		<div id="left-suggested-videos">
+		<div id="left-suggested-videos" n:if="0">
 			{for $x = 0; $x < 4; $x++}
 				{include ../_video.latte, video => $videos[$x]}
 			{/for}
 		</div>
 
-		<div id="right-suggested-videos">
+		<div id="right-suggested-videos" n:if="0">
 			{for ; $x < 8; $x++}
 				{include ../_video.latte, video => $videos[$x], reversed => TRUE}
 			{/for}
@@ -78,7 +78,7 @@ if(window.localStorage) {
 		var last = window.localStorage.getItem(key);
 		if(last) {
 			video[0].currentTime = last;
-		}	
+		}
 	});
 }
 

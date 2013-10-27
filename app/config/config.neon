@@ -21,30 +21,16 @@ nette:
 			password: %database.password%
 
 services:
-	# Database
-	database: @Nette\Database\Connection
-	modelManager: Database\ModelManager
-	rowFactory: Database\RowFactory({
-		users: ActiveRow\User,
-		videos: ActiveRow\Video,
-		comments: ActiveRow\Comment
-	})
-	nette.database.default:
-		setup:
-			- query('SET sql_mode=STRICT_ALL_TABLES')
-
 	# Authentications + Authorizations
 	facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
 	openid: LightOpenID(http://%host%)
-	authenticator: Model\Security\Authenticator\Password
-	authorizator: Model\Security\Authorizator
 	facebookAuthenticator:
 		class: Model\Security\Authenticator\Facebook
 		autowired: false
 	openIDAuthenticator:
 		class: Model\Security\Authenticator\OpenID
 		autowired: false
-	
+
 	# Work queue
 	queue:
 		class: PhpAmqpLib\Connection\AMQPConnection(%workqueue.host%, %workqueue.port%, %workqueue.user%, %workqueue.password%, %workqueue.domain%)
@@ -54,11 +40,25 @@ services:
 		setup:
 			- queue_declare('proccessVideo', false, true, false, false)
 
-factories:
-	nette.latte:
-		setup:
-			- Assets::installMacros(@self::getCompiler(), %wwwDir%, %rootDir%, %productionMode%, ...)
+	database: @nette.database.default
 
+	user:
+		class: Nette\Security\User
+		arguments:
+			- Model\Security\UserStorage()
+
+		setup:
+			- setAuthenticator(Model\Security\Authenticator\Password())
+			- setAuthorizator(Model\Security\Authorizator())
+
+	modelManager: Fabik\Database\ModelManager
+	rowFactory: Fabik\Database\RowFactory({
+		users: ActiveRow\User,
+		videos: ActiveRow\Video,
+		comments: ActiveRow\Comment
+	})
+
+factories:
 	nette.template:
 		setup:
 			- registerHelperLoader('TemplateHelpers::loader')

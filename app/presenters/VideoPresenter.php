@@ -11,7 +11,7 @@ class VideoPresenter extends BasePresenter
 
 	protected $video;
 
-	public function inject(Model\Videos $videos) 
+	public function inject(Model\Videos $videos)
 	{
 		$this->videos = $videos;
 	}
@@ -127,14 +127,14 @@ class VideoPresenter extends BasePresenter
 
 	protected function createComponentRatings()
 	{
-		$component = $this->context->createComponents__ratings();
+		$component = $this->context->createServiceComponents__ratings();
 		$component->setVideo($this->video);
 		return $component;
 	}
 
 	protected function createComponentComments()
 	{
-		$component = $this->context->createComponents__comments();
+		$component = $this->context->createServiceComponents__comments();
 		$component->setVideo($this->video);
 		return $component;
 	}

@@ -81,4 +81,9 @@ class Users extends Repository
 
 		$user->update(array('password' => $newPassword));
 	}
+
+	public function changeDetails($nickname, $data) {
+		$user = $this->find($nickname);
+		$user->update($data);
+	}
 }

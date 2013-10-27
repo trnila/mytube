@@ -15,7 +15,7 @@ class Comments extends BaseControl
 	{
 		$comment = $this->video
 			->related('comment')
-			->find($id)
+			->wherePrimary($id)
 			->fetch();
 
 		if(!$comment) {
@@ -62,7 +62,7 @@ class Comments extends BaseControl
 			));
 
 		$this->flashMessage('Komentář byl přidán.', 'success');
-		
+
 		if($this->presenter->isAjax()) {
 			$this->invalidateControl('comments');
 

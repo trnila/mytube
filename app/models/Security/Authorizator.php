@@ -8,6 +8,7 @@ class Authorizator extends Nette\Security\Permission
 	{
 		// Add roles
 		$this->addRole('guest');
+		$this->addRole('authenticated');
 		$this->addRole('user');
 		$this->addRole('admin');
 
@@ -37,6 +38,10 @@ class Authorizator extends Nette\Security\Permission
 		});
 
 		$this->deny('admin', 'user', 'activation', function($acl) use($user) {
+			return $acl->queriedResource->nickname == $user->id;
+		});
+
+		$this->deny('admin', 'user', 'edit', function($acl) use($user) {
 			return $acl->queriedResource->nickname == $user->id;
 		});
 	}

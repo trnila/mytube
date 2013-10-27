@@ -99,7 +99,7 @@ class SignPresenter extends BasePresenter
 					unset($storage->facebook);
 					$storage->openid = $openid->getAttributes();
 					$storage->openid['identity'] = $openid->identity;
- 
+
 					$this->redirect('registration');
 				}
 			}
