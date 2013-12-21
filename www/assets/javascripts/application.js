@@ -1,7 +1,6 @@
 "use strict";
 
 $(function () {
-	$.nette.ext('history').cache = false;
 	$.nette.init();
 });
 
@@ -18,7 +17,7 @@ $(function() {
 			$.nette.ajax({}, self.closest('form'), evt).done(function() {
 				self.removeClass('loading');
 			});
-			
+
 		}, 100);
 	});
 });
@@ -72,5 +71,5 @@ $(document).on('mouseenter', '.video img', function() {
 		clearInterval(timer);
 		video.find("img").hide();
 		video.find("img:first").show();
-	});	
+	});
 });

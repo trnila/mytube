@@ -17,6 +17,7 @@
   "dependencies": {
     "jquery": "~2.0.3",
     "bootstrap": "~3.0.3",
-    "font-awesome": "~4.0.3"
+    "font-awesome": "~4.0.3",
+    "nette.ajax.js": "git://github.com/vojtech-dobes/nette.ajax.js"
   }
 }
