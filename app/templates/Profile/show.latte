@@ -13,11 +13,11 @@
 		<img src="https://www.gravatar.com/avatar/{md5($profile->email)}?s=300">
 
 		<ul n:ifset="$info['phoneNumbers']" n:inner-foreach="$info['phoneNumbers'] as $phone" class="unstyled">
-			<li><i class="icon-phone"></i> {$phone['value']}</li>
+			<li><i class="fa fa-phone"></i> {$phone['value']}</li>
 		</ul>
 
 		<ul n:ifset="$info['emails']" n:inner-foreach="$info['emails'] as $email" class="unstyled">
-			<li><i class="icon-envelope"></i> {$email['value']}
+			<li><i class="fa fa-envelope"></i> {$email['value']}
 		</ul>
 
 		<ul n:ifset="$info['ims']" n:inner-foreach="$info['ims'] as $im">

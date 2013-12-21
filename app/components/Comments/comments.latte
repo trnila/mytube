@@ -10,7 +10,7 @@
 		{$comment->text}
 		<div class="footer">
 			<a href="{plink Profile:show, $comment->user_nickname}">{$comment->user_nickname}</a> {$comment->created|timeAgo}
-			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="icon-trash"></i></a>{/if}
+			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="fa fa-trash-o"></i></a>{/if}
 		</div>
 	</div>
 	{/snippet}

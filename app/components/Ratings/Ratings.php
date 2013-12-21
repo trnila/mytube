@@ -19,7 +19,7 @@ class Ratings extends BaseControl
 
 		// TODO: workaround, because of this issue https://github.com/nette/nette/pull/799
 		// $this->video->related('ratings')->where('user_nickname', $this->presenter->user->id)->delete();
-		$this->presenter->context->database->selectionFactory->table('ratings')
+		$this->presenter->context->getByType('Nette\Database\Context')->table('ratings')
 			->where('user_nickname', $this->presenter->user->id)
 			->where('video_id', $this->video->id)
 			->delete();

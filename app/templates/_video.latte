@@ -2,18 +2,18 @@
 	<div class="information">
 		<span class="title">{$video->title}</span>
 
-		{if}
+		{if $video->video}
 			<img src="{$basePath}/thumbnails/{$thumbnail->path}" n:foreach="$video->related('thumbnails') as $thumbnail">
 		{else}
-			<i class="icon-music"></i>
-		{/if $iterations}
+			<i class="fa fa-music"></i>
+		{/if}
 
 		<span class="duration">{$video->duration|duration}</span>
 	</div>
 
 	<div class="ratings">
-		<i class="icon-thumbs-up"></i> {$video->related('ratings')->where('positive', true)->count('*')}
-		<i class="icon-thumbs-down"></i> {$video->related('ratings')->where('positive', false)->count('*')}
+		<i class="fa fa-thumbs-up"></i> {$video->related('ratings')->where('positive', true)->count('*')}
+		<i class="fa fa-thumbs-down"></i> {$video->related('ratings')->where('positive', false)->count('*')}
 	</div>
 
 	<div class="views">

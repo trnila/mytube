@@ -1,13 +1,13 @@
 {snippet}
 <div class="ratings-interact">
 	{if $user->isLoggedIn()}
-	<a href="{link rate!, positive => true, takeBack => $positiveRate}" n:class="like, btn, $positiveRate ? active"><i class="icon-thumbs-up"></i> like</a>
-	<a href="{link rate!, positive => false, takeBack => $negativeRate}" n:class="dislike, btn, $negativeRate ? active"><i class="icon-thumbs-down"></i> dislike</a>
+	<a href="{link rate!, positive => true, takeBack => $positiveRate}" n:class="like, btn, $positiveRate ? active"><i class="fa fa-thumbs-up"></i> like</a>
+	<a href="{link rate!, positive => false, takeBack => $negativeRate}" n:class="dislike, btn, $negativeRate ? active"><i class="fa fa-thumbs-down"></i> dislike</a>
 	{/if}
 
 	<div class="progress" n:if="$total > 0">
-		<div class="bar bar-success" style="width: {!$positive / ($total) * 100}%"></div>
-		<div class="bar bar-danger" style="width: {!$negative / ($total) * 100}%"></div>
+		<div class="progress-bar progress-bar-success" style="width: {!$positive / ($total) * 100}%"></div>
+		<div class="progress-bar progress-bar-danger" style="width: {!$negative / ($total) * 100}%"></div>
 	</div>
 </div>
 
@@ -49,6 +49,6 @@
 
 		return false;
 	});
-</script>	
+</script>
 
 {/snippet}

@@ -1,202 +1,9 @@
-@import url(../components/bootstrap/docs/assets/css/bootstrap.css);
-@import url(../components/font-awesome/css/font-awesome.css);
-/* line 3, ../sass/admin.sass */
-table .editable form {
-  margin: 0px;
-  padding: 0px;
-  display: inherit;
-  width: 100%;
-  height: inherit;
-}
-/* line 10, ../sass/admin.sass */
-table .editable form input, table .editable form select {
-  height: inherit;
-  margin: inherit;
-  width: 100%;
-}
-
-/* line 17, ../sass/admin.sass */
-#admin-users-list tr td {
-  width: 20%;
-}
-
-/* line 2, ../sass/tagit.sass */
-ul input {
-  box-shadow: none !important;
-}
-/* line 4, ../sass/tagit.sass */
-ul.tagit li.tagit-choice .tagit-text {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-/* line 8, ../sass/tagit.sass */
-.ui-autocomplete {
-  position: absolute;
-  cursor: default;
-  list-style: none;
-  margin: 25px 0 0;
-  padding: 0;
-  border: 1px solid #e5e5e5;
-  border-top: none;
-  -moz-border-radius: 0 0 10px 10px;
-  border-radius: 0 0 10px 10px;
-  -moz-box-shadow: 0 3px 5px #888888;
-  -webkit-box-shadow: 0 3px 5px #888888;
-  box-shadow: 0 3px 5px #888888;
-  font-size: 12px;
-}
-/* line 23, ../sass/tagit.sass */
-.ui-autocomplete .ui-menu-item {
-  padding: 0;
-  margin: 0;
-}
-/* line 26, ../sass/tagit.sass */
-.ui-autocomplete .ui-menu-item a {
-  display: block;
-  padding: 4px 6px;
-  margin: 0;
-  text-decoration: none;
-  line-height: 12px;
-  border-bottom: 1px solid #e5e5e5;
-  border-top: 1px solid white;
-  color: #789d7a;
-}
-/* line 35, ../sass/tagit.sass */
-.ui-autocomplete .ui-menu-item a.ui-state-hover, .ui-autocomplete .ui-menu-item a.ui-state-active {
-  background-color: #c0e2c0;
-  color: #555555;
-  border-color: #a6f7aa;
-}
-
-/* line 40, ../sass/tagit.sass */
-.ui-autocomplete-loading {
-  background: white url(ui-anim_basic_16x16.gif) right center no-repeat;
-}
-
-/* line 43, ../sass/tagit.sass */
-ul.tagit {
-  cursor: text;
-  overflow: auto;
-  font-size: 14px;
-  width: 400px;
-  padding: 3px;
-  margin-top: 2px;
-  margin-right: 6px;
-  margin-bottom: 16px;
-  margin-left: 0px;
-  border: 1px solid #e5e5e5;
-  background: white;
-  color: #555555;
-}
-/* line 57, ../sass/tagit.sass */
-ul.tagit li {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  display: inline-block;
-  margin: 2px 5px 2px 0;
-  position: relative;
-  font-size: 11.844px;
-  font-weight: bold;
-  line-height: 14px;
-  color: white;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  white-space: nowrap;
-  vertical-align: baseline;
-}
-/* line 70, ../sass/tagit.sass */
-ul.tagit.ui-sortable li.tagit-choice a.ui-icon.ui-icon-grip-dotted-vertical {
-  background: url(icon-drag.gif) center left no-repeat;
-  float: left;
-  width: 12px;
-  margin-left: -5px;
-  cursor: move;
-}
-/* line 78, ../sass/tagit.sass */
-ul.tagit li.tagit-choice {
-  background-color: #3a87ad;
-  border: 0px;
-  padding: 2px 13px 3px 4px;
-}
-/* line 83, ../sass/tagit.sass */
-ul.tagit li.tagit-choice.selected {
-  background-color: #b94a48;
-  border-color: #f76464;
-}
-/* line 87, ../sass/tagit.sass */
-ul.tagit li.tagit-choice:hover {
-  background-color: #3f87af;
-  border-color: #6de072;
-}
-/* line 91, ../sass/tagit.sass */
-ul.tagit li.tagit-new {
-  padding: 2px 4px 3px;
-  padding: 2px 4px 1px;
-  padding: 2px 4px 1px 0;
-}
-/* line 97, ../sass/tagit.sass */
-ul.tagit li.tagit-choice input {
-  display: block;
-  float: left;
-  margin: 0 5px 0 0;
-  padding-top: 2px;
-  padding-bottom: 2px;
-}
-/* line 104, ../sass/tagit.sass */
-ul.tagit li.tagit-choice a.tagit-close {
-  color: white;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: bold;
-  outline: medium none;
-  padding: 2px 7px 2px 3px;
-  text-decoration: none;
-  position: absolute;
-  display: block;
-  top: 0;
-  right: 3px;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.7);
-}
-/* line 118, ../sass/tagit.sass */
-ul.tagit li.tagit-choice a.tagit-close:hover {
-  color: #535353;
-}
-/* line 121, ../sass/tagit.sass */
-ul.tagit input[type="text"] {
-  -moz-box-sizing: border-box;
-  border: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  outline: none;
-  width: 10px;
-}
-/* line 129, ../sass/tagit.sass */
-ul.tagit .ui-helper-hidden-accessible {
-  display: none;
-}
-
-/* line 132, ../sass/tagit.sass */
-.tagit-hiddenSelect {
-  display: none;
-}
-
-/* line 7, ../sass/application.sass */
+/* line 3, ../sass/application.sass */
 body {
   background-color: #eeeeee;
 }
 
-@media(min-width:980px) {
-  /* line 11, ../sass/application.sass */
-  body {
-    margin-top: 60px;
-    margin-bottom: 60px;
-  }
-}
-
-/* line 17, ../sass/application.sass */
+/* line 9, ../sass/application.sass */
 #content, #video #video-detail {
   background-color: white;
   padding: 10px;
@@ -208,31 +15,31 @@ body {
   border-radius: 5px;
 }
 
-/* line 23, ../sass/application.sass */
+/* line 15, ../sass/application.sass */
 #video-search {
   margin: 0px;
 }
-/* line 26, ../sass/application.sass */
+/* line 18, ../sass/application.sass */
 #video-search input {
   margin-top: 4px;
 }
-/* line 29, ../sass/application.sass */
+/* line 21, ../sass/application.sass */
 #video-search input.loading {
   background-image: url('../images/loading-dd6b7b0bf5c3af22499abc0a9ee1e1b2.gif');
   background-position: right center;
   background-repeat: no-repeat;
 }
 
-/* line 35, ../sass/application.sass */
+/* line 27, ../sass/application.sass */
 .ratings-interact {
   width: 154px;
 }
-/* line 38, ../sass/application.sass */
+/* line 30, ../sass/application.sass */
 .ratings-interact .progress {
   height: 10px;
 }
 
-/* line 41, ../sass/application.sass */
+/* line 33, ../sass/application.sass */
 .video {
   display: inline-block;
   margin-bottom: 25px;
@@ -245,13 +52,13 @@ body {
   width: 100%;
   height: 100px;
 }
-/* line 50, ../sass/application.sass */
+/* line 42, ../sass/application.sass */
 .video video {
   width: 150px;
   height: 100%;
   float: left;
 }
-/* line 56, ../sass/application.sass */
+/* line 48, ../sass/application.sass */
 .video .information .title {
   color: black;
   font-weight: bold;
@@ -262,56 +69,56 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* line 66, ../sass/application.sass */
+/* line 58, ../sass/application.sass */
 .video .information .duration {
   float: right;
   color: #999999;
 }
-/* line 70, ../sass/application.sass */
+/* line 62, ../sass/application.sass */
 .video .information img, .video .information .icon-music {
   float: left;
   margin-right: 5px;
   width: 150px;
 }
-/* line 75, ../sass/application.sass */
+/* line 67, ../sass/application.sass */
 .video .information img:not(:first-of-type), .video .information .icon-music:not(:first-of-type) {
   display: none;
 }
-/* line 78, ../sass/application.sass */
+/* line 70, ../sass/application.sass */
 .video .information .icon-music {
   display: block;
   font-size: 150px;
   text-align: center;
 }
-/* line 84, ../sass/application.sass */
+/* line 76, ../sass/application.sass */
 .video.reversed img, .video.reversed .icon-music {
   float: right;
 }
-/* line 87, ../sass/application.sass */
+/* line 79, ../sass/application.sass */
 .video .ratings, .video .views {
   color: black;
 }
 @media screen and (max-width: 1200px) {
-  /* line 41, ../sass/application.sass */
+  /* line 33, ../sass/application.sass */
   .video {
     height: 130px;
   }
-  /* line 91, ../sass/application.sass */
+  /* line 83, ../sass/application.sass */
   .video .views, .video .duration {
     display: none;
   }
 }
-/* line 96, ../sass/application.sass */
+/* line 88, ../sass/application.sass */
 .video:hover {
   text-decoration: none;
   background: whitesmoke;
 }
 
-/* line 100, ../sass/application.sass */
+/* line 92, ../sass/application.sass */
 #video {
   position: relative;
 }
-/* line 103, ../sass/application.sass */
+/* line 95, ../sass/application.sass */
 #video #video-delete {
   position: absolute;
   right: 10px;
@@ -319,53 +126,53 @@ body {
   font-size: 20px;
   text-decoration: none;
 }
-/* line 110, ../sass/application.sass */
+/* line 102, ../sass/application.sass */
 #video #video-delete:hover {
   color: red;
 }
-/* line 113, ../sass/application.sass */
+/* line 105, ../sass/application.sass */
 #video #video-detail {
   position: absolute;
   top: 0;
   z-index: 2;
 }
-/* line 119, ../sass/application.sass */
+/* line 111, ../sass/application.sass */
 #video #video-detail .container {
   width: 70%;
 }
-/* line 122, ../sass/application.sass */
+/* line 114, ../sass/application.sass */
 #video #video-detail .container video, #video #video-detail .container audio {
   width: 100%;
 }
-/* line 126, ../sass/application.sass */
+/* line 118, ../sass/application.sass */
 #video #video-detail .ratings-interact {
   float: right;
 }
-/* line 129, ../sass/application.sass */
+/* line 121, ../sass/application.sass */
 #video #video-detail .tagit {
   border: none;
 }
-/* line 132, ../sass/application.sass */
+/* line 124, ../sass/application.sass */
 #video #video-detail canvas {
   width: 100%;
   border-bottom: 1px solid black;
   -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, 0.25)));
 }
-/* line 137, ../sass/application.sass */
+/* line 129, ../sass/application.sass */
 #video #left-suggested-videos {
   position: relative;
   left: -100px;
 }
-/* line 141, ../sass/application.sass */
+/* line 133, ../sass/application.sass */
 #video #right-suggested-videos {
   position: absolute;
   right: -120px;
 }
-/* line 145, ../sass/application.sass */
+/* line 137, ../sass/application.sass */
 #video [id$=-suggested-videos] {
   top: 30px;
 }
-/* line 148, ../sass/application.sass */
+/* line 140, ../sass/application.sass */
 #video [id$=-suggested-videos] .video {
   position: relative;
   width: 300px;
@@ -375,37 +182,37 @@ body {
   -moz-box-shadow: 2px 2px 3px #eeeeee;
   box-shadow: 2px 2px 3px #eeeeee;
 }
-/* line 155, ../sass/application.sass */
+/* line 147, ../sass/application.sass */
 #video [id$=-suggested-videos] .video:hover {
   z-index: 3;
 }
 
 @media (max-width: 1200px) {
-  /* line 159, ../sass/application.sass */
+  /* line 151, ../sass/application.sass */
   #left-suggested-videos, #right-suggested-videos {
     display: none;
   }
 }
-/* line 164, ../sass/application.sass */
+/* line 156, ../sass/application.sass */
 #video-comments form textarea {
   height: 60px;
   width: 400px;
 }
-/* line 168, ../sass/application.sass */
+/* line 160, ../sass/application.sass */
 #video-comments form input[type=submit] {
   display: block;
 }
-/* line 172, ../sass/application.sass */
+/* line 164, ../sass/application.sass */
 #video-comments .comment .footer {
   color: #999999;
   font-size: 11px;
 }
-/* line 176, ../sass/application.sass */
+/* line 168, ../sass/application.sass */
 #video-comments .comment .footer a {
   color: #999999;
 }
 
-/* line 179, ../sass/application.sass */
+/* line 171, ../sass/application.sass */
 .editable form input {
   border: inherit;
   font-size: inherit;
@@ -417,18 +224,18 @@ body {
   height: inherit;
 }
 
-/* line 189, ../sass/application.sass */
+/* line 181, ../sass/application.sass */
 #profile-informations {
   margin-bottom: 40px;
 }
-/* line 192, ../sass/application.sass */
+/* line 184, ../sass/application.sass */
 #profile-informations #map {
   box-shadow: 0px 0px 5px #333333;
   width: 100%;
   height: 270px;
 }
 
-/* line 199, ../sass/application.sass */
+/* line 191, ../sass/application.sass */
 table .editable form {
   margin: 0px;
   padding: 0px;
@@ -436,27 +243,27 @@ table .editable form {
   width: 100%;
   height: inherit;
 }
-/* line 206, ../sass/application.sass */
+/* line 198, ../sass/application.sass */
 table .editable form input, table .editable form select {
   height: inherit;
   margin: inherit;
   width: 100%;
 }
 
-/* line 212, ../sass/application.sass */
+/* line 204, ../sass/application.sass */
 #video-upload input[type=text], #video-upload textarea {
   width: 98%;
 }
-/* line 215, ../sass/application.sass */
+/* line 207, ../sass/application.sass */
 #video-upload textarea {
   height: 50px;
 }
-/* line 218, ../sass/application.sass */
+/* line 210, ../sass/application.sass */
 #video-upload input[type=file] {
   display: none;
 }
 
-/* line 223, ../sass/application.sass */
+/* line 215, ../sass/application.sass */
 #admin-users-list tr td {
   width: 20%;
 }

@@ -1,7 +1,7 @@
 {var $title => $video->title}
 {var $canEdit = $user->isAllowed($video, 'edit')}
 
-{block raw}
+{block content}
 <div class="container">
 	<div id="video">
 		<div id="left-suggested-videos" n:if="0">
@@ -21,7 +21,7 @@
 
 			<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
 
-			<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="icon-trash"></i></a>
+			<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="fa fa-trash-o"></i></a>
 
 			<div class="container">
 				{if $video->video}
