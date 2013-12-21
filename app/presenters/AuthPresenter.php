@@ -13,9 +13,9 @@ class SignPresenter extends BasePresenter
 
 	public function renderIn()
 	{
-		$facebook = $this->context->facebook;
+		$facebook = $this->context->getService('facebook');
 		$user = $facebook->getUser();
-		$this->template->facebook = $this->context->facebook->getLoginUrl(array(
+		$this->template->facebook = $this->context->getService('facebook')->getLoginUrl(array(
 			'scope' => 'email',
 			'redirect_uri' => $this->link('//facebook')
 		));
@@ -72,7 +72,7 @@ class SignPresenter extends BasePresenter
 
 	public function actionOpenID($identity)
 	{
-		$openid = $this->context->openid;
+		$openid = $this->context->getService('openid');
 		if(!$openid->mode) {
 			$openid->identity = $identity;
 			$openid->required = array('contact/email');
@@ -82,7 +82,7 @@ class SignPresenter extends BasePresenter
 		else {
 			if($openid->validate()) {
 				try {
-					$identity = $this->context->openIDAuthenticator->authenticate(array($openid->identity, $openid->getAttributes()));
+					$identity = $this->context->getService('openIDAuthenticator')->authenticate(array($openid->identity, $openid->getAttributes()));
 					$this->user->login($identity);
 
 					$this->redirectHome();

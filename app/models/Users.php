@@ -19,7 +19,7 @@ class Users extends Repository
 	public function findByIdentity($identity)
 	{
 		return $this->getTable()
-			->where('identities:identity', $identity);
+			->where(':identities.identity', $identity);
 	}
 
 	/**
@@ -48,7 +48,7 @@ class Users extends Repository
 					throw new DuplicateException("Uživatel s tímto uživatelským jménem už existuje.");
 				}
 				elseif($found[1] == 'email') {
-					throw new DuplicateException("Uživatel s tímto emailem už existuje.");	
+					throw new DuplicateException("Uživatel s tímto emailem už existuje.");
 				}
 			}
 

@@ -13,7 +13,7 @@ class UserStorage extends Nette\Http\UserStorage
 	protected $identity;
 	protected $isAuthenticated = FALSE;
 
-	public function __construct(Nette\Http\Session $sessionHandler, Nette\Database\SelectionFactory $database, Nette\Http\Request $httpRequest)
+	public function __construct(Nette\Http\Session $sessionHandler, Nette\Database\Context $database, Nette\Http\Request $httpRequest)
 	{
 		parent::__construct($sessionHandler);
 		$this->database = $database;

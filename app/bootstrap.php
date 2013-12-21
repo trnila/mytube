@@ -1,7 +1,7 @@
 <?php
 include __DIR__ . '/../vendor/autoload.php';
 
-$configurator = new Nette\Config\Configurator;
+$configurator = new Nette\Configurator;
 $configurator->enableDebugger(__DIR__ . '/../logs');
 $configurator->setTempDirectory(__DIR__ . '/../tmp');
 

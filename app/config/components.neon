@@ -1,11 +1,3 @@
-factories:
-	components.ChangePassword: Form\ChangePassword
-	components.login: Form\Login
-	components.registration: Form\Registration
-	components.ratings: Component\Ratings
-	components.comments: Component\Comments
-	components.changeDetails: Form\ChangeDetails
-
 services:
 	model.users: Model\Users
 	model.videos:
@@ -14,3 +6,28 @@ services:
 			- $incomingDir(%appDir%/../incoming/)
 			- $videosDir(%wwwDir%/videos/)
 			- $thumbnailsDir(%wwwDir%/thumbnails/)
+
+	components.ChangePassword:
+		class: Form\ChangePassword
+		autowired: no
+
+
+	components.login:
+		class: Form\Login
+		autowired: no
+
+	components.registration:
+		class: Form\Registration
+		autowired: no
+
+	components.ratings:
+		class: Component\Ratings
+		autowired: no
+
+	components.comments:
+		class: Component\Comments
+		autowired: no
+
+	components.changeDetails:
+		class: Form\ChangeDetails
+		autowired: no

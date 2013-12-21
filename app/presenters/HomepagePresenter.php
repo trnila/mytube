@@ -2,6 +2,8 @@
 
 class HomepagePresenter extends BasePresenter
 {
+
+
 	public function renderDefault()
 	{
 		if($this->isAjax()) {
@@ -9,6 +11,6 @@ class HomepagePresenter extends BasePresenter
 			$this->invalidateControl('content');
 		}
 
-		$this->template->videos = $this->context->model__videos->findAll()->order('created DESC');
+		$this->template->videos = $this->context->getService('model__videos')->findAll()->order('created DESC');
 	}
 }

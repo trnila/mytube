@@ -5,22 +5,17 @@ includes:
 php:
 	date.timezone: Europe/Prague
 
-parameters:
-	productionMode: true
-
 nette:
-	xhtml: false
-
 	session:
-		autoStart: smart
-
-	database:
-		default:
-			dsn: '%database.driver%:host=%database.host%;dbname=%database.dbname%'
-			user: %database.user%
-			password: %database.password%
+		debugger: true
+		expiration: +7 days
 
 services:
+
+
+
+
+
 	# Authentications + Authorizations
 	facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
 	openid: LightOpenID(http://%host%)
@@ -40,7 +35,6 @@ services:
 		setup:
 			- queue_declare('proccessVideo', false, true, false, false)
 
-	database: @nette.database.default
 
 	user:
 		class: Nette\Security\User
@@ -58,7 +52,6 @@ services:
 		comments: ActiveRow\Comment
 	})
 
-factories:
 	nette.template:
 		setup:
 			- registerHelperLoader('TemplateHelpers::loader')

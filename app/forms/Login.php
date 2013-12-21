@@ -25,7 +25,7 @@ class Login extends BaseForm
 
 			// save openid if any
 			if($presenter->identity) {
-				$presenter->context->database->table('identities')
+				$presenter->context->getByType('Nette\Database\Context')->table('identities')
 					->insert(array(
 						'user_nickname' => $form['nickname']->value,
 						'identity' => $presenter->identity

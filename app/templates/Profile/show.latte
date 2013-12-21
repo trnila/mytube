@@ -1,4 +1,4 @@
-{#content}
+{block content}
 <h1>
 	{if isset($info['displayName'])}
 		{$info['displayName']} <span n:class="muted" n:if="$profile->nickname != $info['displayName']">({$profile->nickname})</span>
@@ -10,7 +10,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 <div class="row" id="profile-informations">
 	<div class="span3">
-		<img src="https://www.gravatar.com/avatar/{? echo md5($profile->email)}?s=300">
+		<img src="https://www.gravatar.com/avatar/{md5($profile->email)}?s=300">
 
 		<ul n:ifset="$info['phoneNumbers']" n:inner-foreach="$info['phoneNumbers'] as $phone" class="unstyled">
 			<li><i class="icon-phone"></i> {$phone['value']}</li>
@@ -27,7 +27,7 @@
 
 	<div class="span9">
 		{ifset $info['aboutMe']}{!$info['aboutMe']}{/ifset}
- 
+
  		<div n:ifset="$info['currentLocation']" id="map" data-map-location="{$info['currentLocation']}" data-map-marker="https://www.gravatar.com/avatar/{? echo md5($profile->email)}?s=25"></div>
 	</div>
 </div>

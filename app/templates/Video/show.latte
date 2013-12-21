@@ -1,7 +1,7 @@
 {var $title => $video->title}
 {var $canEdit = $user->isAllowed($video, 'edit')}
 
-{#raw}
+{block raw}
 <div class="container">
 	<div id="video">
 		<div id="left-suggested-videos" n:if="0">

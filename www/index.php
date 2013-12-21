@@ -1,3 +1,3 @@
 <?php
 $container = include __DIR__ . '/../app/bootstrap.php';
-$container->application->run();
+$container->getByType('Nette\Application\Application')->run();
