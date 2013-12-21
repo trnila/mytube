@@ -4,23 +4,17 @@
 		<meta charset="UTF-8">
 		<title n:snippet="title">{ifset $title}{$title} - {/ifset}Youtube</title>
 
-		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
-		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="{$basePath}/assets/stylesheets/application.css">
+		<!-- bower:css -->
+		<link href="{$basePath}/assets/components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+		<!-- endbower -->
+		<link href="{$basePath}/assets/components/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/nette.ajax.js/nette.ajax.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/nette.ajax.js/extensions/diagnostics.dumps.ajax.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/nette.ajax.js/extensions/scrollTo.ajax.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/nette.ajax.js/history/history.ajax.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/jquery_jeditable/jquery.jeditable.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/Widen-Jquery-Tagit/js/autogrowinput.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/Widen-Jquery-Tagit/js/jquery.ba-outside-events.js"></script>
-		<script src="{$basePath}/assets/javascripts/libraries/Widen-Jquery-Tagit/js/tagit.js"></script>
-		<script src="{$basePath}/assets/javascripts/visualizer.js"></script>
-		<script src="{$basePath}/assets/javascripts/jeditable.js"></script>
+		<!-- bower:js -->
+		<script src="{$basePath}/assets/components/jquery/jquery.js"></script>
+		<script src="{$basePath}/assets/components/bootstrap/dist/js/bootstrap.js"></script>
+		<!-- endbower -->
+
+		<link rel="stylesheet" href="{$basePath}/assets/stylesheets/application.css">
 		<script src="{$basePath}/assets/javascripts/application.js"></script>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
