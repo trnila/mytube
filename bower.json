@@ -1,0 +1,22 @@
+{
+  "name": "youtube.trnila.eu",
+  "version": "0.0.0",
+  "authors": [
+    "Daniel Trnka <daniel.trnka@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "www/assets/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.3",
+    "font-awesome": "~4.0.3"
+  }
+}
