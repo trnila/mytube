@@ -1,9 +1,9 @@
 {block content}
 <h1>
 	{if isset($info['displayName'])}
-		{$info['displayName']} <span n:class="muted" n:if="$profile->nickname != $info['displayName']">({$profile->nickname})</span>
+		{$info['displayName']} <span n:class="muted" n:if="$profile->username != $info['displayName']">({$profile->username})</span>
 	{else}
-		{$profile->nickname}
+		{$profile->username}
 	{/if}
 </h1>
 

@@ -15,7 +15,7 @@ class Authorizator extends Nette\Security\Permission
 		// Resources
 		$this->addResource('video');
 		$this->addResource('comment');
-		
+
 		// Add resources
 		$this->addResource('user');
 
@@ -28,46 +28,47 @@ class Authorizator extends Nette\Security\Permission
 	}
 
 	/**
-	 * All admins could do everything with user, but they can't deactivate or delete themselves 
+	 * All admins could do everything with user, but they can't deactivate or delete themselves
 	 */
 	protected function permitUser($user)
 	{
 		$this->allow('admin', 'user', $this::ALL);
 		$this->deny('admin', 'user', 'delete', function($acl) use($user) {
-			return $acl->queriedResource->nickname == $user->id;
+			return $acl->queriedResource->username == $user->id;
 		});
 
 		$this->deny('admin', 'user', 'activation', function($acl) use($user) {
-			return $acl->queriedResource->nickname == $user->id;
+			return $acl->queriedResource->username == $user->id;
 		});
 
 		$this->deny('admin', 'user', 'edit', function($acl) use($user) {
-			return $acl->queriedResource->nickname == $user->id;
+			return $acl->queriedResource->username == $user->id;
 		});
 	}
 
 	protected function permitVideo($user)
 	{
 		$this->allow('user', 'video', 'edit', function($acl) use($user) {
-			return $acl->queriedResource->user_nickname == $user->id;
+			return $acl->queriedResource->user_id == $user->id;
 		});
 
 		$this->allow('user', 'video', 'delete', function($acl) use($user) {
-			return $acl->queriedResource->user_nickname == $user->id;
+			return $acl->queriedResource->user_id == $user->id;
 		});
 
 		$this->allow($this::ALL, 'video', 'show', function($acl) use($user) {
 			$video = $acl->queriedResource;
 
-			if(!$video->processed && $acl->queriedResource->user_nickname != $user->id) {
+			// TODO: fix
+			/*if(!$video->processed && $acl->queriedResource->user_id != $user->id) {
 				return false;
-			}
+			}*/
 
 			if($video->enabled) {
 				return true;
 			}
 
-			if($video->user_nickname == $user->id) {
+			if($video->user_id == $user->id) {
 				return true;
 			}
 
@@ -80,7 +81,7 @@ class Authorizator extends Nette\Security\Permission
 	protected function permitComments($user)
 	{
 		$this->allow('user', 'comment', 'delete', function($acl) use($user) {
-			return $acl->queriedResource->user_nickname == $user->id;
+			return $acl->queriedResource->user_id == $user->id;
 		});
 
 		$this->allow('admin', 'comment', $this::ALL);

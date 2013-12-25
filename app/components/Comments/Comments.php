@@ -53,12 +53,11 @@ class Comments extends BaseControl
 			throw new ForbiddenRequestException;
 		}
 
-		$this->video->related('comments')
+		$this->video->related('video_comments')
 			->insert(array(
-				'user_nickname' => $this->presenter->user->id,
+				'user_id' => $this->presenter->user->id,
 				'created' => new DateTime,
-				'text' => $form['text']->value,
-				'name' => 'test'
+				'text' => $form['text']->value
 			));
 
 		$this->flashMessage('Komentář byl přidán.', 'success');

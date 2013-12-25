@@ -20,7 +20,7 @@ class SignPresenter extends BasePresenter
 			'redirect_uri' => $this->link('//facebook')
 		));
 
-		$this['login']['nickname']->value = $this->getParameter('nickname');
+		$this['login']['username']->value = $this->getParameter('username');
 	}
 
 	public function actionRegistration()
@@ -31,7 +31,7 @@ class SignPresenter extends BasePresenter
 			$form->addAdditionalData('fbId', $facebook['id']);
 
 			if(isset($facebook['username'])) {
-				$form['nickname']->setDefaultValue($facebook['username']);
+				$form['username']->setDefaultValue($facebook['username']);
 			}
 
 			$form['email']->setValue($facebook['email'])
@@ -50,12 +50,12 @@ class SignPresenter extends BasePresenter
 
 	public function renderFacebook()
 	{
-		$facebook = $this->context->facebook;
+		$facebook = $this->context->getService('facebook');
 
 		$me = $facebook->api('/me');
 
 		try {
-			$identity = $this->context->facebookAuthenticator->authenticate($me);
+			$identity = $this->context->getService('facebookAuthenticator')->authenticate($me);
 			$this->user->login($identity);
 
 			$this->flashMessage('Úspěšně přihlášeno.', $this::FLASH_SUCCESS);

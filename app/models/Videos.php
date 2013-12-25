@@ -34,10 +34,18 @@ class Videos extends Repository
 			@$file->move($this->incomingDir . "/{$video['id']}");
 
 			// send video to queue
+
+			$client = new \GearmanClient;
+			$client->addServer();
+
+			echo $client->doBackground("processVideo", $video['id']);
+			exit;
+
+			/*
 			$ch = @Nette\Environment::getContext()->workqueue__proccessVideo; //TODO: this is not clean
 			$msg_body = "{$video['id']}";
 			$msg = new \PhpAmqpLib\Message\AMQPMessage($msg_body, array('content_type' => 'text/plain'));
-			$ch->basic_publish($msg, "", "proccessVideo");
+			$ch->basic_publish($msg, "", "proccessVideo");*/
 
 		}
 		catch(\Exception $e) {
@@ -51,6 +59,7 @@ class Videos extends Repository
 
 		return $video;
 	}
+
 
 	public function deleteVideo(\ActiveRow\Video $video)
 	{

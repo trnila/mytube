@@ -26,7 +26,7 @@ class Registration extends BaseForm
 				->setType('email')
 				->addRule($this::EMAIL);
 
-		$this->addText('nickname', 'Nickname')
+		$this->addText('username', 'Username')
 			->setRequired();
 
 		$this->addPassword('password', 'Heslo')
@@ -62,10 +62,13 @@ class Registration extends BaseForm
 
 		// Add openid identity if any
 		if(isset($identity)) {
-			$user->related('identities')->insert(array('identity' => $identity));
+			$user->related('identities')->insert(array(
+				'type' => 'openid',
+				'identity' => $identity
+			));
 		}
 
-		$identity = new \Nette\Security\Identity($user['nickname'], 'user', $user);
+		$identity = new \Nette\Security\Identity($user->id, NULL, $user);
 		$this->presenter->user->login($identity);
 
 		$this->presenter->flashMessage('Registrace dokončena.', 'success');

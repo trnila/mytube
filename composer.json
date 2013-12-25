@@ -4,6 +4,7 @@
 		"facebook/php-sdk": "dev-master",
 		"videlalvaro/php-amqplib": "dev-master",
 		"fp/lightopenid": "dev-master",
-		"fabik/database": "dev-master"
+		"fabik/database": "dev-master",
+		"robmorgan/phinx": "dev-master"
 	}
 }

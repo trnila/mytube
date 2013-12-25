@@ -18,9 +18,9 @@ class Ratings extends BaseControl
 		}
 
 		// TODO: workaround, because of this issue https://github.com/nette/nette/pull/799
-		// $this->video->related('ratings')->where('user_nickname', $this->presenter->user->id)->delete();
-		$this->presenter->context->getByType('Nette\Database\Context')->table('ratings')
-			->where('user_nickname', $this->presenter->user->id)
+		// $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->delete();
+		$this->presenter->context->getByType('Nette\Database\Context')->table('video_ratings')
+			->where('user_id', $this->presenter->user->id)
 			->where('video_id', $this->video->id)
 			->delete();
 
@@ -28,7 +28,7 @@ class Ratings extends BaseControl
 			$this->video->related('ratings')
 				->insert(array(
 					'positive' => (bool) $positive,
-					'user_nickname' => $this->presenter->user->id,
+					'user_id' => $this->presenter->user->id,
 					'created' => new DateTime
 				));
 		}
@@ -51,7 +51,7 @@ class Ratings extends BaseControl
 		$template->total = $template->positive + $template->negative;
 
 		if($this->presenter->user->isLoggedIn()) {
-			$rate = $this->video->related('ratings')->where('user_nickname', $this->presenter->user->id)->fetch();
+			$rate = $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->fetch();
 
 			$template->positiveRate = $rate ? $rate->positive == TRUE : FALSE;
 			$template->negativeRate = $rate ? $rate->positive == FALSE : FALSE;

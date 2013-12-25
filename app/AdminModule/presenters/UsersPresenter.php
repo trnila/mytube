@@ -12,22 +12,22 @@ class UsersPresenter extends BasePresenter
 		$this->users = $users;
 	}
 
-	public function actionEdit($nickname)
+	public function actionEdit($username)
 	{
-		$user = $this->users->find($nickname);
+		$user = $this->users->find($username);
 		if(!$this->user->isAllowed($user, 'edit')) {
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
 		$form = $this['userForm'];
 		$form->setDefaults($user);
-		$form['nickname']->setDisabled();
+		$form['username']->setDisabled();
 		$form['password']->setRequired(FALSE)->setDefaultValue('');
 	}
 
-	public function handleDelete($nickname)
+	public function handleDelete($username)
 	{
-		$user = $this->users->find($nickname);
+		$user = $this->users->find($username);
 		if(!$this->user->isAllowed($user, 'delete')) {
 			throw new Nette\Application\ForbiddenRequestException;
 		}
@@ -37,9 +37,9 @@ class UsersPresenter extends BasePresenter
 		$this->redirect('this');
 	}
 
-	public function handleActivate($nickname, $activate = TRUE)
+	public function handleActivate($username, $activate = TRUE)
 	{
-		$user = $this->users->find($nickname);
+		$user = $this->users->find($username);
 		if(!$user) {
 			throw new Nette\Application\BadRequestException;
 		}
@@ -71,7 +71,7 @@ class UsersPresenter extends BasePresenter
 	{
 		$form = $this->createForm();
 
-		$form->addText('nickname', 'Nickname');
+		$form->addText('username', 'username');
 
 		$form->addText('email', 'E-mail')
 			->setRequired()
@@ -111,28 +111,28 @@ class UsersPresenter extends BasePresenter
 			unset($values['password']);
 		}
 
-		if($nickname = $this->getParameter('nickname')) {
-			$user = $this->users->find($nickname);
+		if($username = $this->getParameter('username')) {
+			$user = $this->users->find($username);
 			if(!$this->user->isAllowed($user, 'edit')) {
 				throw new Nette\Application\ForbiddenRequestException;
 			}
 
 			if(isset($values['password'])) {
-				$values['password'] = $this->users->hash($nickname, $values['password']);
+				$values['password'] = $this->users->hash($username, $values['password']);
 			}
 
-			unset($values['nickname']);
+			unset($values['username']);
 
 			$user->update($values);
 			$this->flashMessage('Uživatel byl upraven.', 'success');
 			$this->redirect('this');
 		}
 		else {
-			$values['password'] = $this->users->hash($values['nickname'], $values['password']);
+			$values['password'] = $this->users->hash($values['username'], $values['password']);
 			$this->users->create($values);
 
 			$this->flashMessage('Uživatel byl vytvořen.', 'success');
-			$this->redirect('edit', $values['nickname']);
+			$this->redirect('edit', $values['username']);
 		}
 	}
 }

@@ -17,18 +17,18 @@
 		</div>
 
 		<div id="video-detail" class="container"{if $canEdit} data-editable-action="{link edit!}"{/if}>
-			<div class="alert" n:if="!$video->processed">Toto video neni stále zkonvertováno.</div>
+			<div class="alert" n:if="0 /** TODO **/ && !$video->processed">Toto video neni stále zkonvertováno.</div>
 
 			<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
 
 			<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="fa fa-trash-o"></i></a>
 
 			<div class="container">
-				{if $video->video}
-					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls autoplay></video>
+				{if $video->isvideo}
+					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}" controls autoplay></video>
 				{else}
 					<canvas></canvas>
-					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->path}" controls></audio>
+					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}" controls></audio>
 				{/if}
 			</div>
 
@@ -36,10 +36,10 @@
 			<div>
 				<dl class="dl-horizontal">
 					<dt>Pocet zhlédnutí:</dt>
-					<dd>{$video->views}</dd>
+					<dd n:if="0 /** TODO */">{$video->views}</dd>
 
 					<dt>Nahrál:</dt>
-					<dd><a n:href="Profile:show, $video->user_nickname">{$video->user}</a></dd>
+					<dd><a n:href="Profile:show, $video->user_id">{$video->user}</a></dd>
 				</dl>
 
 				<p {if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{!$video->description|escape|nl2br}</p>

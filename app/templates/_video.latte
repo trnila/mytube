@@ -2,7 +2,7 @@
 	<div class="information">
 		<span class="title">{$video->title}</span>
 
-		{if $video->video}
+		{if $video->isvideo}
 			<img src="{$basePath}/thumbnails/{$thumbnail->path}" n:foreach="$video->related('thumbnails') as $thumbnail">
 		{else}
 			<i class="fa fa-music"></i>
@@ -16,7 +16,7 @@
 		<i class="fa fa-thumbs-down"></i> {$video->related('ratings')->where('positive', false)->count('*')}
 	</div>
 
-	<div class="views">
+	<div class="views" n:if="0/*TODO*/">
 		{$video->views} zhlédnutí
 	</div>
 

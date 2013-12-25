@@ -9,15 +9,15 @@ class ProfilePresenter extends BasePresenter
 		$this->users = $users;
 	}
 
-	public function renderShow($nickname)
+	public function renderShow($username)
 	{
-		$user = $this->template->profile = $this->users->find($nickname);
+		$user = $this->template->profile = $this->users->find($username);
 		$this->template->myVideos = $user->related('videos');
-		$this->template->likedVideos = $user->related('videos')->where(':ratings.user_nickname = ? AND :ratings.positive = 1', $this->user->id)->order('created DESC');
+		$this->template->likedVideos = $user->related('videos')->where(':ratings.user_id = ? AND :ratings.positive = 1', $this->user->id)->order('created DESC');
 
 		$cache = new Nette\Caching\Cache($this->context->getByType('Nette\Caching\IStorage'), "Profiles.Gravatar");
 
-		$this->template->info = $cache->load($nickname, function(&$cache) use($user) {
+		$this->template->info = $cache->load($username, function(&$cache) use($user) {
 			$cache = array(
 				Nette\Caching\Cache::EXPIRE => '+ 1hour'
 			);

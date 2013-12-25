@@ -9,8 +9,8 @@
 	<div class="comment" n:foreach="$comments as $comment">
 		{$comment->text}
 		<div class="footer">
-			<a href="{plink Profile:show, $comment->user_nickname}">{$comment->user_nickname}</a> {$comment->created|timeAgo}
-			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="fa fa-trash-o"></i></a>{/if}
+			<a href="{plink Profile:show, $comment->user_id}">{$comment->user_id}</a> {$comment->created|timeAgo}
+			{if 0 /*TODO*/&& $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="fa fa-trash-o"></i></a>{/if}
 		</div>
 	</div>
 	{/snippet}

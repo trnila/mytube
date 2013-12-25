@@ -19,7 +19,7 @@ class Password extends Authenticator
 		list($username, $password) = $credentials;
 		$password = $this->users->hash($username, $password);
 
-		$user = $this->users->find($username);
+		$user = $this->users->findBy(array('username' => $username))->fetch();
 		if(!$user || $user->password != $password) {
 			throw new AuthenticationException("Špatné uživatelské jméno nebo heslo.");
 		}

@@ -20,7 +20,11 @@ class Facebook extends Authenticator
 
 	public function authenticate(array $credentials)
 	{
-		$user = $this->users->find(array('fbId' => $credentials['id']));
+		$user = $this->users
+			->findOneBy(array(
+				':users_identities.type' => 'facebook',
+				':users_identities.identity' => $credentials['id']
+			));
 
 		if(!$user) {
 			$user = $this->users
@@ -29,7 +33,11 @@ class Facebook extends Authenticator
 			// If user by email exists assign fbId if not already exists
 			if($user) {
 				if(empty($user->fbId)) {
-					$user->update(array('fbId' => $credentials['id']));
+					$user->related('users_identities')
+						->insert(array(
+							'type' => 'facebook',
+							'identity' => $credentials['id']
+						));
 				}
 				else {
 					throw new Exception("Already exists for another facebook application id");

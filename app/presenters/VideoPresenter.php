@@ -103,6 +103,7 @@ class VideoPresenter extends BasePresenter
 	{
 		$this->template->video = $this->video;
 
+		/* TODO
 		if($this->user->isLoggedIn()) {
 			// increment views count only if last video is not same as actual
 			$lastVideo = $this->video->related('history')->order('created DESC')->fetch();
@@ -110,13 +111,14 @@ class VideoPresenter extends BasePresenter
 				$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
 				$this->video->related('history')->insert(array(
 					'created' => new DateTime,
-					'user_nickname' => $this->user->id
+					'user_id' => $this->user->id
 				));
 			}
 		}
 		else {
 			$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
 		}
+		*/
 
 		$videos = $this->videos->findAll()->limit(8)->order('RAND()');
 		$this->template->videos = [];
@@ -156,6 +158,16 @@ class VideoPresenter extends BasePresenter
 		return $form;
 	}
 
+
+	public function renderStatus($handle)
+	{
+			$client = new \GearmanClient;
+			$client->addServer();
+
+			dump($client->jobStatus($handle));
+		exit;
+	}
+
 	public function addVideo($form)
 	{
 		if(!$this->user->isLoggedIn()) {
@@ -166,8 +178,7 @@ class VideoPresenter extends BasePresenter
 			'title' => $form['title']->value,
 			'description' => $form['description']->value,
 			'created' => new DateTime,
-			'processed' => 0,
-			'user_nickname' => $this->user->id
+			'user_id' => $this->user->id
 		);
 
 		// Add video to process
