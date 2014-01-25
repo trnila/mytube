@@ -5,3 +5,4 @@ app/config/config.local.neon
 .settings
 www/assets/.sass-cache/
 node_modules
+phinx.yml
