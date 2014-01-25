@@ -5,6 +5,8 @@
 		"videlalvaro/php-amqplib": "dev-master",
 		"fp/lightopenid": "dev-master",
 		"fabik/database": "dev-master",
-		"robmorgan/phinx": "dev-master"
+		"robmorgan/phinx": "dev-master",
+		"monolog/monolog": "dev-master",
+		"php-ffmpeg/php-ffmpeg": "dev-master"
 	}
 }
