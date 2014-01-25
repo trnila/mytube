@@ -1,115 +1,158 @@
 <?php
 namespace Worker\Job;
+use FFMpeg;
 
 class ProcessVideo extends Job
 {
-	protected function getMetaData($file)
-	{
-		$this->logger->info('Getting informations from video...');
-		$output = shell_exec("ffprobe -v quiet -print_format json -show_format -show_streams $file");
-		//$this->logger->debug($output);
-		$meta = json_decode($output);
-		return $meta;
-	}
+	/**
+	 * @var FFMpeg\FFMpeg
+	 * @inject
+	*/
+	public $ffmpeg;
 
-	protected function createScreenshots($file, $video)
-	{
-		$screenshots = array();
+	/**
+	 * @var FFMpeg\FFProbe
+	 * @inject
+	*/
+	public $ffprobe;
 
-		// if its video - generate screenshots
+	/**
+	 * @var Model\Videos
+	 * @inject
+	*/
+	public $videos;
+
+	/**
+	 * @var int
+	*/
+	public $thumbnailsNum = 3;
+
+	protected function createthumbnails($filePath, $video)
+	{
+		$thumbnails = array();
+
+		// if its video - generate thumbnails
 		if($video->isVideo) {
-			for($i = 1; $i <= 5; $i++) {
-				$time = $i / 5 * $video->duration;
-				$time -= 0.25 * $time;
+			$ffmpeg = $this->ffmpeg->open($filePath);
 
-				$thumb = $this->getTempDirectory() . $video->id . "_{$i}.jpg";
+			$duration = $video->duration;
+			$duration = floor($duration - $duration * 1 / 20);
+			$stepTime = floor($duration / $this->thumbnailsNum);
+			for($shot = 1; $shot <= $this->thumbnailsNum; $shot++) {
+				$time = $stepTime * $shot;
 
-				$this->logger->info("Generating screenshot at time {$time}s");
-				`ffmpeg -y -v quiet -ss $time -i $file -y -f image2 -vcodec mjpeg -vframes 1 $thumb`;
-				if(file_exists($thumb)) {
-					$screenshots[] = $thumb;
-				}
-			}
+				$ffmpeg->frame(FFMpeg\Coordinate\TimeCode::fromSeconds($time))
+					->save(__DIR__ . '/../../www/thumbnails/' . $video->id . "-" . $shot . ".png", TRUE);
+
+				$thumbnails[] = array(
+					'num' => $shot,
+					'time' => $time
+				);
+		}
 		} else { // if not try to find image in audio
 			$thumb = $this->getTempDirectory() . $video->id . '.png';
 
 			`ffmpeg -v quiet -y -i $file -an -vcodec copy $thumb`;
 			if(file_exists($thumb)) {
-				$screenshots[] = $thumb;
+				$thumbnails[] = $thumb;
 			}
 		}
-		return $screenshots;
+		return $thumbnails;
 	}
 
-	protected function convertToWebm($file, $video)
+	protected function convertToWebm($filePath, $video)
 	{
-		$descriptors = array(
-			0 => array('file', '/dev/null', 'r'),
-			1 => array('file', '/dev/null', 'w'),
-			2 => array('pipe', 'w')
-		);
+		$ffmpeg = $this->ffmpeg->open($filePath);
 
-		$process = proc_open("ffmpeg -v quiet -y -i $file tmp/kuscus.webm", $descriptors, $pipes);
 
-	    stream_set_blocking($pipes[2], 0);
-		while(!feof($pipes[2])) {
-			$line = trim(fgets($pipes[2]));
-			if(!empty($line)) {
-				preg_match('/time=([^ ]+)/', $line, $matches);
-				if(isset($matches[1])) {
-					$tmp = explode(":", $matches[1]);
+		$format = new FFMpeg\Format\Video\WebM();
+		$format->on('progress', function ($video, $format, $percentage) {
+			echo "$percentage % transcoded";
+		});
 
-					$time = $tmp[0] * 60 * 60 + $tmp[1] * 60 + $tmp[2];
-
-					$job->sendStatus(floor($time / $video->duration * 100), 100);
-				}
-
-				//$this->logger->debug($line);
-			}
-
-		}
+		$ffmpeg->save($format, __DIR__ . "/../../www/videos/{$video->id}.webm");
 	}
 
-	public function process(\GearmanJob $job)
+	public function execute(\GearmanJob $job)
 	{
 		$video = new Video;
 		$video->id = $job->workload();
-
 		$this->logger->info("Procesing {$video->id}");
 
-		$file = '/home/daniel/Videos/a.mp4';
+		$row = $this->videos->find($video->id);
+		if(!$row) {
+			throw new Exception("Video not found!");
+		}
+
+		$filePath = __DIR__ . '/../../incoming/' . $video->id;
+
+		//$filePath = '/home/daniel/Videos/a.mp4';
 		//$file = '/home/daniel/Downloads/LittleLight - Ring The Bells (Christmas Special).mp3';
-		$file = escapeshellarg($file);
 
 		// get meta data from video
-		$meta = $this->getMetaData($file);
-
-
-		$video->duration = isset($meta->format, $meta->format->duration) ? $meta->format->duration : 0;
-		$video->isVideo = $meta->streams[0]->codec_type == 'video';
+		$meta = $this->ffprobe->streams($filePath);
+		$video->duration = $this->getDuration($filePath);
+		$video->isVideo = (bool) count($meta->videos());
 
 		$this->logger->info('Video: ' . ($video->isVideo ? 'true' : 'false'));
 		$this->logger->info("Duration: {$video->duration} seconds");
 
-		// generate screenshots
-		$video->screenshots = $this->createScreenshots($file, $video);
+		// generate thumbnails
+		$video->thumbnails = $this->createthumbnails($filePath, $video);
+		$this->convertToWebm($filePath, $video);
 
-		$this->convertToWebm($file, $video);
+		$this->logger->info('Adding video to database');
 
-		var_dump($video);
+		$row->update(array(
+			'duration' => $video->duration,
+			'isvideo' => $video->isVideo,
+			'jobid' => NULL
+		));
 
-		exit;
+		// add a screnshots
+		foreach($video->thumbnails as $thumbnail) {
+			$row->related('video_thumbnails')
+				->insert(array(
+					'number' => $thumbnail['num'],
+					'time' => $thumbnail['time']
+				));
+		}
+
+		$this->logger->info('Video successfully converted');
 	}
 
 	protected function getTempDirectory()
 	{
 		return 'tmp/';
 	}
+
+	/**
+	 * calculates duration of media, if media supports meta than grab it, otherwise calculate it direct via ffmpeg
+	 *
+	 * @return float
+	 */
+	protected function getDuration($filePath)
+	{
+		$streams = $this->ffprobe->streams($filePath);
+		try {
+			return $streams->videos()->first()->get('duration');
+		} catch(FFMpeg\Exception\InvalidArgumentException $e) {
+			ob_start();
+			echo `ffmpeg -i "{$filePath}" 2>&1`;
+			$output = ob_get_clean();
+
+			preg_match("#Duration: (\d\d):(\d\d):(\d\d(\.\d\d)?)#", $output, $result);
+			$duration = ((int) $result[1]) * 60 * 60; // hours
+			$duration += ((int) $result[2]) * 60; // minutes
+			$duration += ((float) $result[3]);
+			return $duration;
+		}
+	}
 }
 
 class Video {
 	public $id;
 	public $duration;
-	public $screenshots;
+	public $thumbnails;
 	public $isVideo;
 }

@@ -21,6 +21,9 @@ services:
 		setup:
 			- pushHandler()
 
+	- FFMpeg\FFProbe::create()
+	- FFMpeg\FFMpeg::create()
+
 
 
 	# Authentications + Authorizations

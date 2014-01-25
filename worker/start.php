@@ -23,7 +23,7 @@ $gmworker->addServer();
 
 $processVideo = $context->createInstance('Worker\Job\ProcessVideo');
 $context->callInjects($processVideo);
-$gmworker->addFunction("processVideo", array($processVideo, 'process'));
+$gmworker->addFunction("processVideo", array($processVideo, 'execute'));
 
 $log->addInfo("Waiting for job...");
 while($gmworker->work())

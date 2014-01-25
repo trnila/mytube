@@ -10,5 +10,5 @@ abstract class Job
 	*/
 	public $logger;
 
-	abstract public function process(\GearmanJob $job);
+	abstract public function execute(\GearmanJob $job);
 }
