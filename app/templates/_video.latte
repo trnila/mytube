@@ -3,7 +3,7 @@
 		<span class="title">{$video->title}</span>
 
 		{if $video->isvideo}
-			<img src="{$basePath}/thumbnails/{$thumbnail->path}" n:foreach="$video->related('thumbnails') as $thumbnail">
+			<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->related('thumbnails') as $thumbnail">
 		{else}
 			<i class="fa fa-music"></i>
 		{/if}
