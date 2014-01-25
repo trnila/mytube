@@ -1,6 +1,7 @@
 <?php
 namespace Worker\Job;
 use FFMpeg;
+use Nette;
 
 class ProcessVideo extends Job
 {
@@ -27,13 +28,13 @@ class ProcessVideo extends Job
 	*/
 	public $thumbnailsNum = 3;
 
-	protected function createthumbnails($filePath, $video)
+	protected function createthumbnails($video)
 	{
 		$thumbnails = array();
 
 		// if its video - generate thumbnails
 		if($video->isVideo) {
-			$ffmpeg = $this->ffmpeg->open($filePath);
+			$ffmpeg = $this->ffmpeg->open($video->filePath);
 
 			$duration = $video->duration;
 			$duration = floor($duration - $duration * 1 / 20);
@@ -50,19 +51,23 @@ class ProcessVideo extends Job
 				);
 		}
 		} else { // if not try to find image in audio
-			$thumb = $this->getTempDirectory() . $video->id . '.png';
+			$thumb = __DIR__ . '/../../www/thumbnails/' . $video->id . '-1.png';
 
-			`ffmpeg -v quiet -y -i $file -an -vcodec copy $thumb`;
+			`ffmpeg -v quiet -y -i {$video->filePath} -an -vcodec copy {$thumb}`;
+
 			if(file_exists($thumb)) {
-				$thumbnails[] = $thumb;
+				$thumbnails[] = array(
+					'num' => 1,
+					'time' => NULL
+				);
 			}
 		}
 		return $thumbnails;
 	}
 
-	protected function convertToWebm($filePath, $video)
+	protected function convertToWebm($video)
 	{
-		$ffmpeg = $this->ffmpeg->open($filePath);
+		$ffmpeg = $this->ffmpeg->open($video->filePath);
 
 
 		$format = new FFMpeg\Format\Video\WebM();
@@ -84,22 +89,20 @@ class ProcessVideo extends Job
 			throw new Exception("Video not found!");
 		}
 
-		$filePath = __DIR__ . '/../../incoming/' . $video->id;
+		$video->filePath = __DIR__ . '/../../incoming/' . $video->id;
 
-		//$filePath = '/home/daniel/Videos/a.mp4';
+		//$video->filePath = '/home/daniel/Videos/a.mp4';
 		//$file = '/home/daniel/Downloads/LittleLight - Ring The Bells (Christmas Special).mp3';
 
 		// get meta data from video
-		$meta = $this->ffprobe->streams($filePath);
-		$video->duration = $this->getDuration($filePath);
-		$video->isVideo = (bool) count($meta->videos());
+		$this->extractMetadata($video);
 
 		$this->logger->info('Video: ' . ($video->isVideo ? 'true' : 'false'));
 		$this->logger->info("Duration: {$video->duration} seconds");
 
 		// generate thumbnails
-		$video->thumbnails = $this->createthumbnails($filePath, $video);
-		$this->convertToWebm($filePath, $video);
+		$video->thumbnails = $this->createthumbnails($video);
+		$this->convertToWebm($video);
 
 		$this->logger->info('Adding video to database');
 
@@ -126,19 +129,39 @@ class ProcessVideo extends Job
 		return 'tmp/';
 	}
 
+	protected function extractMetadata($video)
+	{
+		$meta = $this->ffprobe->streams($video->filePath);
+
+		$video->isVideo = FALSE;
+		// we need to find at least one stream that is not a png image
+		foreach($meta->videos() as $stream) {
+			if($stream->has('codec_name') && $stream->get('codec_name') !== 'png') {
+				$video->isVideo = TRUE;
+				break;
+			}
+		}
+
+		$video->duration = $this->getDuration($video);
+	}
+
 	/**
 	 * calculates duration of media, if media supports meta than grab it, otherwise calculate it direct via ffmpeg
 	 *
 	 * @return float
 	 */
-	protected function getDuration($filePath)
+	protected function getDuration($video)
 	{
-		$streams = $this->ffprobe->streams($filePath);
+		$streams = $this->ffprobe->streams($video->filePath);
 		try {
-			return $streams->videos()->first()->get('duration');
+			if($video->isVideo) {
+				return $streams->videos()->first()->get('duration');
+			} else {
+				return $streams->audios()->first()->get('duration');
+			}
 		} catch(FFMpeg\Exception\InvalidArgumentException $e) {
 			ob_start();
-			echo `ffmpeg -i "{$filePath}" 2>&1`;
+			echo `ffmpeg -i "{$video->filePath}" 2>&1`;
 			$output = ob_get_clean();
 
 			preg_match("#Duration: (\d\d):(\d\d):(\d\d(\.\d\d)?)#", $output, $result);
@@ -150,9 +173,10 @@ class ProcessVideo extends Job
 	}
 }
 
-class Video {
+class Video extends Nette\Object {
 	public $id;
 	public $duration;
 	public $thumbnails;
 	public $isVideo;
+	public $filePath;
 }
