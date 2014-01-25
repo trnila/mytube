@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="span9">
-		{ifset $info['aboutMe']}{!$info['aboutMe']}{/ifset}
+		{ifset $info['aboutMe']}{$info['aboutMe']}{/ifset}
 
  		<div n:ifset="$info['currentLocation']" id="map" data-map-location="{$info['currentLocation']}" data-map-marker="https://www.gravatar.com/avatar/{? echo md5($profile->email)}?s=25"></div>
 	</div>

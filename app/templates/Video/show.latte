@@ -42,7 +42,7 @@
 					<dd><a n:href="Profile:show, $video->user_id">{$video->user}</a></dd>
 				</dl>
 
-				<p {if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{!$video->description|escape|nl2br}</p>
+				<p {if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{$video->description|noescape|nl2br}</p>
 
 
 

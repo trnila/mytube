@@ -6,8 +6,8 @@
 	{/if}
 
 	<div class="progress" n:if="$total > 0">
-		<div class="progress-bar progress-bar-success" style="width: {!$positive / ($total) * 100}%"></div>
-		<div class="progress-bar progress-bar-danger" style="width: {!$negative / ($total) * 100}%"></div>
+		<div class="progress-bar progress-bar-success" style="width: {$positive / ($total) * 100}%"></div>
+		<div class="progress-bar progress-bar-danger" style="width: {$negative / ($total) * 100}%"></div>
 	</div>
 </div>
 
