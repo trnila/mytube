@@ -11,8 +11,15 @@ nette:
 		expiration: +7 days
 
 services:
+	loggerout:
+		class: Monolog\Handler\StreamHandler('php://stdout')
+		setup:
+			- setFormatter(MonologCliFormatter())
 
-
+	logger:
+		class: Monolog\Logger('main')
+		setup:
+			- pushHandler()
 
 
 

@@ -1,7 +1,7 @@
 <?php
-namespace Task;
+namespace Worker\Job;
 
-class ffmpeg extends Task
+class ProcessVideo extends Job
 {
 	protected function getMetaData($file)
 	{
