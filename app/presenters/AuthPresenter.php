@@ -1,6 +1,13 @@
 <?php
 class SignPresenter extends BasePresenter
 {
+	/**
+	 * @var Facebook
+	 * @inject
+	*/
+	public $facebook;
+
+
 	/** @persistent */
 	public $identity;
 
@@ -13,9 +20,7 @@ class SignPresenter extends BasePresenter
 
 	public function renderIn()
 	{
-		$facebook = $this->context->getService('facebook');
-		$user = $facebook->getUser();
-		$this->template->facebook = $this->context->getService('facebook')->getLoginUrl(array(
+		$this->template->facebook = $this->facebook->getLoginUrl(array(
 			'scope' => 'email',
 			'redirect_uri' => $this->link('//facebook')
 		));
@@ -50,9 +55,7 @@ class SignPresenter extends BasePresenter
 
 	public function renderFacebook()
 	{
-		$facebook = $this->context->getService('facebook');
-
-		$me = $facebook->api('/me');
+		$me = $this->facebook->api('/me');
 
 		try {
 			$identity = $this->context->getService('facebookAuthenticator')->authenticate($me);
