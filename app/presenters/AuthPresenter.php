@@ -7,10 +7,6 @@ class SignPresenter extends BasePresenter
 	*/
 	public $facebook;
 
-
-	/** @persistent */
-	public $identity;
-
 	public function actionOut()
 	{
 		$this->user->logout(TRUE);
@@ -25,7 +21,7 @@ class SignPresenter extends BasePresenter
 			'redirect_uri' => $this->link('//facebook')
 		));
 
-		$this['login']['username']->value = $this->getParameter('username');
+		$this['login']['username']->setDefaultValue($this->getParameter('username'));
 	}
 
 	public function actionRegistration()

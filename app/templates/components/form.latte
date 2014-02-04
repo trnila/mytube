@@ -1,0 +1,14 @@
+<form n:name="$form" class="form" role="form">
+	<ul class=error n:if="$form->ownErrors">
+		<li n:foreach="$form->ownErrors as $error">{$error}</li>
+	</ul>
+
+	<div n:foreach="$form->controls as $input" n:class="form-group, $input->error ? has-error">
+		{label $input, class => control-label /}
+		{if $input instanceof Nette\Forms\Controls\SubmitButton}
+			<input n:name="$input" class="btn btn-primary">
+		{else}
+			{input $input, class => array(!($input instanceof Nette\Forms\Controls\UploadControl) ? 'form-control', $input->error ? 'has-error'), placeholder => $input->caption} <span class="help-block" n:ifcontent>{$input->error}</span>
+		{/if}
+	</div>
+</form>

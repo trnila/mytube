@@ -18,7 +18,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 			$template->registerFilter('Nette\Templating\Helpers::strip');
 		}
 	}
-	
+
 	public function createTemplate($class = NULL)
 	{
 		$template = parent::createTemplate($class);

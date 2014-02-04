@@ -23,15 +23,6 @@ class Login extends BaseForm
 			$presenter = $this->presenter;
 			$presenter->user->login($form['username']->value, $form['password']->value);
 
-			// save openid if any
-			if($presenter->identity) {
-				$presenter->context->getByType('Nette\Database\Context')->table('identities')
-					->insert(array(
-						'user_id' => $form['username']->value,
-						'identity' => $presenter->identity
-					));
-			}
-
 			$presenter->flashMessage('Byl jste přihlášen.', $presenter::FLASH_SUCCESS);
 			$presenter->redirectHome();
 		}
