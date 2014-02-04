@@ -38,8 +38,7 @@ class Videos extends Repository
 			$client = new \GearmanClient;
 			$client->addServer();
 
-			echo $client->doBackground("processVideo", $video['id']);
-			exit;
+			$client->doBackground("processVideo", $video['id']);
 
 			/*
 			$ch = @Nette\Environment::getContext()->workqueue__proccessVideo; //TODO: this is not clean

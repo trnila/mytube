@@ -15,6 +15,7 @@
 		<script src="{$basePath}/assets/components/bootstrap/dist/js/bootstrap.js"></script>
 		<!-- endbower -->
 		<script src="{$basePath}/assets/components/nette.ajax.js/nette.ajax.js"></script>
+		<script src="{$basePath}/assets/components/autogrow-textarea/jquery.autogrowtextarea.js"></script>
 		<script src="{$basePath}/assets/javascripts/application.js"></script>
 
 
@@ -71,69 +72,3 @@
 		</div>
 	</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-<?php /*
-		<div class="navbar navbar-fixed-top navbar-inverse">
-			<div class="navbar-inner">
-				<div class="container">
-					<a class="brand" n:href=":Homepage:">Youtube</a>
-
-					<ul class="nav">
-						<li n:class="$presenter->isLinkCurrent(':Homepage:') ? active"><a n:href=":Homepage:">Hlavní strana</a></li>
-						<li>
-							<form action="{$basePath}/search" id="video-search">
-								<input type="text" name="query" placeholder="Hledání">
-							</form>
-						</li>
-					</ul>
-
-					<ul class="nav pull-right">
-						{if $user->isLoggedIn()}
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								{$user->id} <i class="caret"></i>
-							</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a n:href=":Video:add">Přidat video</a>
-									<a n:href=":Profile:show, $user->id">Můj profil</a>
-									<a n:href=":Account:changePassword">Změna hesla</a>
-									<a n:href=":Admin:Users:list" n:if="$user->isAllowed('user', 'list')">Správa uživatelů</a>
-									<a n:href=":Sign:out">Odhlásit</a>
-								</li>
-							</ul>
-						</li>
-						{else}
-							<li><a n:href=":Sign:in">Přihlásit se</a></li>
-						{/if}
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		{ifset #content}
-			<div id="content" class="container">
-				<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
-					{$flash->message}
-				</div>
-
-				{snippet}
-					{include #content}
-				{/snippet}
-			</div>
-		{/ifset}
-		{ifset #raw}
-			{include #raw}
-		{/ifset}
-	</body>
-</html>
-*/

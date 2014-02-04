@@ -1,86 +1,90 @@
 {block content}
-<div id="video-upload">
-	<h1>Přidání nového videa</h1>
-	<div class="progress progress-striped active" hidden>
-		<div class="bar"></div>
+<script src="{$basePath}/assets/components/plupload/js/moxie.js"></script>
+<script src="{$basePath}/assets/components/plupload/js/plupload.dev.js"></script>
+
+<div class="panel panel-default" id="upload">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-upload"></i> Nahrání nového videa</h3>
 	</div>
+	<div class="panel-body">
+		<div class="progress progress-striped active hidden">
+			<div class="progress-bar"></div>
+		</div>
 
-	{form addVideo}
-		{foreach $form->errors as $error}
-			{$error}
-		{/foreach}
+		<form n:name="addVideo" class="form" role="form">
+			<ul class=error n:if="$form->ownErrors">
+				<li n:foreach="$form->ownErrors as $error">{$error}</li>
+			</ul>
 
-		{input title, placeholder => 'Název'}
-		{input description, placeholder => 'Popisek'}
+			<div class="form-group">
+				<label n:name="title">{$form['title']->caption}</label>
+				<div>
+					<input n:name="title" class="form-control" placeholder="{$form['title']->caption}">
+				</div>
+			</div>
 
-		<ul name="tags[]">
-		</ul>
+			<div class="form-group">
+				<label n:name="description">{$form['description']->caption}</label>
+				<div>
+					<textarea n:name="description" class="form-control" placeholder="Popis souboru"></textarea>
+				</div>
+			</div>
 
-		{input video, accept => 'audio/*,video/*'}
-		<span class="btn btn-primary" id="video-upload-pickfile">Vybrat video nebo hudbu</span>
-		<input type="submit" class="btn btn" value="Nahrát">
-	{/form}
+			<span class="btn btn-default" id="upload-choose-file"><i class="fa fa-level-up"></i> Vybrat video nebo hudbu...</span>
+
+			<div class="pull-right">
+				<button n:name="upload" class="btn btn-primary" disabled><i class="fa fa-upload"></i> Nahrát</button>
+			</div>
+		</form>
+	</div>
 </div>
 
 <script>
-$(document).ready(function() {
-	var picker = $("#frm-addVideo-video");
-	var progress = $("#video-upload .progress");
-	var tags = $("ul[name='tags[]']");
+$("textarea").autoGrow();
+var container = $("#upload");
+var form = container.find('form');
+var submitBtn = container.find('button[name=upload]');
 
-	$("#video-upload-pickfile").click(function() {
-		picker.click();
+var uploader = new plupload.Uploader({
+	browse_button: 'upload-choose-file',
+	url: {link this},
+	filters: [
+		{ title: 'Videa', extensions: 'avi,wmv,mp4,ogg,webm,m4v'},
+		{ title: 'Hudba', extensions: 'mp3,ogg,webm,flac'}
+	],
+	headers: {'X-Requested-With': 'XMLHttpRequest'}
+});
+
+uploader.init();
+uploader.bind('FilesAdded', function(uploader, files) {
+	submitBtn.removeAttr('disabled');
+});
+
+uploader.bind('BeforeUpload', function(uploader, file) {
+	var data = {};
+	$.each(form.serializeArray(), function(i, element) {
+		data[element.name] = element.value;
 	});
 
-	$("#frm-addVideo").submit(function() {
-		var file = picker[0].files[0];
-		if(!file) {
-			picker.click();
-			return false;
-		}
+	uploader.settings.multipart_params = data;
+});
 
-		if($(this).data('submitting')) {
-			return;
-		}
+uploader.bind('FileUploaded', function(up, file, info) {
+	var json = jQuery.parseJSON(info.response);
+	if(json && json['redirect']) {
+		document.location.href = json['redirect'];
+	}
+});
 
-		$(this).data('submitting', true).find('[type=submit]').attr('disabled', 'disabled');
+uploader.bind('UploadProgress', function(up, file) {
+	$("#status").html(file.percent + '%');
+});
 
-		progress.show();
-		var xhr = new XMLHttpRequest();
-		xhr.upload.addEventListener("progress", function(evt){
-			var percent = evt.loaded / evt.total * 100;
-			progress.find(".bar").css('width', percent + '%');
-		}, false);
+form.submit(function(evt) {
+	if(!submitBtn.is(':disabled')) {
+		uploader.start();
+	}
 
-		$(xhr).bind('load', function(evt){
-			var response = $.parseJSON(xhr.responseText);
-			if(response.videoUrl) {
-				document.location.href = response.videoUrl;
-			}
-		});
-
-		var data = new FormData;
-		$("form input:not([type=file]), form textarea", "#video-upload").each(function() {
-			var el = $(this);
-			data.append(el.attr('name'), el.val());
-		})
-
-		tags.tagit('tags').map(function(el) {
-			data.append("tags[]", el.value);
-		});
-
-		data.append("video", file);
-
-		xhr.open("POST", picker.closest('form').attr('action'));
-		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-		xhr.send(data);
-
-		return false;
-	});
-
-	tags.tagit({
-		select:true,
-		triggerKeys:['comma', 'enter', 'space', 'semicolon', 'tab'],
-	});
+	evt.preventDefault();
 });
 </script>

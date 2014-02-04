@@ -149,7 +149,7 @@ class VideoPresenter extends BasePresenter
 
 		$form->addTextArea('description', 'Popisek');
 
-		$form->addUpload('video');
+		$form->addUpload('file');
 
 		$form->addSubmit('upload', 'Nahrát');
 		$form->addProtection();
@@ -182,8 +182,7 @@ class VideoPresenter extends BasePresenter
 		);
 
 		// Add video to process
-		$video = $this->videos->addVideoToProcess($video, $form['video']->value);
-
+		$video = $this->videos->addVideoToProcess($video, $form['file']->value);
 
 		// Addd tags to video
 		$tags = $this->getHttpRequest()->getPost('tags');
@@ -200,11 +199,6 @@ class VideoPresenter extends BasePresenter
 		}
 
 		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
-
-		if($this->isAjax()) {
-			$this->payload->videoUrl = $this->link('show', $video['id']);
-			$this->terminate();
-		}
 
 		$this->redirect('show', $video['id']);
 	}
