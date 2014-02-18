@@ -30,6 +30,13 @@
 				</div>
 			</div>
 
+			<div class="form-group">
+				<label n:name="tags">{$form['tags']->caption}</label>
+				<div>
+					<input n:name="tags" type="hidden" style="width: 100%">
+				</div>
+			</div>
+
 			<span class="btn btn-default" id="upload-choose-file"><i class="fa fa-level-up"></i> Vybrat video nebo hudbu...</span>
 
 			<div class="pull-right">
@@ -44,6 +51,14 @@ $("textarea").autoGrow();
 var container = $("#upload");
 var form = container.find('form');
 var submitBtn = container.find('button[name=upload]');
+var tags = container.find("[name=tags]");
+
+tags.select2({ tags: []})
+	.select2("container").find("ul.select2-choices").sortable({
+		containment: 'parent',
+		start: function() { $("#e15").select2("onSortStart"); },
+		update: function() { $("#e15").select2("onSortEnd"); }
+	});
 
 var uploader = new plupload.Uploader({
 	browse_button: 'upload-choose-file',

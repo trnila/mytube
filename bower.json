@@ -20,6 +20,8 @@
     "font-awesome": "~4.0.3",
     "nette.ajax.js": "git://github.com/vojtech-dobes/nette.ajax.js",
     "plupload": "~2.1.1",
-    "autogrow-textarea": "*"
+    "autogrow-textarea": "*",
+    "select2": "~3.4.5",
+    "jquery-ui": "~1.10.4"
   }
 }

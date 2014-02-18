@@ -149,7 +149,10 @@ class VideoPresenter extends BasePresenter
 
 		$form->addTextArea('description', 'Popisek');
 
-		$form->addUpload('file');
+		$form->addText('tags', 'Tagy');
+
+		$form->addUpload('file')
+			->setRequired();
 
 		$form->addSubmit('upload', 'Nahrát');
 		$form->addProtection();
@@ -185,7 +188,7 @@ class VideoPresenter extends BasePresenter
 		$video = $this->videos->addVideoToProcess($video, $form['file']->value);
 
 		// Addd tags to video
-		$tags = $this->getHttpRequest()->getPost('tags');
+		$tags = explode(",", $form['tags']->value);
 		if(is_array($tags)) {
 			$position = 0;
 			foreach($tags as &$tag) {
