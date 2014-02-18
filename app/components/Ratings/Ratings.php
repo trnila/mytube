@@ -1,14 +1,26 @@
 <?php
 namespace Component;
-use Nette, DateTime, \Nette\Application\ForbiddenRequestException;
+use Nette;
+use DateTime;
+use Nette\Application\ForbiddenRequestException;
+use Model;
 
 class Ratings extends BaseControl
 {
+	/**
+	 * @var Model\Ratings
+	 * @inject
+	 */
+	public $ratings;
+
+	/**
+	 * @var Model\Entity\Video
+	 */
 	protected $video;
 
-	public function setVideo(Nette\Database\Table\ActiveRow $video)
+	public function setVideo(Model\Entity\Video $video)
 	{
-		$this->video = clone $video;
+		$this->video = $video;
 	}
 
 	public function handleRate($positive = TRUE, $takeBack = FALSE)
@@ -17,21 +29,16 @@ class Ratings extends BaseControl
 			throw new ForbiddenRequestException;
 		}
 
-		// TODO: workaround, because of this issue https://github.com/nette/nette/pull/799
-		// $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->delete();
-		$this->presenter->context->getByType('Nette\Database\Context')->table('video_ratings')
-			->where('user_id', $this->presenter->user->id)
-			->where('video_id', $this->video->id)
-			->delete();
+		$this->ratings->rate($this->video->id, $this->presenter->user->id, $positive, $takeBack);
 
-		if(!$takeBack) {
-			$this->video->related('ratings')
-				->insert(array(
-					'positive' => (bool) $positive,
-					'user_id' => $this->presenter->user->id,
-					'created' => new DateTime
-				));
+		// compute actual ratings
+		//TODO: get new stats from database rather!
+		if($positive) {
+			$this->video->overallRating->positive += $takeBack ? -1 : 1;
+		} else {
+			$this->video->overallRating->negative += $takeBack ? -1 : 1;
 		}
+		$this->video->overallRating->total = $this->video->overallRating->positive + $this->video->overallRating->negative;
 
 		if($this->presenter->isAjax()) {
 			$this->invalidateControl();
@@ -46,12 +53,12 @@ class Ratings extends BaseControl
 		$template = $this->createTemplate();
 		$template->setFile(__DIR__ . '/ratings.latte');
 
-		$template->positive = $this->video->related('ratings')->where('positive', TRUE)->count('*');
-		$template->negative = $this->video->related('ratings')->where('positive', FALSE)->count('*');
-		$template->total = $template->positive + $template->negative;
+		$template->positive = $this->video->overallRating->positive;
+		$template->negative = $this->video->overallRating->negative;
+		$template->total = $this->video->overallRating->total;
 
 		if($this->presenter->user->isLoggedIn()) {
-			$rate = $this->video->related('ratings')->where('user_id', $this->presenter->user->id)->fetch();
+			$rate = $this->ratings->getUserRate($this->video->id, $this->presenter->user->id);
 
 			$template->positiveRate = $rate ? $rate->positive == TRUE : FALSE;
 			$template->negativeRate = $rate ? $rate->positive == FALSE : FALSE;

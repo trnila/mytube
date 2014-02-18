@@ -1,14 +1,27 @@
 <?php
 namespace Component;
-use Nette, DateTime, Nette\Application\ForbiddenRequestException, Nette\Application\BadRequestException, ActiveRow;
+use Nette;
+use DateTime;
+use Nette\Application\ForbiddenRequestException;
+use Nette\Application\BadRequestException;
+use Model;
 
 class Comments extends BaseControl
 {
+	/**
+	 * @var Model\Comments
+	 * @inject
+	 */
+	public $comments;
+
+	/**
+	 * @var Model\Entity\Video
+	*/
 	protected $video;
 
-	public function setVideo(ActiveRow\Video $video)
+	public function setVideo(Model\Entity\Video $video)
 	{
-		$this->video = clone $video;
+		$this->video = $video;
 	}
 
 	public function handleDelete($id)
@@ -42,7 +55,7 @@ class Comments extends BaseControl
 		$template = $this->createTemplate();
 		$template->setFile(__DIR__ . '/comments.latte');
 
-		$template->comments = $this->video->related('comments')->order('created DESC');
+		$template->comments = $this->comments->findAllOrderedByDate($this->video->id);
 
 		echo $template;
 	}
@@ -53,12 +66,12 @@ class Comments extends BaseControl
 			throw new ForbiddenRequestException;
 		}
 
-		$this->video->related('video_comments')
-			->insert(array(
-				'user_id' => $this->presenter->user->id,
-				'created' => new DateTime,
-				'text' => $form['text']->value
-			));
+		$comment = new Model\Entity\Comment;
+		$comment->user_id = $this->presenter->user->id;
+		$comment->text = $form['text']->value;
+		$comment->created = new DateTime;
+
+		$this->comments->addComment($this->video->id, $comment);
 
 		$this->flashMessage('Komentář byl přidán.', 'success');
 

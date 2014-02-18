@@ -44,7 +44,7 @@
 
 				<p class="editable" data-type="textarea" data-name="description" data-pk="{$video->id}" data-url="{link edit!}">{$video->description|noescape|nl2br}</p>
 
-				<ul n:inner-foreach="$video->related('video_tags')->order('position') as $tag">
+				<ul n:inner-foreach="$video->tags as $tag">
 					{$tag->tag} {sep}, {/sep}
 				</ul>
 			</div>

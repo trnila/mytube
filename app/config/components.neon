@@ -1,5 +1,7 @@
 services:
 	model.users: Model\Users
+	model.ratings: Model\Ratings
+	model.comments: Model\Comments
 	model.videos:
 		class: Model\Videos
 		setup:

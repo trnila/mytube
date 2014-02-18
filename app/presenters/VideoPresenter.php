@@ -47,9 +47,10 @@ class VideoPresenter extends BasePresenter
 		$this->redirectHome();
 	}
 
-	public function renderShow($id)
+	public function actionShow($id)
 	{
 		$video = $this->videos->find($id);
+		$this->template->video = $video;
 
 		/* TODO
 		if($this->user->isLoggedIn()) {
@@ -77,7 +78,7 @@ class VideoPresenter extends BasePresenter
 			$this->template->videos[] = $video;
 		}
 
-		$this->template->video = $video;
+
 	}
 
 	protected function createComponentRatings()

@@ -16,7 +16,19 @@ class Videos extends Repository
 	public $thumbnailsDir;
 
 	/** @var string table name */
-	protected $name = 'videos';
+	protected $tableName = 'videos';
+
+
+	/**
+	 * Finds video by id
+	 * @param $id string
+	 * @return Model\Entity\Video
+	 */
+	public function find($id)
+	{
+		$row = parent::find($id);
+		return Entity\Video::create($row);
+	}
 
 	public function addVideoToProcess(array $input, Nette\Http\FileUpload $file)
 	{
@@ -78,7 +90,7 @@ class Videos extends Repository
 		throw new Exception("Could not create a video!");
 	}
 
-	public function create($data)
+	public function create(array $data)
 	{
 		// work arround, because Nette\Database wont refetch the inserted value, because there is no return of last_insert_id
 		$this->insert($data);
@@ -87,8 +99,7 @@ class Videos extends Repository
 
 	public function update($id, $data)
 	{
-		$video = $this->find($id);
-
+		$video = parent::find($id);
 		$video->update($data);
 	}
 
