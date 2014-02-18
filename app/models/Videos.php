@@ -59,6 +59,12 @@ class Videos extends Repository
 		return $video;
 	}
 
+	public function update($id, $data)
+	{
+		$video = $this->find($id);
+
+		$video->update($data);
+	}
 
 	public function deleteVideo(\ActiveRow\Video $video)
 	{

@@ -1,4 +1,6 @@
 <?php
+use Nette\Application\BadRequestException;
+
 class VideoPresenter extends BasePresenter
 {
 	/** @persistent */
@@ -35,54 +37,27 @@ class VideoPresenter extends BasePresenter
 
 	public function handleEdit()
 	{
-		if(!$this->user->isAllowed($this->video, 'edit')) {
+		/*if(!$this->user->isAllowed($this->video, 'edit')) {
 			throw new Nette\Application\ForbiddenRequestException;
+		}*/
+
+		$id = $this->getHttpRequest()->getPost('pk');
+		$name = $this->getHttpRequest()->getPost('name');
+		$value = $this->getHttpRequest()->getPost('value');
+
+		if(!$id) {
+			throw new BadRequestException('POST id not provided', Nette\Http\Response::S400_BAD_REQUEST);
 		}
 
-		$type = $this->getHttpRequest()->getPost('id');
-		if($type == 'video-title') {
-			$title = $this->getHttpRequest()->getPost('value');
-			$this->video->update(array(
-				'title' => $title
-			));
-
-			$this->payload->value = $this->template->escapeHtml($title);
-			$this->payload->saved = TRUE;
+		if(!$name) {
+			throw new BadRequestException('POST name not provided', Nette\Http\Response::S400_BAD_REQUEST);
 		}
-		elseif($type == 'video-description') {
-			$description = $this->getHttpRequest()->getPost('value');
-			$description = Nette\Utils\Strings::replace($description, '#<br[^>]*>#', '');
 
-			$this->video->update(array(
-				'description' => $description
-			));
-
-			$this->payload->value = $this->template->nl2br($this->template->escapeHtml($description));
-			$this->payload->saved = TRUE;
+		if(!$value) {
+			throw new BadRequestException('POST value not provided', Nette\Http\Response::S400_BAD_REQUEST);
 		}
-		elseif($type == 'video-tags') {
-			$this->video->related('video_tags')
-				->delete();
 
-			$tags = $this->getHttpRequest()->getPost('value');
-			if($tags) {
-				$position = 0;
-				foreach($tags as &$tag) {
-					$tag = array(
-						'tag' => trim($tag),
-						'position' => $position++
-					);
-				}
-
-				$this->video->related('video_tags')
-					->insert($tags);
-			}
-
-			$this->payload->saved = TRUE;
-		}
-		else {
-			throw new BadRequestException(Nette\Http\Request::S_400_BAD_REQUEST);
-		}
+		$this->videos->update($id, array($name => $value));
 
 		$this->terminate();
 	}

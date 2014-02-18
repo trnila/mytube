@@ -19,7 +19,7 @@
 		<div id="video-detail" class="container"{if $canEdit} data-editable-action="{link edit!}"{/if}>
 			<div class="alert" n:if="0 /** TODO **/ && !$video->processed">Toto video neni stále zkonvertováno.</div>
 
-			<h1{if $canEdit} class="editable"{/if} id="video-title">{$video->title}</h1>
+			<h1 class="editable" data-type="text" data-pk="{$video->id}" data-url="{link edit!}" data-name="title">{$video->title}</h1>
 
 			<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="fa fa-trash-o"></i></a>
 
@@ -42,14 +42,10 @@
 					<dd><a n:href="Profile:show, $video->user_id">{$video->user}</a></dd>
 				</dl>
 
-				<p {if $canEdit} class="editable" data-editable-type="textarea" data-editable-buttons {/if}id="video-description">{$video->description|noescape|nl2br}</p>
+				<p class="editable" data-type="textarea" data-name="description" data-pk="{$video->id}" data-url="{link edit!}">{$video->description|noescape|nl2br}</p>
 
-
-
-				<ul n:attr="data-tagit-enable => $user->isAllowed($video, 'edit')" class="tagit" n:inner-foreach="$video->related('video_tags')->order('position') as $tag">
-					<li class="tagit-choice">
-						<span class="tagit-text">{$tag->tag}</span>
-					</li>
+				<ul n:inner-foreach="$video->related('video_tags')->order('position') as $tag">
+					{$tag->tag} {sep}, {/sep}
 				</ul>
 			</div>
 
@@ -82,66 +78,7 @@ if(window.localStorage) {
 	});
 }
 
-var tagitPlaceholder = 	function() {
-	var tagit = $(this);
-	if(tagit.find('li.tagit-choice').length < 1) {
-		tagit.html('<span class="muted">Klepnutím přidejte tagy</span>');
-	}
-};
+//$.fn.editable.defaults.mode = 'inline';
+$(".editable").editable();
 
-var tagItEditable = function() {
-	var tagit = $(this);
-	tagit.off('click');
-
-	var original = $(this).html();
-
-	tagit.tagit({
-		select: true,
-		editOnClick: true,
-		triggerKeys: ['enter'],
-		sortable: true
-	});
-
-	tagit.find("input:first").focus();
-
-	// btns
-	var submit = $("<button class='btn btn-success'>Uložit</button>");
-	var cancel = $("<button class='btn btn-danger'>Zrušit</button>");
-
-	tagit.after(submit, cancel);
-
-	var destroy = function() {
-		submit.remove();
-		cancel.remove();
-		tagit.one('click', tagItEditable);
-		tagit.tagit('destroy');
-
-		tagitPlaceholder.apply(tagit);
-	};
-
-	submit.one('click', function() {
-		submit.attr('disabled', 'disabled');
-		setTimeout(function() {
-			var data = $.makeArray(tagit.tagit('tags').map(function(tag) {
-				return tag.value;
-			}));
-
-			$.post(tagit.closest('[data-editable-action]').data('editable-action'), { id: 'video-tags', value: data}, function(payload) {
-				if(payload.saved) {
-					destroy();
-					tagit.find(".tagit-close").remove();
-				}
-				else {
-					alert('Nastala chyba při ukládáni tagu.');
-				}
-			});
-		}, 100);
-	});
-	cancel.one('click', function() {
-		destroy();
-		tagit.html(original);
-	});
-};
-
-$("[data-tagit-enable]").one('click', tagItEditable).each(tagitPlaceholder);
 </script>
