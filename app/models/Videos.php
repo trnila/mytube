@@ -2,6 +2,7 @@
 namespace Model;
 use Nette\Utils\Validators;
 use Nette;
+use InvalidArgumentException;
 
 class Videos extends Repository
 {
@@ -17,46 +18,71 @@ class Videos extends Repository
 	/** @var string table name */
 	protected $name = 'videos';
 
-	public function addVideoToProcess(array $data, Nette\Http\FileUpload $file)
+	public function addVideoToProcess(array $input, Nette\Http\FileUpload $file)
 	{
-		try {
-			$video = FALSE;
-			$tries = 15;
-
-			//$this->manager->connection->beginTransaction();
-//TODO: fix
-			$data['id'] = Nette\Utils\Strings::random(8, 'a-z0-9A-Z');
-			$this->create($data);
-
-			$video = $this->find($data['id']);
-
-			// save file to incoming location for further process
-			@$file->move($this->incomingDir . "/{$video['id']}");
-
-			// send video to queue
-
-			$client = new \GearmanClient;
-			$client->addServer();
-
-			$client->doBackground("processVideo", $video['id']);
-
-			/*
-			$ch = @Nette\Environment::getContext()->workqueue__proccessVideo; //TODO: this is not clean
-			$msg_body = "{$video['id']}";
-			$msg = new \PhpAmqpLib\Message\AMQPMessage($msg_body, array('content_type' => 'text/plain'));
-			$ch->basic_publish($msg, "", "proccessVideo");*/
-
-		}
-		catch(\Exception $e) {
-			if($video) {
-				@unlink($this->incomingDir . "/{$video['id']}");
+		$data = $tags = array();
+		foreach($input as $key => $value) {
+			if(in_array($key, array('title', 'description', 'created', 'user_id'))) {
+				$data[$key] = $value;
+			} elseif($key == 'tags') {
+				$tags = $input[$key];
+			} else {
+				throw new InvalidArgumentException("Input key '{$key}' is invalid!");
 			}
-			dump($e);
 		}
 
-		//$this->manager->connection->commit();
+		$incomingFilePath = NULL;
+		for($tries = 3; $tries > 0; $tries--) {
+			try {
 
-		return $video;
+				// try to generate id
+				$data['id'] = Nette\Utils\Strings::random(8, 'a-z0-9A-Z');
+
+				// video with same ID already exists, skipping
+				if($this->find($data['id'])) {
+					continue;
+				}
+
+				$video = $this->create($data);
+
+				foreach($tags as $tag) {
+					$video->related('video_tags')
+						->insert($tag);
+				}
+
+				// save file to incoming location for further process
+				$incomingFilePath = $this->incomingDir . "/{$video['id']}";
+				$file->move($incomingFilePath);
+
+				// send video to queue
+				$client = new \GearmanClient;
+				$client->addServer();
+				$client->doBackground("processVideo", $video['id']);
+
+				return $video;
+			}
+			catch(\PDOException $e) {
+
+				// re-throw just if its not unique-or-another-constraint exception
+				if($e->getCode() != 23000) {
+					throw $e;
+				}
+			}
+		}
+
+		// delete uploaded file if exists
+		if($incomingFilePath && file_exists($incomingFilePath)) {
+			@unlink($incomingFilePath);
+		}
+
+		throw new Exception("Could not create a video!");
+	}
+
+	public function create($data)
+	{
+		// work arround, because Nette\Database wont refetch the inserted value, because there is no return of last_insert_id
+		$this->insert($data);
+		return $this->find($data['id']);
 	}
 
 	public function update($id, $data)
@@ -86,5 +112,10 @@ class Videos extends Repository
 				trigger_error("Thumbnail could not be removed: " . $file, E_USER_NOTICE);
 			}
 		}
+	}
+
+	public function getLastVideos($limit = 10)
+	{
+		return $this->findAll()->order('created DESC');
 	}
 }

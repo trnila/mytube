@@ -2,13 +2,11 @@
 
 class SearchPresenter extends BasePresenter
 {
-	/* @var Model\Videos */
-	protected $videos;
-
-	public function inject(Model\Videos $videos)
-	{
-		$this->videos = $videos;
-	}
+	/**
+	 * @var Model\Videos
+	 * @inject
+	*/
+	public $videos;
 
 	public function renderDefault($query)
 	{

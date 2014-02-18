@@ -2,15 +2,14 @@
 
 class HomepagePresenter extends BasePresenter
 {
-
+	/**
+	 * @var Model\Videos
+	 * @inject
+	*/
+	public $videos;
 
 	public function renderDefault()
 	{
-		if($this->isAjax()) {
-			$this->invalidateControl('title');
-			$this->invalidateControl('content');
-		}
-
-		$this->template->videos = $this->context->getService('model__videos')->findAll()->order('created DESC');
+		$this->template->videos = $this->videos->getLastVideos();
 	}
 }

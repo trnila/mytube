@@ -3,37 +3,11 @@ use Nette\Application\BadRequestException;
 
 class VideoPresenter extends BasePresenter
 {
-	/** @persistent */
-	public $id;
-
 	/**
 	 * @var Model\Videos
+	 * @inject
 	 */
-	protected $videos;
-
-	protected $video;
-
-	public function inject(Model\Videos $videos)
-	{
-		$this->videos = $videos;
-	}
-
-	public function startup()
-	{
-		parent::startup();
-
-		if($this->getParameter('id')) {
-			$this->video = $this->videos->find($this->getParameter('id'));
-
-			if(!$this->video) {
-				throw new Nette\Application\BadRequestException;
-			}
-
-			if(!$this->user->isAllowed($this->video, 'show')) {
-				throw new Nette\Application\ForbiddenRequestException;
-			}
-		}
-	}
+	public $videos;
 
 	public function handleEdit()
 	{
@@ -58,7 +32,6 @@ class VideoPresenter extends BasePresenter
 		}
 
 		$this->videos->update($id, array($name => $value));
-
 		$this->terminate();
 	}
 
@@ -76,7 +49,7 @@ class VideoPresenter extends BasePresenter
 
 	public function renderShow($id)
 	{
-		$this->template->video = $this->video;
+		$video = $this->videos->find($id);
 
 		/* TODO
 		if($this->user->isLoggedIn()) {
@@ -95,24 +68,27 @@ class VideoPresenter extends BasePresenter
 		}
 		*/
 
+		$this['ratings']->setVideo($video);
+		$this['comments']->setVideo($video);
+
 		$videos = $this->videos->findAll()->limit(8)->order('RAND()');
 		$this->template->videos = [];
 		foreach($videos as $video) {
 			$this->template->videos[] = $video;
 		}
+
+		$this->template->video = $video;
 	}
 
 	protected function createComponentRatings()
 	{
 		$component = $this->context->createServiceComponents__ratings();
-		$component->setVideo($this->video);
 		return $component;
 	}
 
 	protected function createComponentComments()
 	{
 		$component = $this->context->createServiceComponents__comments();
-		$component->setVideo($this->video);
 		return $component;
 	}
 
@@ -136,16 +112,6 @@ class VideoPresenter extends BasePresenter
 		return $form;
 	}
 
-
-	public function renderStatus($handle)
-	{
-			$client = new \GearmanClient;
-			$client->addServer();
-
-			dump($client->jobStatus($handle));
-		exit;
-	}
-
 	public function addVideo($form)
 	{
 		if(!$this->user->isLoggedIn()) {
@@ -155,29 +121,27 @@ class VideoPresenter extends BasePresenter
 		$video = array(
 			'title' => $form['title']->value,
 			'description' => $form['description']->value,
+			'tags' => array(),
 			'created' => new DateTime,
 			'user_id' => $this->user->id
 		);
-
-		// Add video to process
-		$video = $this->videos->addVideoToProcess($video, $form['file']->value);
 
 		// Addd tags to video
 		$tags = explode(",", $form['tags']->value);
 		if(is_array($tags)) {
 			$position = 0;
-			foreach($tags as &$tag) {
-				$tag = [
+			foreach($tags as $tag) {
+				$video['tags'][] = array(
 					'tag' => trim($tag),
 					'position' => $position++
-				];
+				);
 			}
-
-			$video->related('video_tags')->insert($tags);
 		}
 
-		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
+		// Add video to process
+		$video = $this->videos->addVideoToProcess($video, $form['file']->value);
 
+		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
 		$this->redirect('show', $video['id']);
 	}
 }

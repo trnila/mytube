@@ -36,16 +36,6 @@ services:
 		class: Model\Security\Authenticator\OpenID
 		autowired: false
 
-	# Work queue
-	queue:
-		class: PhpAmqpLib\Connection\AMQPConnection(%workqueue.host%, %workqueue.port%, %workqueue.user%, %workqueue.password%, %workqueue.domain%)
-
-	workqueue.proccessVideo:
-		factory: @queue::channel()
-		setup:
-			- queue_declare('proccessVideo', false, true, false, false)
-
-
 	user:
 		class: Nette\Security\User
 		arguments:
