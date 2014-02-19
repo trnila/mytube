@@ -16,11 +16,12 @@ class Repository extends Nette\Object
 
 	/**
 	 * Returns all rows from table
+	 * @param string table name to use
 	 * @return \Nette\Database\Table\Selection
 	 */
-	protected function getTable()
+	protected function getTable($name = NULL)
 	{
-		return $this->context->table($this->tableName);
+		return $this->context->table($name ? $name : $this->tableName);
 	}
 
 	/**

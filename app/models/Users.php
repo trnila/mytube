@@ -5,7 +5,7 @@ use Nette\Utils\Strings;
 
 class Users extends Repository
 {
-	protected $name = 'users';
+	protected $tableName = 'users';
 
 	/** static password hashing salt */
 	const PASSWORD_SALT = 'ho5Dei3aLi';

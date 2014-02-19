@@ -119,20 +119,18 @@ class VideoPresenter extends BasePresenter
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
-		$video = array(
-			'title' => $form['title']->value,
-			'description' => $form['description']->value,
-			'tags' => array(),
-			'created' => new DateTime,
-			'user_id' => $this->user->id
-		);
+		$video = new Model\Entity\Video;
+		$video->title = $form['title']->value;
+		$video->description = $form['description']->value;
+		$video->created = new DateTime;
+		$video->user_id = $this->user->id;
 
 		// Addd tags to video
 		$tags = explode(",", $form['tags']->value);
 		if(is_array($tags)) {
 			$position = 0;
 			foreach($tags as $tag) {
-				$video['tags'][] = array(
+				$video->tags[] = array(
 					'tag' => trim($tag),
 					'position' => $position++
 				);
@@ -143,6 +141,6 @@ class VideoPresenter extends BasePresenter
 		$video = $this->videos->addVideoToProcess($video, $form['file']->value);
 
 		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
-		$this->redirect('show', $video['id']);
+		$this->redirect('show', $video->id);
 	}
 }

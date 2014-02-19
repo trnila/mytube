@@ -22,54 +22,50 @@ class Videos extends Repository
 	/**
 	 * Finds video by id
 	 * @param $id string
-	 * @return Model\Entity\Video
+	 * @return Model\Entity\Video|FALSE
 	 */
 	public function find($id)
 	{
 		$row = parent::find($id);
-		return Entity\Video::create($row);
+
+		return $row ? Entity\Video::create($row) : FALSE;
 	}
 
-	public function addVideoToProcess(array $input, Nette\Http\FileUpload $file)
+	public function addVideoToProcess(Entity\Video $video, Nette\Http\FileUpload $file)
 	{
-		$data = $tags = array();
-		foreach($input as $key => $value) {
-			if(in_array($key, array('title', 'description', 'created', 'user_id'))) {
-				$data[$key] = $value;
-			} elseif($key == 'tags') {
-				$tags = $input[$key];
-			} else {
-				throw new InvalidArgumentException("Input key '{$key}' is invalid!");
-			}
-		}
-
 		$incomingFilePath = NULL;
 		for($tries = 3; $tries > 0; $tries--) {
 			try {
-
 				// try to generate id
-				$data['id'] = Nette\Utils\Strings::random(8, 'a-z0-9A-Z');
+				$video->id = Nette\Utils\Strings::random(8, 'a-z0-9A-Z');
 
 				// video with same ID already exists, skipping
-				if($this->find($data['id'])) {
+				if($this->find($video->id)) {
 					continue;
 				}
 
-				$video = $this->create($data);
+				$video = $this->create(array(
+					'id' => $video->id,
+					'title' => $video->title,
+					'description' => $video->description,
+					'created' => $video->created,
+					'user_id' => $video->user_id,
+				));
 
-				foreach($tags as $tag) {
-					$video->related('video_tags')
-						->insert($tag);
+				$position = 0;
+				foreach($video->tags as $tag) {
+					$this->addTag($video->id, $tag, $position);
+					$position++;
 				}
 
 				// save file to incoming location for further process
-				$incomingFilePath = $this->incomingDir . "/{$video['id']}";
+				$incomingFilePath = $this->incomingDir . "/{$video->id}";
 				$file->move($incomingFilePath);
 
 				// send video to queue
 				$client = new \GearmanClient;
 				$client->addServer();
-				$client->doBackground("processVideo", $video['id']);
+				$client->doBackground("processVideo", $video->id);
 
 				return $video;
 			}
@@ -93,7 +89,7 @@ class Videos extends Repository
 	public function create(array $data)
 	{
 		// work arround, because Nette\Database wont refetch the inserted value, because there is no return of last_insert_id
-		$this->insert($data);
+		parent::create($data);
 		return $this->find($data['id']);
 	}
 
@@ -101,6 +97,16 @@ class Videos extends Repository
 	{
 		$video = parent::find($id);
 		$video->update($data);
+	}
+
+	public function addTag($id, $tag, $position)
+	{
+		$this->getTable('video_tags')
+			->insert(array(
+				'video_id' => $id,
+				'tag' => $tag,
+				'position' => $position
+			));
 	}
 
 	public function deleteVideo(\ActiveRow\Video $video)
