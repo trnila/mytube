@@ -23,6 +23,24 @@ class Users extends Repository
 	}
 
 	/**
+	 * @return Model\Entity\User
+	 */
+	public function find($id)
+	{
+		$row = $this->getTable()->wherePrimary($id)->fetch();
+		return $row ? Entity\User::create($row) : NULL;
+	}
+
+	/**
+	 * @param $user Entity\User
+	 * @param $data array
+	 */
+	public function update(Entity\User $user, array $data)
+	{
+		parent::find($user->id)->update($data);
+	}
+
+	/**
 	 * Register a user
 	 * @param array $data
 	 */

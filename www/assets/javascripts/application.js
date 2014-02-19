@@ -73,3 +73,13 @@ $(document).on('mouseenter', '.video img', function() {
 		video.find("img:first").show();
 	});
 });
+
+$(document).ready(function() {
+	$(".editable").editable({
+		success: function(response) {
+			if(response && response.error) {
+				return response.error;
+			}
+		}
+	});
+});

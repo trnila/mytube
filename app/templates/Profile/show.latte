@@ -1,36 +1,35 @@
 {block content}
-<h1>
-	{if isset($info['displayName'])}
-		{$info['displayName']} <span n:class="muted" n:if="$profile->username != $info['displayName']">({$profile->username})</span>
-	{else}
-		{$profile->username}
-	{/if}
-</h1>
-
-<script src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
-<div class="row" id="profile-informations">
-	<div class="span3">
-		<img src="https://www.gravatar.com/avatar/{md5($profile->email)}?s=300">
-
-		<ul n:ifset="$info['phoneNumbers']" n:inner-foreach="$info['phoneNumbers'] as $phone" class="unstyled">
-			<li><i class="fa fa-phone"></i> {$phone['value']}</li>
-		</ul>
-
-		<ul n:ifset="$info['emails']" n:inner-foreach="$info['emails'] as $email" class="unstyled">
-			<li><i class="fa fa-envelope"></i> {$email['value']}
-		</ul>
-
-		<ul n:ifset="$info['ims']" n:inner-foreach="$info['ims'] as $im">
-			<li>{$im['type']} {$im['value']}</li>
-		</ul>
+{var $canEdit => $user->isAllowed($profile, 'edit')}
+<div class="panel panel-default" id="upload">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-user"></i> {$profile->username}</h3>
 	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-sm-2">
+				<img src="https://www.gravatar.com/avatar/{md5($profile->email)}?s=300" style="width: 100%">
+			</div>
 
-	<div class="span9">
-		{ifset $info['aboutMe']}{$info['aboutMe']}{/ifset}
+			<div class="col-sm-10">
+				<div>
+					<span class="editable" data-pk="{$profile->id}" data-url="{link edit!}" data-name="firstname" data-emptyText="Firstname" n:tag-if="$canEdit">{$profile->firstname}</span>
+					<span class="editable" data-pk="{$profile->id}" data-url="{link edit!}" data-name="lastname" data-emptyText="Lastname" n:tag-if="$canEdit">{$profile->lastname}</span>
+				</div>
 
- 		<div n:ifset="$info['currentLocation']" id="map" data-map-location="{$info['currentLocation']}" data-map-marker="https://www.gravatar.com/avatar/{? echo md5($profile->email)}?s=25"></div>
+				<div>
+					<i class="fa fa-envelope"></i>
+					<span class="editable" data-pk="{$profile->id}" data-url="{link edit!}" data-type="email" data-name="email" data-emptyText="E-mail" n:tag-if="$canEdit">{$profile->email}</span>
+				</div>
+
+				<div>
+					<div class="editable" data-pk="{$profile->id}" data-type="textarea" data-url="{link edit!}" data-name="aboutme" data-emptyText="About me..." n:tag-if="$canEdit">{$profile->aboutme}</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+
+{dump $user->isAllowed($profile, 'edit')}
 
 
 <h2>Uživatelovy videa</h2>

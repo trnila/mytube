@@ -44,6 +44,10 @@ class Authorizator extends Nette\Security\Permission
 		$this->deny('admin', 'user', 'edit', function($acl) use($user) {
 			return $acl->queriedResource->username == $user->id;
 		});
+
+		$this->allow('user', 'user', 'edit', function($acl) use($user) {
+			return $acl->queriedResource->id == $user->id;
+		});
 	}
 
 	protected function permitVideo($user)
