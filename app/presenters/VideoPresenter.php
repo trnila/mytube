@@ -11,10 +11,6 @@ class VideoPresenter extends BasePresenter
 
 	public function handleEdit()
 	{
-		/*if(!$this->user->isAllowed($this->video, 'edit')) {
-			throw new Nette\Application\ForbiddenRequestException;
-		}*/
-
 		$id = $this->getHttpRequest()->getPost('pk');
 		$name = $this->getHttpRequest()->getPost('name');
 		$value = $this->getHttpRequest()->getPost('value');
@@ -28,7 +24,18 @@ class VideoPresenter extends BasePresenter
 		}
 
 		if(!$value) {
-			throw new BadRequestException('POST value not provided', Nette\Http\Response::S400_BAD_REQUEST);
+			$this->payload->error('Povinná hodnota, vyplňte ji prosím.');
+			$this->terminate();
+		}
+
+		$video = $this->videos->find($id);
+		if(!$video) {
+			throw new BadRequestException('Video not found.');
+		}
+
+		// check if user has permission to eidt file
+		if($this->user->isAllowed($video, 'edit')) {
+			throw new Nette\Application\ForbiddenRequestException;
 		}
 
 		$this->videos->update($id, array($name => $value));
