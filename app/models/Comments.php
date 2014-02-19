@@ -29,7 +29,12 @@ class Comments extends Repository
 
 		return $comments;
 	}
-
+	
+	/**
+	 * Add comment for video
+	 * @param $video_id int
+	 * @param $comment Model\Entity\Comment
+	*/
 	public function addComment($video_id, Entity\Comment $comment)
 	{
 		$this->create(array(

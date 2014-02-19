@@ -25,6 +25,13 @@ class Ratings extends Repository
 		return $rate ? Entity\Rating::create($rate) : NULL;
 	}
 
+	/**
+	 * Rates or takes rate back in video
+	 * @param $video_id int
+	 * @param $user_id int
+	 * @param $positive bool
+	 * @param $takeBack bool if rate has been taken back
+	 */
 	public function rate($video_id, $user_id, $positive, $takeBack)
 	{
 		$actualRate = $this->findAll()
@@ -41,6 +48,5 @@ class Ratings extends Repository
 				'created' => new DateTime
 			));
 		}
-
 	}
 }
