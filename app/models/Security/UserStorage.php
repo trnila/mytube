@@ -33,7 +33,13 @@ class UserStorage extends Nette\Http\UserStorage
 				$this->identity = NULL;
 			}
 			else {
-				$this->identity = new Identity($user->id, array('user'), iterator_to_array($user));
+				$roles = array('user');
+
+				if($user->admin) {
+					$roles[] = 'admin';
+				}
+
+				$this->identity = new Identity($user->id, $roles, iterator_to_array($user));
 			}
 		}
 	}

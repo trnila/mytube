@@ -17,7 +17,7 @@
 		<tr n:foreach="$users as $u">
 			<td>{$u->username}</td>
 			<td>{$u->email}</td>
-			<td>{$u->role}</td>
+			<td>{$u->admin}</td>
 			<td>
 				<a n:tag-if="$user->isAllowed($u, 'activation')" n:href="activate! $u->username, !$u->active">
 					<i class="icon-check{$u->active ? '' : '-empty'}"></i>

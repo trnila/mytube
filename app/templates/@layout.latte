@@ -41,6 +41,7 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li n:class="$control->isLinkCurrent(':Homepage:') ? active"><a n:href=":Homepage:">Home</a></li>
+					<li n:class="$presenter->isLinkCurrent(':Admin:Users:list') ? active" n:if="$user->isAllowed('user', 'list')"><a n:href="Admin:Users:list">Uživatelé</a></li>
 				</ul>
 
 				<form class="navbar-form navbar-left" role="search" action="{$basePath}/search" id="video-search">
