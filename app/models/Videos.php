@@ -127,7 +127,8 @@ class Videos extends Repository
 		// delete file in database
 		$this->getTable()->wherePrimary($video->id)->delete();
 
-		// Remove a video
+		//TODO: reimplement this
+/*		// Remove a video
 		if(!file_exists($file = $this->videosDir . '/' . $video->path) || !unlink($file)) {
 			trigger_error("Video could not be removed: " . $file, E_USER_NOTICE);
 		}
@@ -138,6 +139,7 @@ class Videos extends Repository
 				trigger_error("Thumbnail could not be removed: " . $file, E_USER_NOTICE);
 			}
 		}
+		*/
 	}
 
 	public function getLastVideos($limit = 10)
