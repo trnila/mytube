@@ -28,13 +28,10 @@ class VideoPresenter extends BasePresenter
 			$this->terminate();
 		}
 
-		$video = $this->videos->find($id);
-		if(!$video) {
-			throw new BadRequestException('Video not found.');
-		}
+		$video = $this->getVideo($id);
 
 		// check if user has permission to eidt file
-		if($this->user->isAllowed($video, 'edit')) {
+		if(!$this->user->isAllowed($video, 'edit')) {
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
@@ -44,11 +41,13 @@ class VideoPresenter extends BasePresenter
 
 	public function handleDelete($id)
 	{
-		if(!$this->user->isAllowed($this->video, 'delete')) {
+		$video = $this->getVideo($id);
+
+		if(!$this->user->isAllowed($video, 'delete')) {
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
-		$this->videos->deleteVideo($this->video);
+		$this->videos->deleteVideo($video);
 
 		$this->flashMessage('Video bylo smazáno.', 'success');
 		$this->redirectHome();
@@ -56,7 +55,7 @@ class VideoPresenter extends BasePresenter
 
 	public function actionShow($id)
 	{
-		$video = $this->videos->find($id);
+		$video = $this->getVideo($id);
 		$this->template->video = $video;
 
 		/* TODO
@@ -149,5 +148,20 @@ class VideoPresenter extends BasePresenter
 
 		$this->flashMessage('Video bylo přidáno do fronty ke zpracování.', 'success');
 		$this->redirect('show', $video->id);
+	}
+
+	/**
+	 * @param $id string
+	 * @return Model\Entity\Video
+	 * @throws Nette\Application\BadRequestException
+	 */
+	public function getVideo($id)
+	{
+		$video = $this->videos->find($id);
+		if(!$video) {
+			throw new BadRequestException('Video not found.');
+		}
+
+		return $video;
 	}
 }

@@ -55,6 +55,11 @@ class Video extends Nette\Object implements Nette\Security\IResource
 	public $tags = array();
 
 	/**
+	 * @var array
+	 */
+	public $thumbnails = array();
+
+	/**
 	 * @var OverallRating
 	 */
 	public $overallRating;
@@ -80,6 +85,11 @@ class Video extends Nette\Object implements Nette\Security\IResource
 		$ratings->negative = $data->related('ratings')->where('positive', FALSE)->count('user_id');
 		$ratings->total = $ratings->positive + $ratings->negative;
 		$entity->overallRating = $ratings;
+
+		// map thumbnails
+		foreach($data->related('thumbnails') as $thumbnail) {
+			$entity->thumbnails[] = Thumbnail::create($thumbnail);
+		}
 
 		// map user
 		$entity->user = 'daniel';

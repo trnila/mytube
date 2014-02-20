@@ -1,7 +1,6 @@
 {var $title => $video->title}
-{var $canEdit = $user->isAllowed($video, 'edit')}
-
 {block content}
+{var $canEdit = $user->isAllowed($video, 'edit')}
 <div class="container">
 	<div id="video">
 		<div id="left-suggested-videos" n:if="0">
@@ -16,12 +15,16 @@
 			{/for}
 		</div>
 
-		<div id="video-detail" class="container"{if $canEdit} data-editable-action="{link edit!}"{/if}>
+		<div id="video-detail" class="container">
 			<div class="alert" n:if="0 /** TODO **/ && !$video->processed">Toto video neni stále zkonvertováno.</div>
 
-			<h1 class="editable" data-type="text" data-pk="{$video->id}" data-url="{link edit!}" data-name="title">{$video->title}</h1>
+			<a n:href="delete! $video->id" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?" class="pull-right btn btn-sm btn-danger">
+				<i class="fa fa-trash-o"></i>
+			</a>
 
-			<a n:href="delete! $video->id" id="video-delete" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?"><i class="fa fa-trash-o"></i></a>
+			<h1>
+				<span n:tag-if="$canEdit" class="editable" data-type="text" data-pk="{$video->id}" data-url="{link edit!}" data-name="title">{$video->title}</span>
+			</h1>
 
 			<div class="container">
 				{if $video->isvideo}

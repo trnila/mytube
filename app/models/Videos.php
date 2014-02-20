@@ -109,14 +109,23 @@ class Videos extends Repository
 			));
 	}
 
-	public function deleteVideo(\ActiveRow\Video $video)
+	public function addThumbnail(Entity\Video $video, $number, $time)
 	{
-		$thumbnails = [];
-		foreach($video->related('thumbnails') as $thumbnail) {
-			$thumbnails[] = $thumbnail->path;
-		}
+		$this->getTable('video_thumbnails')
+			->insert(array(
+				'video_id' => $video->id,
+				'number' => $number,
+				'time' => $time
+			));
+	}
 
-		$video->delete();
+	public function deleteVideo(Entity\Video $video)
+	{
+		// get copy of all thumbnails
+		$thumbnails = $video->thumbnails;
+
+		// delete file in database
+		$this->getTable()->wherePrimary($video->id)->delete();
 
 		// Remove a video
 		if(!file_exists($file = $this->videosDir . '/' . $video->path) || !unlink($file)) {

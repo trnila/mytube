@@ -106,7 +106,7 @@ class ProcessVideo extends Job
 
 		$this->logger->info('Adding video to database');
 
-		$row->update(array(
+		$this->videos->update($video->id, array(
 			'duration' => $video->duration,
 			'isvideo' => $video->isVideo,
 			'jobid' => NULL
@@ -114,11 +114,7 @@ class ProcessVideo extends Job
 
 		// add a screnshots
 		foreach($video->thumbnails as $thumbnail) {
-			$row->related('video_thumbnails')
-				->insert(array(
-					'number' => $thumbnail['num'],
-					'time' => $thumbnail['time']
-				));
+			$this->videos->addThumbnail($row, $thumbnail['num'], $thumbnail['time']);
 		}
 
 		$this->logger->info('Video successfully converted');
