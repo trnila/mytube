@@ -46,6 +46,26 @@ class Playlists extends BaseControl
 		}
 	}
 
+	public function handleDelete($playlist_id)
+	{
+		$playlist = $this->playlists->find($playlist_id);
+		if(!$playlist) {
+			throw new Nette\Application\BadRequestException;
+		}
+
+		if(!$this->presenter->user->isAllowed($playlist, 'delete')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
+		$this->playlists->delete($playlist_id);
+
+		if($this->presenter->isAjax()) {
+			$this->invalidateControl('list');
+		} else {
+			$this->redirect('this');
+		}
+	}
+
 	public function render()
 	{
 		$template = $this->createTemplate();

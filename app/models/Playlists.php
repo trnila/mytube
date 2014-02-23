@@ -34,6 +34,13 @@ class Playlists extends Repository
 			->delete();
 	}
 
+	public function delete($playlist_id)
+	{
+		$this->getTable('playlists')
+			->wherePrimary($playlist_id)
+			->delete();
+	}
+
 	public function getAll($user_id, $video_id)
 	{
 		$rows = $this->getTable()
