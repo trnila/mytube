@@ -39,7 +39,11 @@ class Playlists extends BaseControl
 			$this->playlists->removeVideo($playlist->id, $this->video->id);
 		}
 
-		$this->redirect('this');
+		if($this->presenter->isAjax()) {
+			$this->invalidateControl('list');
+		} else {
+			$this->redirect('this');
+		}
 	}
 
 	public function render()
@@ -82,6 +86,12 @@ class Playlists extends BaseControl
 
 		$this->playlists->create($playlist);
 
-		$this->redirect('this');
+		if($this->presenter->isAjax()) {
+			$form['name']->value = '';
+			$this->invalidateControl('list');
+			$this->invalidateControl('form');
+		} else {
+			$this->redirect('this');
+		}
 	}
 }
