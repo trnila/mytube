@@ -15,6 +15,7 @@ class Authorizator extends Nette\Security\Permission
 		// Resources
 		$this->addResource('video');
 		$this->addResource('comment');
+		$this->addResource('playlist');
 
 		// Add resources
 		$this->addResource('user');
@@ -85,5 +86,12 @@ class Authorizator extends Nette\Security\Permission
 		});
 
 		$this->allow('admin', 'comment', $this::ALL);
+	}
+
+	protected function permitPlaylist($user)
+	{
+		$this->allow($this::ALL, 'playlist', 'manage', function($acl) use($user) {
+			return $acl->queriedResource->user_id == $user->id;
+		});
 	}
 }

@@ -87,7 +87,7 @@ class Video extends Nette\Object implements Nette\Security\IResource
 		$entity->overallRating = $ratings;
 
 		// map thumbnails
-		foreach($data->related('thumbnails') as $thumbnail) {
+		foreach($data->related('video_thumbnails') as $thumbnail) {
 			$entity->thumbnails[] = Thumbnail::create($thumbnail);
 		}
 
@@ -99,7 +99,7 @@ class Video extends Nette\Object implements Nette\Security\IResource
 
 	public function getCoverThumbnail()
 	{
-		$thumbnail = $this->related('thumbnails')->fetch();
+		$thumbnail = $this->related('video_thumbnails')->fetch();
 		return $thumbnail ? $thumbnail : NULL;
 	}
 

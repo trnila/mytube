@@ -1,0 +1,24 @@
+<div class="well">
+	<ul class="list-group">
+		<li class="list-group-item" n:foreach="$playlists as $playlist">
+			<a n:href="add, $playlist->playlist->id, !$playlist->contained">
+				<i n:class="fa, $playlist->contained ? fa-check-square-o : fa-square-o"></i>
+				{$playlist->playlist->name}
+			</a>
+		</li>
+
+		<li class="list-group-item">
+			<form n:name="playlist">
+				<div class="row">
+					<div class="col-sm-7">
+						<input n:name="name" class="form-control" placeholder="{$form['name']->caption}">
+					</div>
+					<div class="col-sm-2">
+						<select n:name="type" class="form-control"></select>
+					</div>
+					<button n:name="send" class="btn btn-primary"><i class="fa fa-plus"></i> Přidat</button>
+				</div>
+			</form>
+		</li>
+	</ul>
+</div>

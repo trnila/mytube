@@ -1,0 +1,87 @@
+<?php
+namespace Component;
+use Nette;
+use DateTime;
+use Model;
+
+class Playlists extends BaseControl
+{
+	/**
+	 * @var Model\Playlists
+	 * @inject
+	 */
+	public $playlists;
+
+	/**
+	 * @var Model\Entity\Video
+	*/
+	protected $video;
+
+	public function setVideo(Model\Entity\Video $video)
+	{
+		$this->video = $video;
+	}
+
+	public function handleAdd($playlist_id, $add = TRUE)
+	{
+		$playlist = $this->playlists->find($playlist_id);
+		if(!$playlist) {
+			throw new Nette\Application\BadRequestException;
+		}
+
+		if(!$this->presenter->user->isAllowed($playlist, 'manage')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
+		if($add) {
+			$this->playlists->addVideo($playlist->id, $this->video->id);
+		} else {
+			$this->playlists->removeVideo($playlist->id, $this->video->id);
+		}
+
+		$this->redirect('this');
+	}
+
+	public function render()
+	{
+		$template = $this->createTemplate();
+		$template->setFile(__DIR__ . '/playlists.latte');
+
+		$template->playlists = $this->playlists->getAll($this->presenter->user->id, $this->video->id);
+
+		echo $template;
+	}
+
+	protected function createComponentPlaylist()
+	{
+		$form = new Nette\Application\UI\Form;
+
+		$form->addText('name', 'Název')
+			->setRequired();
+
+		$form->addSelect('type')
+			->setItems(array(
+				1 => 'Privátni',
+				0 => 'Veřejný'
+			));
+
+
+		$form->addSubmit('send');
+		$form->onSuccess[] = $this->processPlaylist;
+
+		return $form;
+	}
+
+	public function processPlaylist($form)
+	{
+		$playlist = new Model\Entity\Playlist;
+		$playlist->name = $form['name']->value;
+		$playlist->private = $form['type']->value;
+		$playlist->user_id = $this->presenter->user->id;
+		$playlist->created = new DateTime;
+
+		$this->playlists->create($playlist);
+
+		$this->redirect('this');
+	}
+}

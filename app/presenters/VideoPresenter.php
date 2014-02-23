@@ -77,6 +77,7 @@ class VideoPresenter extends BasePresenter
 
 		$this['ratings']->setVideo($video);
 		$this['comments']->setVideo($video);
+		$this['playlists']->setVideo($video);
 
 		$videos = $this->videos->findAll()->limit(8)->order('RAND()');
 		$this->template->videos = [];
@@ -85,6 +86,13 @@ class VideoPresenter extends BasePresenter
 		}
 
 
+	}
+
+	protected function createComponentPlaylists()
+	{
+		$component = new Component\Playlists;
+		$component->playlists = Nette\Environment::getContext()->getByType('Model\Playlists');
+		return $component;
 	}
 
 	protected function createComponentRatings()

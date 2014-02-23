@@ -62,10 +62,14 @@ class Repository extends Nette\Object
 	}
 
 	/**
-	 * @param array
+	 * @param mixed
 	 */
-	public function create(array $data)
+	public function create($data)
 	{
+		if(is_object($data)) {
+			$data = (array) $data;
+		}
+
 		$this->getTable()->insert($data);
 	}
 }

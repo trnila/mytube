@@ -86,7 +86,7 @@ class Videos extends Repository
 		throw new Exception("Could not create a video!");
 	}
 
-	public function create(array $data)
+	public function create($data)
 	{
 		// work arround, because Nette\Database wont refetch the inserted value, because there is no return of last_insert_id
 		parent::create($data);
