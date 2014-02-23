@@ -5,6 +5,15 @@
 		<a class="close" data-dismiss="alert" href="#">&times;</a>
 	</div>
 
+	{snippet form}
+	{if $user->isLoggedIn()}
+		{form form class => ajax}
+			<textarea n:name="text" placeholder="Text komentáře..." class="form-control"></textarea>
+			<input n:name="add" class="btn btn-primary">
+		{/form}
+	{/if}
+	{/snippet}
+
 	{snippet comments}
 	<div class="comment" n:foreach="$comments as $comment">
 		{$comment->text}
@@ -13,14 +22,5 @@
 			{if 0 /*TODO*/&& $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="fa fa-trash-o"></i></a>{/if}
 		</div>
 	</div>
-	{/snippet}
-
-	{snippet form}
-	{if $user->isLoggedIn()}
-		{form form class => ajax}
-			{input text}
-			<input n:name="add" class="btn btn-primary">
-		{/form}
-	{/if}
 	{/snippet}
 </div>

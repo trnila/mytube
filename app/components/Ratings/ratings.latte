@@ -1,8 +1,8 @@
 {snippet}
 <div class="ratings-interact">
 	{if $user->isLoggedIn()}
-	<a n:href="rate!, positive => true, takeBack => $positiveRate" n:class="like, btn, btn-default, $positiveRate ? active"><i class="fa fa-thumbs-up"></i> like</a>
-	<a n:href="rate!, positive => false, takeBack => $negativeRate" n:class="dislike, btn, btn-default, $negativeRate ? active"><i class="fa fa-thumbs-down"></i> dislike</a>
+	<a n:href="rate!, positive => true, takeBack => $positiveRate" n:class="like, btn, btn-sm, btn-default, $positiveRate ? active"><i class="fa fa-thumbs-up"></i> like</a>
+	<a n:href="rate!, positive => false, takeBack => $negativeRate" n:class="dislike, btn, btn-sm, btn-default, $negativeRate ? active"><i class="fa fa-thumbs-down"></i> dislike</a>
 	{/if}
 
 	<div class="progress">
@@ -52,5 +52,11 @@
 		return false;
 	});
 </script>
+
+<style>
+	.ratings-interact .progress {
+		margin-bottom: 0px;
+	}
+</style>
 
 {/snippet}

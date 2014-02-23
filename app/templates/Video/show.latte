@@ -35,27 +35,62 @@
 				{/if}
 			</div>
 
-			{control ratings}
+			<div class="row">
+				<div class="col-sm-10">
+					<ul class="nav nav-tabs">
+		  				<li class="active"><a href="#details" data-toggle="tab">Detaily</a></li>
+		  				<li><a href="#playlists" data-toggle="tab">Playlist</a></li>
+		  				<li><a href="#share" data-toggle="tab">Sdílet</a></li>
+		  				<li><a href="#comments" data-toggle="tab">Komentáře</a></li>
+					</ul>
+				</div>
 
-			{control playlists}
-
-			<div>
-				<dl class="dl-horizontal">
-					<dt>Pocet zhlédnutí:</dt>
-					<dd n:if="0 /** TODO */">{$video->views}</dd>
-
-					<dt>Nahrál:</dt>
-					<dd><a n:href="Profile:show, $video->user_id">{$video->user}</a></dd>
-				</dl>
-
-				<p class="editable" data-type="textarea" data-name="description" data-pk="{$video->id}" data-url="{link edit!}">{$video->description|noescape|nl2br}</p>
-
-				<ul n:inner-foreach="$video->tags as $tag">
-					{$tag->tag} {sep}, {/sep}
-				</ul>
+				<div class="col-sm-2">
+					{control ratings}
+				</div>
 			</div>
 
-			{control comments}
+			<div class="tab-content well">
+				<div class="tab-pane active" id="details">
+					<h2>Detaily</h2>
+					<dl class="dl-horizontal">
+						<dt>Nahrál:</dt>
+						<dd><a n:href="Profile:show, $video->user_id">{$video->user->username}</a></dd>
+
+						<dt>Datum nahráni</dt>
+						<dd>{$video->created}</dd>
+
+						<dt>Popis</dt>
+						<dd>
+							<p class="editable" data-type="textarea" data-name="description" data-pk="{$video->id}" data-url="{link edit!}">{$video->description|escape|nl2br|noescape}</p>
+						</dd>
+
+						<dt>Tagy</dt>
+						<dd>
+							<ul n:inner-foreach="$video->tags as $tag">
+								{$tag->tag} {sep}, {/sep}
+							</ul>
+						</dd>
+					</dl>
+
+
+				</div>
+				<div class="tab-pane" id="playlists">
+					{control playlists}
+				</div>
+				<div class="tab-pane" id="share">
+					<h2>Sdílet</h2>
+					<input readonly class="form-control" value="{link //this}">
+					<script>
+						$("#share input").click(function() {
+							$(this).select();
+						})
+					</script>
+				</div>
+				<div class="tab-pane" id="comments">
+					{control comments}
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

@@ -92,7 +92,7 @@ class Video extends Nette\Object implements Nette\Security\IResource
 		}
 
 		// map user
-		$entity->user = 'daniel';
+		$entity->user = User::create($data->user);
 
 		return $entity;
 	}

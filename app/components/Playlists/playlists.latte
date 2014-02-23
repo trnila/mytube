@@ -1,17 +1,19 @@
-<div class="well" id="playlists">
+<div id="playlists">
 	<h2>Přidat do playlistu</h2>
-	<ul class="list-group" n:snippet="list">
-		<li class="list-group-item" n:foreach="$playlists as $playlist">
-			<a n:href="add, $playlist->playlist->id, !$playlist->contained" class="ajax">
-				<i n:class="fa, $playlist->contained ? fa-check-square-o : fa-square-o"></i>
-				{$playlist->playlist->name}
+	<div id="playlists-list">
+		<ul class="list-group" n:snippet="list">
+			<li class="list-group-item" n:foreach="$playlists as $playlist">
+				<a n:href="add, $playlist->playlist->id, !$playlist->contained" class="ajax">
+					<i n:class="fa, $playlist->contained ? fa-check-square-o : fa-square-o"></i>
+					{$playlist->playlist->name}
 
-				<a n:href="delete $playlist->playlist->id" class="btn btn-xs btn-danger pull-right ajax" data-confirm="Opravdu smazat playlist {$playlist->playlist->name}?">
-					<i class="fa fa-trash-o"></i>
+					<a n:href="delete $playlist->playlist->id" class="btn btn-xs btn-danger pull-right ajax" data-confirm="Opravdu smazat playlist {$playlist->playlist->name}?">
+						<i class="fa fa-trash-o"></i>
+					</a>
 				</a>
-			</a>
-		</li>
-	</ul>
+			</li>
+		</ul>
+	</div>
 
 	<ul class="list-group">
 		<li class="list-group-item" n:snippet="form">
@@ -34,5 +36,10 @@
 #playlists .list-group {
 	margin:0px;
 	margin-top: -1px;
+}
+
+#playlists-list {
+	max-height: 123px;
+	overflow-y: auto;
 }
 </style>
