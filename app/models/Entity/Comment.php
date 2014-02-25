@@ -24,6 +24,11 @@ class Comment extends Nette\Object implements Nette\Security\IResource
  	 */
  	public $created;
 
+ 	/**
+ 	 * @var User
+ 	 */
+ 	public $user;
+
  	public static function create($row)
  	{
  		$comment = new static;
@@ -31,6 +36,8 @@ class Comment extends Nette\Object implements Nette\Security\IResource
  		$comment->user_id = $row->user_id;
  		$comment->text = $row->text;
  		$comment->created = $row->created;
+
+ 		$comment->user = User::create($row->user);
 
  		return $comment;
  	}

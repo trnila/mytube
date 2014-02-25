@@ -18,7 +18,7 @@
 	<div class="comment" n:foreach="$comments as $comment">
 		{$comment->text}
 		<div class="footer">
-			<a href="{plink Profile:show, $comment->user_id}">{$comment->user_id}</a> {$comment->created|timeAgo}
+			<a href="{plink Profile:show, $comment->user_id}">{$comment->user->username}</a> {$comment->created|timeAgo}
 			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="fa fa-trash-o"></i></a>{/if}
 		</div>
 	</div>
