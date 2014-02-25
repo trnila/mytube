@@ -44,7 +44,7 @@ class Videos extends Repository
 					continue;
 				}
 
-				$video = $this->create(array(
+				$row = $this->create(array(
 					'id' => $video->id,
 					'title' => $video->title,
 					'description' => $video->description,
@@ -52,10 +52,8 @@ class Videos extends Repository
 					'user_id' => $video->user_id,
 				));
 
-				$position = 0;
 				foreach($video->tags as $tag) {
-					$this->addTag($video->id, $tag, $position);
-					$position++;
+					$this->addTag($video->id, $tag['tag'], $tag['position']);
 				}
 
 				// save file to incoming location for further process
@@ -67,10 +65,9 @@ class Videos extends Repository
 				$client->addServer();
 				$client->doBackground("processVideo", $video->id);
 
-				return $video;
+				return $row;
 			}
 			catch(\PDOException $e) {
-
 				// re-throw just if its not unique-or-another-constraint exception
 				if($e->getCode() != 23000) {
 					throw $e;
