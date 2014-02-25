@@ -31,3 +31,10 @@ class Login extends BaseForm
 		}
 	}
 }
+
+interface ILoginFactory {
+	/**
+	 * @return Login
+	*/
+	public function create();
+}

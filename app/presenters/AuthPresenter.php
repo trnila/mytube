@@ -7,6 +7,18 @@ class SignPresenter extends BasePresenter
 	*/
 	public $facebook;
 
+	/**
+	 * @var Form\ILoginFactory
+	 * @inject
+	*/
+	public $loginFactory;
+
+	/**
+	 * @var Form\IRegistrationFactory
+	 * @inject
+	*/
+	public $registrationFactory;
+
 	public function actionOut()
 	{
 		$this->user->logout(TRUE);
@@ -106,6 +118,16 @@ class SignPresenter extends BasePresenter
 				echo 'Error';
 			}
 		}
+	}
+
+	protected function createComponentLogin()
+	{
+		return $this->loginFactory->create();
+	}
+
+	protected function createComponentRegistration()
+	{
+		return $this->registrationFactory->create();
 	}
 
 	protected function getPersistentRegistration()

@@ -1,11 +1,12 @@
 <?php
-namespace Component;
+namespace Component\Ratings;
 use Nette;
 use DateTime;
 use Nette\Application\ForbiddenRequestException;
 use Model;
+use Component;
 
-class Ratings extends BaseControl
+class Ratings extends Component\BaseControl
 {
 	/**
 	 * @var Model\Ratings

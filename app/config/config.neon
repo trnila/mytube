@@ -11,20 +11,18 @@ nette:
 		expiration: +7 days
 
 services:
-	loggerout:
+	-
 		class: Monolog\Handler\StreamHandler('php://stdout')
 		setup:
 			- setFormatter(MonologCliFormatter())
 
-	logger:
+	-
 		class: Monolog\Logger('main')
 		setup:
 			- pushHandler()
 
 	- FFMpeg\FFProbe::create()
 	- FFMpeg\FFMpeg::create()
-
-
 
 	# Authentications + Authorizations
 	facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
@@ -44,13 +42,6 @@ services:
 		setup:
 			- setAuthenticator(Model\Security\Authenticator\Password())
 			- setAuthorizator(Model\Security\Authorizator())
-
-	modelManager: Fabik\Database\ModelManager
-	rowFactory: Fabik\Database\RowFactory({
-		users: ActiveRow\User,
-		videos: ActiveRow\Video,
-		comments: ActiveRow\Comment
-	})
 
 	nette.template:
 		setup:

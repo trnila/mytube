@@ -1,10 +1,11 @@
 <?php
-namespace Component;
+namespace Component\Playlists;
 use Nette;
 use DateTime;
 use Model;
+use Component;
 
-class Playlists extends BaseControl
+class Playlists extends Component\BaseControl
 {
 	/**
 	 * @var Model\Playlists

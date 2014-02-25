@@ -58,7 +58,7 @@ class Users extends Repository
 		try {
 			return $this->create($data);
 		}
-		catch(\Database\DuplicateEntryException $e) {
+		catch(DuplicateEntryException $e) {
 			$found = Strings::match($e->getMessage(), "#for key '([^']+)'#");
 
 			if($found && isset($found[1])) {
@@ -86,6 +86,11 @@ class Users extends Repository
 		return hash('sha512', md5(self::PASSWORD_SALT . $username) . sha1($password . self::PASSWORD_SALT));
 	}
 
+	public function addIdentity($user_id, $data)
+	{
+		$this->getTable('identities')
+			->insert(array('user_id' => $user_id) + $data);
+	}
 
 	public function changePassword($username, $oldPassword, $newPassword)
 	{

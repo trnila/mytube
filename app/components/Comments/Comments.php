@@ -1,12 +1,13 @@
 <?php
-namespace Component;
+namespace Component\Comments;
 use Nette;
 use DateTime;
 use Nette\Application\ForbiddenRequestException;
 use Nette\Application\BadRequestException;
 use Model;
+use Component;
 
-class Comments extends BaseControl
+class Comments extends Component\BaseControl
 {
 	/**
 	 * @var Model\Comments

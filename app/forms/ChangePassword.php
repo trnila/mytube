@@ -40,3 +40,11 @@ class ChangePassword extends BaseForm
 		}
 	}
 }
+
+interface IChangePasswordFactory
+{
+	/**
+	 * @return ChangePassword
+	*/
+	public function create();
+}

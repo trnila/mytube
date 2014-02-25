@@ -56,16 +56,19 @@ class Registration extends BaseForm
 			$user = $this->users->register($values);
 		}
 		catch(Model\DuplicateException $e) {
-			$form->addError($e->getMessage());
+			if($e->getKey() == 'username') {
+				$form['username']->addError('Uživatelské jméno již existuje.');
+			}
+			else {
+				// could be risky?
+				$form->addError($e->getMessage());
+			}
 			return;
 		}
 
 		// Add openid identity if any
 		if(isset($identity)) {
-			$user->related('identities')->insert(array(
-				'type' => 'openid',
-				'identity' => $identity
-			));
+			$this->users->addIdentity($user->id, array('type' => 'openid', 'identity' => $identity));
 		}
 
 		$identity = new \Nette\Security\Identity($user->id, NULL, $user);
@@ -86,4 +89,12 @@ class Registration extends BaseForm
 			$this->additionalData[$key] = $data;
 		}
 	}
+}
+
+interface IRegistrationFactory
+{
+	/**
+	 * @return Registration
+	 */
+	public function create();
 }

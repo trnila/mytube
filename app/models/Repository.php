@@ -1,6 +1,7 @@
 <?php
 namespace Model;
 use Nette;
+use PDOException;
 
 class Repository extends Nette\Object
 {
@@ -66,10 +67,25 @@ class Repository extends Nette\Object
 	 */
 	public function create($data)
 	{
-		if(is_object($data)) {
-			$data = (array) $data;
-		}
+		try {
+			if(is_object($data)) {
+				$data = (array) $data;
+			}
 
-		$this->getTable()->insert($data);
+			return $this->getTable()->insert($data);
+		} catch(PDOException $e) {
+			if(is_array($e->errorInfo) && $e->errorInfo[1] == 1062) {
+				$exception = new DuplicateException($e->getMessage(), $e->errorInfo[1], $e);
+
+				$parts = Nette\Utils\Strings::match($e->errorInfo[2], "/key '([^']+)'/");
+				if(isset($parts[1])) {
+					$exception->setKey($parts[1]);
+				}
+
+				throw $exception;
+			} else {
+				throw $e;
+			}
+		}
 	}
 }

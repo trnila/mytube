@@ -9,6 +9,24 @@ class VideoPresenter extends BasePresenter
 	 */
 	public $videos;
 
+	/**
+	 * @var Component\Playlists\IFactory
+	 * @inject
+	 */
+	public $playlistsComponentFactory;
+
+	/**
+	 * @var Component\Ratings\IFactory
+	 * @inject
+	 */
+	public $ratingsComponentFactory;
+
+	/**
+	 * @var Component\Comments\IFactory
+	 * @inject
+	 */
+	public $commentsComponentFactory;
+
 	public function handleEdit()
 	{
 		$id = $this->getHttpRequest()->getPost('pk');
@@ -90,21 +108,17 @@ class VideoPresenter extends BasePresenter
 
 	protected function createComponentPlaylists()
 	{
-		$component = new Component\Playlists;
-		$component->playlists = Nette\Environment::getContext()->getByType('Model\Playlists');
-		return $component;
+		return $this->playlistsComponentFactory->create();
 	}
 
 	protected function createComponentRatings()
 	{
-		$component = $this->context->createServiceComponents__ratings();
-		return $component;
+		return $this->ratingsComponentFactory->create();
 	}
 
 	protected function createComponentComments()
 	{
-		$component = $this->context->createServiceComponents__comments();
-		return $component;
+		return $this->commentsComponentFactory->create();
 	}
 
 	protected function createComponentAddVideo()
