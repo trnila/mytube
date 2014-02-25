@@ -27,10 +27,7 @@ class Comments extends Component\BaseControl
 
 	public function handleDelete($id)
 	{
-		$comment = $this->video
-			->related('comment')
-			->wherePrimary($id)
-			->fetch();
+		$comment = $this->comments->find($id);
 
 		if(!$comment) {
 			throw new BadRequestException;
@@ -40,7 +37,7 @@ class Comments extends Component\BaseControl
 			throw new ForbiddenRequestException;
 		}
 
-		$comment->delete();
+		$this->comments->delete($comment->id);
 		$this->flashMessage('Váš komentář byl smazán.', 'success');
 
 		if($this->presenter->isAjax()) {

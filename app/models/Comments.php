@@ -29,7 +29,7 @@ class Comments extends Repository
 
 		return $comments;
 	}
-	
+
 	/**
 	 * Add comment for video
 	 * @param $video_id int
@@ -43,5 +43,18 @@ class Comments extends Repository
 			'text' => $comment->text,
 			'created' => $comment->created
 		));
+	}
+
+	public function find($id)
+	{
+		$comment = parent::find($id);
+		return $comment ? Entity\Comment::create($comment) : NULL;
+	}
+
+	public function delete($comment_id)
+	{
+		$this->getTable()
+			->wherePrimary($comment_id)
+			->delete();
 	}
 }
