@@ -1,2 +1,9 @@
 {block content}
-{control userForm}
+<div class="panel panel-default" id="upload">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-user"></i> Editace uživatele</h3>
+	</div>
+	<div class="panel-body">
+		{include ../../../templates/components/form.latte, form => 'userForm'}
+	</div>
+</div>

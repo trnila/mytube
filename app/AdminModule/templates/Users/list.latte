@@ -1,32 +1,46 @@
 {block content}
-<h1>Seznam uživatelů</h1>
+<div class="panel panel-default" id="upload">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-users"></i> Seznam uživatelů</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-hover table-bordered table-striped table-condensed">
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>E-mail</th>
+					<th>Admin?</th>
+					<th>Aktivní?</th>
+					<th style="width: 165px"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr n:foreach="$users as $u">
+					<td>{$u->username}</td>
+					<td>{$u->email}</td>
+					<td>
+						<i n:class="fa, $u->admin ? fa-check : fa-times"></i>
+					</td>
+					<td>
+						<a n:tag-if="$user->isAllowed($u, 'activation')" n:href="activate! $u->id, !$u->active">
+							<i n:class="fa, $u->active ? fa-check : fa-times"></i>
+						</a>
+					</td>
+					<td>
+						<a n:if="$user->isAllowed($u, 'edit')" n:href="edit $u->id" class="btn btn-default btn-sm"><i class="fa fa-edit"></i> Upravit</a>
+						<a n:if="$user->isAllowed($u, 'delete')" n:href="delete! $u->id" class="btn btn-danger btn-sm" data-confirm="Opravdu smazat uživatele '{$u->username}'?">
+							<i class="fa fa-trash-o"></i> Smazat
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
 
-<a n:href="create" class="btn"><i class="icon-plus"></i> Vytvořit nového uživatele</a>
-
-<table class="table table-hover table-bordered table-striped" id="admin-users-list">
-	<thead>
-		<tr>
-			<th>username</th>
-			<th>E-mail</th>
-			<th>Role</th>
-			<th>Aktivní?</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr n:foreach="$users as $u">
-			<td>{$u->username}</td>
-			<td>{$u->email}</td>
-			<td>{$u->admin}</td>
-			<td>
-				<a n:tag-if="$user->isAllowed($u, 'activation')" n:href="activate! $u->username, !$u->active">
-					<i class="icon-check{$u->active ? '' : '-empty'}"></i>
-				</a>
-			</td>
-			<td>
-				<a n:if="$user->isAllowed($u, 'edit')" n:href="edit $u->username" class="btn">Upravit</a>
-				<a n:if="$user->isAllowed($u, 'delete')" n:href="delete! $u->username" class="btn btn-danger">Smazat</a>
-			</td>
-		</tr>
-	</tbody>
-</table>
+<style>
+	table tr td:nth-of-type(4), table tr td:nth-of-type(3) {
+		text-align: center;
+		width: 20px;
+	}
+</style>

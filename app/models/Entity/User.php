@@ -46,13 +46,19 @@ class User extends Nette\Object implements Nette\Security\IResource
 	public $active;
 
 	/**
+	 * @var bool
+	 */
+	public $admin;
+
+
+	/**
 	 * Creates new instance from a row
 	 * @return Model\Entity\User
 	 */
 	public static function create($row)
 	{
 		$user = new static;
-		foreach(array('id', 'username', 'firstname', 'lastname', 'email', 'password', 'active', 'aboutme') as $column) {
+		foreach(array('id', 'username', 'firstname', 'lastname', 'email', 'password', 'active', 'aboutme', 'admin') as $column) {
 			$user->{$column} = $row[$column];
 		}
 

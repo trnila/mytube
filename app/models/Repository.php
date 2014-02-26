@@ -88,4 +88,11 @@ class Repository extends Nette\Object
 			}
 		}
 	}
+
+	public function delete($id)
+	{
+		$this->getTable()
+			->wherePrimary($id)
+			->delete();
+	}
 }

@@ -35,18 +35,14 @@ class Authorizator extends Nette\Security\Permission
 	{
 		$this->allow('admin', 'user', $this::ALL);
 		$this->deny('admin', 'user', 'delete', function($acl) use($user) {
-			return $acl->queriedResource->username == $user->id;
+			return $acl->queriedResource->id == $user->id;
 		});
 
 		$this->deny('admin', 'user', 'activation', function($acl) use($user) {
-			return $acl->queriedResource->username == $user->id;
+			return $acl->queriedResource->id == $user->id;
 		});
 
 		$this->deny('admin', 'user', 'edit', function($acl) use($user) {
-			return $acl->queriedResource->username == $user->id;
-		});
-
-		$this->allow('user', 'user', 'edit', function($acl) use($user) {
 			return $acl->queriedResource->id == $user->id;
 		});
 	}

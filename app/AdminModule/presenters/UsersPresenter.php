@@ -10,34 +10,41 @@ class UsersPresenter extends BasePresenter
 	*/
 	public $users;
 
-	public function actionEdit($username)
+	public function actionEdit($id)
 	{
-		$user = $this->users->find($username);
+		$user = $this->users->find($id);
+		if(!$user) {
+			throw new Nette\Application\BadRequestException;
+		}
+
 		if(!$this->user->isAllowed($user, 'edit')) {
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
 		$form = $this['userForm'];
-		$form->setDefaults($user);
-		$form['username']->setDisabled();
-		$form['password']->setRequired(FALSE)->setDefaultValue('');
+
+		$defaults = (array) $user;
+		unset($defaults['password']);
+
+		$form->setDefaults($defaults);
 	}
 
-	public function handleDelete($username)
+	public function handleDelete($id)
 	{
-		$user = $this->users->find($username);
+		$user = $this->users->find($id);
 		if(!$this->user->isAllowed($user, 'delete')) {
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
-		$user->delete();
+		$this->users->delete($user->id);
+
 		$this->flashMessage('Uživatel byl smazán.', 'success');
 		$this->redirect('this');
 	}
 
-	public function handleActivate($username, $activate = TRUE)
+	public function handleActivate($id, $activate = TRUE)
 	{
-		$user = $this->users->find($username);
+		$user = $this->users->find($id);
 		if(!$user) {
 			throw new Nette\Application\BadRequestException;
 		}
@@ -47,7 +54,7 @@ class UsersPresenter extends BasePresenter
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
-		$user->update(array(
+		$this->users->update($user, array(
 			'active' => $activate
 		));
 
@@ -61,7 +68,13 @@ class UsersPresenter extends BasePresenter
 			throw new Nette\Application\ForbiddenRequestException;
 		}
 
-		$users = $this->users->findAll();
+		$users = iterator_to_array($this->users->findAll());
+		foreach($users as &$user) {
+			$user = Model\Entity\User::create($user);
+		}
+
+
+
 		$this->template->users = $users;
 	}
 
@@ -69,31 +82,22 @@ class UsersPresenter extends BasePresenter
 	{
 		$form = $this->createForm();
 
-		$form->addText('username', 'username');
+		$form->addText('username', 'Username')
+			->setDisabled();
 
 		$form->addText('email', 'E-mail')
 			->setRequired()
 			->addRule($form::EMAIL);
 
-		$form->addPassword('password', 'Heslo')
-			->setRequired();
-
+		$form->addPassword('password', 'Heslo');
 
 		$form->addPassword('passwordAgain', 'Heslo znovu')
 			->addConditionOn($form['password'], $form::FILLED)
 				->addRule($form::EQUAL, 'Hesla se musí shodovat', $form['password']);
 
-
-		$form->addSelect('role', 'Role')
-			->setRequired()
-			->setPrompt('Vyberte roli')
-			->setItems(array(
-				'user' => 'user',
-				'admin' => 'admin'
-			));
+		$form->addCheckbox('admin', 'Admin');
 
 		$form->addSubmit('submit', 'Upravit');
-
 
 		$form->onSuccess[] = array($this, 'processUserForm');
 
@@ -109,28 +113,23 @@ class UsersPresenter extends BasePresenter
 			unset($values['password']);
 		}
 
-		if($username = $this->getParameter('username')) {
-			$user = $this->users->find($username);
-			if(!$this->user->isAllowed($user, 'edit')) {
-				throw new Nette\Application\ForbiddenRequestException;
-			}
-
-			if(isset($values['password'])) {
-				$values['password'] = $this->users->hash($username, $values['password']);
-			}
-
-			unset($values['username']);
-
-			$user->update($values);
-			$this->flashMessage('Uživatel byl upraven.', 'success');
-			$this->redirect('this');
+		$user = $this->users->find($this->getParameter('id'));
+		if(!$user) {
+			throw new Nette\Application\BadRequestException;
 		}
-		else {
-			$values['password'] = $this->users->hash($values['username'], $values['password']);
-			$this->users->create($values);
 
-			$this->flashMessage('Uživatel byl vytvořen.', 'success');
-			$this->redirect('edit', $values['username']);
+		if(!$this->user->isAllowed($user, 'edit')) {
+			throw new Nette\Application\ForbiddenRequestException;
 		}
+
+		if(isset($values['password'])) {
+			$values['password'] = $this->users->hash($username, $values['password']);
+		}
+
+		unset($values['username']);
+
+		$this->users->update($user, (array) $values);
+		$this->flashMessage('Uživatel byl upraven.', 'success');
+		$this->redirect('this');
 	}
 }
