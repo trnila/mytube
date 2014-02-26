@@ -22,34 +22,6 @@ $(function() {
 	});
 });
 
-// show map on profile
-$(document).ready(function() {
-	$("[data-map-location]").each(function() {
-		var el = $(this);
-		var geocoder = new google.maps.Geocoder();
-		var mapOptions = {
-			zoom: 8,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(this, mapOptions);
-
-		// Geocode address
-		geocoder.geocode({'address': el.attr('data-map-location')}, function(results, status) {
-			if(status == google.maps.GeocoderStatus.OK) {
-				map.setCenter(results[0].geometry.location);
-				var marker = new google.maps.Marker({
-					map: map,
-					position: results[0].geometry.location,
-					icon: el.attr('data-map-marker') ? el.attr('data-map-marker') : null
-				});
-			}
-			else {
-				el.fadeOut();
-			}
-		});
-	});
-});
-
 // Data confirms
 $(document).on('click', '[data-confirm]', function() {
 	return confirm($(this).data('confirm'));
@@ -74,12 +46,31 @@ $(document).on('mouseenter', '.video img', function() {
 	});
 });
 
+// editable elements setup
 $(document).ready(function() {
 	$(".editable").editable({
 		success: function(response) {
 			if(response && response.error) {
 				return response.error;
 			}
+		}
+	});
+});
+
+$(document).ready(function() {
+	if(document.location.hash.length) {
+		var show = $('a[href="' + document.location.hash + '"]').click();
+	}
+
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		var el = $(e.target);
+		console.log(el[0]);
+		console.log(el.closest('ul').find('li:first a')[0]);
+
+		if(!el.is(el.closest('ul').find('li:first a'))) {
+			document.location.hash = $(e.target).attr('href');
+		} else {
+			document.location.hash = '';
 		}
 	});
 });
