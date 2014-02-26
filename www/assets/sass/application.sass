@@ -4,8 +4,6 @@ body
 	background-color: #eeeeee
 
 
-$width: 1170px
-
 #content
 	background-color: white
 	padding: 10px
@@ -13,11 +11,7 @@ $width: 1170px
 	+border-radius(5px)
 
 #video-search
-	margin: 0px
-
 	input
-		margin-top: 4px
-
 		&.loading
 			background:
 				image: image-url("loading.gif")
@@ -25,8 +19,6 @@ $width: 1170px
 				repeat: no-repeat
 
 .ratings-interact
-	width: 154px
-
 	.progress
 		height: 10px
 
@@ -92,16 +84,6 @@ $width: 1170px
 #video
 	position: relative
 
-	#video-delete
-		position: absolute
-		right: 10px
-		top: 10px
-		font-size: 20px
-		text-decoration: none
-
-		&:hover
-			color: red
-
 	#video-detail
 		position: absolute
 		top: 0
@@ -155,7 +137,7 @@ $width: 1170px
 	form
 		textarea
 			height: 60px
-			width: 400px
+			width: 100%
 
 		input[type=submit]
 			display: block
@@ -168,49 +150,5 @@ $width: 1170px
 			a
 				color: #999
 
-.editable form input
-	border: inherit
-	font-size: inherit
-	font-family: inherit
-	font-weight: inherit
-	color: inherit
-	width: inherit
-	padding: inherit
-	height: inherit
-
 #profile-informations
 	margin-bottom: 40px
-
-	#map
-		box-shadow: 0px 0px 5px #333
-		width: 100%
-		height: 270px
-
-table
-	.editable
-		form
-			margin: 0px
-			padding: 0px
-			display: inherit
-			width: 100%
-			height: inherit
-
-			input, select
-				height: inherit
-				margin: inherit
-				width: 100%
-
-#video-upload
-	input[type=text], textarea
-		width: 98%
-
-	textarea
-		height: 50px
-
-	input[type=file]
-		display: none
-
-#admin-users-list
-	tr
-		td
-			width: 20%
