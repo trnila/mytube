@@ -26,60 +26,59 @@ body
 	display: inline-block
 	margin-bottom: 25px
 	+transition(background, 500ms)
-	border: 1px solid #F0F0F0
 	padding: 3px
 	width: 100%
-	height: 100px
+	height: 135px
+	overflow: hidden
+	position: relative
+	color: black
 
-	video
-		width: 150px
-		height: 100%
-		float: left
+	.video-title
+		color: black
+		font-weight: bold
+		display: inline-block
+		width: 80%
+		height: 19px
+		overflow: hidden
+		text-overflow: ellipsis
+		white-space: nowrap
+		font-size: 15px
 
-	.information
-		.title
-			color: black
-			font-weight: bold
-			display: inline-block
-			width: 110px
-			height: 19px
-			overflow: hidden
-			text-overflow: ellipsis
-			white-space: nowrap
-
-		.duration
-			float: right
-			color: #999
-
-		img, .icon-music
+	.video-thumbnail
+		img, .fa-music
 			float: left
 			margin-right: 5px
-			width: 150px
+			width: 100%
 
 			&:not(:first-of-type)
 				display: none
 
-		.icon-music
+		.fa-music
 			display: block
 			font-size: 150px
 			text-align: center
+
+	.video-duration
+		position: absolute
+		top: 0px
+		right: 2px
+		color: #999
+
+	.video-ratings
+		.video-ratings-positive
+			color: #5cb85c
+
+		.video-ratings-negative
+			color: #d2322d
 
 	&.reversed
 		img, .icon-music
 			float: right
 
-	.ratings, .views
-		color: black
-
-	@media screen and (max-width: 1200px)
-		.views, .duration
-			display: none
-
-		height: 130px
-
 	&:hover
 		text-decoration: none
 		background: whiteSmoke
+		color: black
 
 #video
 	position: relative

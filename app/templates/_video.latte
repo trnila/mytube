@@ -1,24 +1,30 @@
 <a n:href="Video:show, $video->id" class="video{ifset $reversed} reversed{/ifset}">
-	<div class="information">
-		<span class="title">{$video->title}</span>
+		<span class="video-duration">{$video->duration|duration}</span>
+		<span class="video-title">{$video->title}</span>
+	<div class="row">
+		<div n:class="col-xs-9" n:capture="$thumbnail">
+			<div class="video-thumbnail">
+				{if $video->isvideo}
+					<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->related('thumbnails') as $thumbnail">
+				{else}
+					<i class="fa fa-music" style='font-size: 90px; display: block'></i>
+				{/if}
+			</div>
+		</div>
 
-		{if $video->isvideo}
-			<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->related('thumbnails') as $thumbnail">
-		{else}
-			<i class="fa fa-music" style='font-size: 90px; display: block'></i>
-		{/if}
+		{if !isset($reversed)}{$thumbnail|noescape}{/if}
 
-		<span class="duration">{$video->duration|duration}</span>
+		<div class="col-xs-3">
+			<div class="video-ratings">
+				<div class="video-ratings-positive"><i class="fa fa-thumbs-up"></i> {$video->related('ratings')->where('positive', true)->count('*')}</div>
+				<div class="video-ratings-negative"><i class="fa fa-thumbs-down"></i> {$video->related('ratings')->where('positive', false)->count('*')}</div>
+			</div>
+
+			<div class="views" n:if="0/*TODO*/">
+				{$video->views} zhlédnutí
+			</div>
+		</div>
+
+		{ifset $reversed}{$thumbnail|noescape}{/ifset}
 	</div>
-
-	<div class="ratings">
-		<i class="fa fa-thumbs-up"></i> {$video->related('ratings')->where('positive', true)->count('*')}
-		<i class="fa fa-thumbs-down"></i> {$video->related('ratings')->where('positive', false)->count('*')}
-	</div>
-
-	<div class="views" n:if="0/*TODO*/">
-		{$video->views} zhlédnutí
-	</div>
-
-	{*<video src="{$basePath}/videos/{$video->path}" controls poster="{? $thumbnail = $video->related('thumbnails')->fetch(); if($thumbnail){ echo $thumbnail->path}"></video>*}
 </a>
