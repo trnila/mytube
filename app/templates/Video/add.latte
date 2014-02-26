@@ -26,7 +26,7 @@
 			<div class="form-group">
 				<label n:name="description">{$form['description']->caption}</label>
 				<div>
-					<textarea n:name="description" class="form-control" placeholder="Popis souboru"></textarea>
+					<textarea n:name="description" class="form-control autogrow" placeholder="Popis souboru"></textarea>
 				</div>
 			</div>
 
@@ -47,7 +47,6 @@
 </div>
 
 <script>
-$("textarea").autoGrow();
 var container = $("#upload");
 var form = container.find('form');
 var submitBtn = container.find('button[name=upload]');

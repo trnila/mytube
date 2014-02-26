@@ -168,21 +168,17 @@ body {
   height: 60px;
   width: 100%;
 }
-/* line 141, ../sass/application.sass */
-#video-comments form input[type=submit] {
-  display: block;
-}
-/* line 145, ../sass/application.sass */
+/* line 142, ../sass/application.sass */
 #video-comments .comment .footer {
   color: #999999;
   font-size: 11px;
 }
-/* line 149, ../sass/application.sass */
+/* line 146, ../sass/application.sass */
 #video-comments .comment .footer a {
   color: #999999;
 }
 
-/* line 152, ../sass/application.sass */
+/* line 149, ../sass/application.sass */
 #profile-informations {
   margin-bottom: 40px;
 }

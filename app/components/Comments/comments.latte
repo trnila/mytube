@@ -7,9 +7,14 @@
 
 	{snippet form}
 	{if $user->isLoggedIn()}
-		<form n:name="form" class="ajax">
-			<textarea n:name="text" placeholder="Text komentáře..." class="form-control"></textarea>
-			<button n:name="add" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> {$form['add']->caption}</button>
+		<form n:name="form" class="ajax form-horizontal">
+			<div class="form-group">
+				<textarea n:name="text" placeholder="Text komentáře..." class="form-control autogrow"></textarea>
+			</div>
+
+			<div class="form-group">
+				<button n:name="add" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> {$form['add']->caption}</button>
+			</div>
 		</form>
 	{/if}
 	{/snippet}
@@ -22,5 +27,12 @@
 			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="fa fa-trash-o"></i></a>{/if}
 		</div>
 	</div>
+
+	{if !$iterations}
+		<div class="alert alert-info">
+			Nikdo zatím nepřidal komentář.
+		</div>
+	{/if}
+
 	{/snippet}
 </div>

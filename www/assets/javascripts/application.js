@@ -57,6 +57,7 @@ $(document).ready(function() {
 	});
 });
 
+// save active tab to location
 $(document).ready(function() {
 	if(document.location.hash.length) {
 		var show = $('a[href="' + document.location.hash + '"]').click();
@@ -73,4 +74,9 @@ $(document).ready(function() {
 			document.location.hash = '';
 		}
 	});
+});
+
+// .autogrow
+$(document).ready(function() {
+	$("textarea.autogrow").autoGrow();
 });
