@@ -22,7 +22,7 @@ services:
 			- pushHandler()
 
 	- FFMpeg\FFProbe::create()
-	- FFMpeg\FFMpeg::create()
+	- FFMpeg\FFMpeg::create([timeout: 86400])
 
 	# Authentications + Authorizations
 	facebook: Facebook({appId: %facebook.appId%, secret: %facebook.secret%})
