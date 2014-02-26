@@ -3,15 +3,19 @@
 {var $canEdit = $user->isAllowed($video, 'edit')}
 <div class="container">
 	<div id="video">
-		<div id="left-suggested-videos" n:if="0">
+		<div id="left-suggested-videos">
 			{for $x = 0; $x < 4; $x++}
-				{include ../_video.latte, video => $videos[$x]}
+				{if isset($videos[$x])}
+					{include ../_video.latte, video => $videos[$x]}
+				{/if}
 			{/for}
 		</div>
 
-		<div id="right-suggested-videos" n:if="0">
+		<div id="right-suggested-videos">
 			{for ; $x < 8; $x++}
-				{include ../_video.latte, video => $videos[$x], reversed => TRUE}
+				{if isset($videos[$x])}
+					{include ../_video.latte, video => $videos[$x], reversed => TRUE}
+				{/if}
 			{/for}
 		</div>
 
@@ -38,10 +42,10 @@
 			<div class="row">
 				<div class="col-sm-10">
 					<ul class="nav nav-tabs">
-		  				<li class="active"><a href="#details" data-toggle="tab">Detaily</a></li>
-		  				<li><a href="#playlists" data-toggle="tab" n:if="$user->isLoggedIn()">Playlist</a></li>
-		  				<li><a href="#share" data-toggle="tab">Sdílet</a></li>
-		  				<li><a href="#comments" data-toggle="tab">Komentáře</a></li>
+		  				<li class="active"><a href="#details" data-toggle="tab"><i class="fa fa-info"></i> Detaily</a></li>
+		  				<li><a href="#playlists" data-toggle="tab" n:if="$user->isLoggedIn()"><i class="fa fa-list"></i> Playlist</a></li>
+		  				<li><a href="#share" data-toggle="tab"><i class="fa fa-share"></i> Sdílet</a></li>
+		  				<li><a href="#comments" data-toggle="tab"><i class="fa fa-comments"></i> Komentáře</a></li>
 					</ul>
 				</div>
 
@@ -52,7 +56,7 @@
 
 			<div class="tab-content well">
 				<div class="tab-pane active" id="details">
-					<h2>Detaily</h2>
+					<h2><i class="fa fa-info"></i> Detaily</h2>
 					<dl class="dl-horizontal">
 						<dt>Nahrál:</dt>
 						<dd><a n:href="Profile:show, $video->user_id">{$video->user->username}</a></dd>
@@ -79,7 +83,7 @@
 					{control playlists}
 				</div>
 				<div class="tab-pane" id="share">
-					<h2>Sdílet</h2>
+					<h2><i class="fa fa-share"></i> Sdílet</h2>
 					<input readonly class="form-control" value="{link //this}">
 					<script>
 						$("#share input").click(function() {

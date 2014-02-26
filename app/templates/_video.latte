@@ -2,8 +2,11 @@
 	<div class="information">
 		<span class="title">{$video->title}</span>
 
-
+		{if $video->isvideo}
 			<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->related('thumbnails') as $thumbnail">
+		{else}
+			<i class="fa fa-music" style='font-size: 90px; display: block'></i>
+		{/if}
 
 		<span class="duration">{$video->duration|duration}</span>
 	</div>

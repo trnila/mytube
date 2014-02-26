@@ -1,5 +1,5 @@
 <div id="video-comments">
-	<h2>Komentáře</h2>
+	<h2><i class="fa fa-comments"></i> Komentáře</h2>
 	<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
 		{$flash->message}
 		<a class="close" data-dismiss="alert" href="#">&times;</a>
@@ -7,10 +7,10 @@
 
 	{snippet form}
 	{if $user->isLoggedIn()}
-		{form form class => ajax}
+		<form n:name="form" class="ajax">
 			<textarea n:name="text" placeholder="Text komentáře..." class="form-control"></textarea>
-			<input n:name="add" class="btn btn-primary">
-		{/form}
+			<button n:name="add" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> {$form['add']->caption}</button>
+		</form>
 	{/if}
 	{/snippet}
 
