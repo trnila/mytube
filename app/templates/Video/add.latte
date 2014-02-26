@@ -73,6 +73,11 @@ var uploader = new plupload.Uploader({
 uploader.init();
 uploader.bind('FilesAdded', function(uploader, files) {
 	submitBtn.removeAttr('disabled');
+
+	var filename = files[0].name.split('.');
+	filename.pop();
+
+	form.find('[name=title]').val(filename.join('.'));
 });
 
 uploader.bind('BeforeUpload', function(uploader, file) {
@@ -88,6 +93,8 @@ uploader.bind('FileUploaded', function(up, file, info) {
 	var json = jQuery.parseJSON(info.response);
 	if(json && json['redirect']) {
 		document.location.href = json['redirect'];
+	} else {
+		alert("An error occured, try it again please");
 	}
 });
 
