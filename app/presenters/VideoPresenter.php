@@ -10,6 +10,12 @@ class VideoPresenter extends BasePresenter
 	public $videos;
 
 	/**
+	 * @var Model\Playlists
+	 * @inject
+	*/
+	public $playlists;
+
+	/**
 	 * @var Component\Playlists\IFactory
 	 * @inject
 	 */
@@ -71,27 +77,18 @@ class VideoPresenter extends BasePresenter
 		$this->redirectHome();
 	}
 
-	public function actionShow($id)
+	public function actionShow($id, $playlist_id = NULL)
 	{
 		$video = $this->getVideo($id);
 		$this->template->video = $video;
 
-		/* TODO
-		if($this->user->isLoggedIn()) {
-			// increment views count only if last video is not same as actual
-			$lastVideo = $this->video->related('history')->order('created DESC')->fetch();
-			if(!$lastVideo || $lastVideo->video_id != $id) {
-				$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
-				$this->video->related('history')->insert(array(
-					'created' => new DateTime,
-					'user_id' => $this->user->id
-				));
-			}
+		// playlist
+		if($playlist_id) {
+			$playlist = $this->getPlaylist($playlist_id);
+
+			$this->template->playlist = $this->playlists->getVideos($playlist);
 		}
-		else {
-			$this->video->update(array('views' => new Nette\Database\SqlLiteral('views + 1')));
-		}
-		*/
+
 
 		$this['ratings']->setVideo($video);
 		$this['comments']->setVideo($video);
@@ -102,8 +99,19 @@ class VideoPresenter extends BasePresenter
 		foreach($videos as $video) {
 			$this->template->videos[] = $video;
 		}
+	}
+
+	public function actionPlaylist($playlist_id)
+	{
+		$playlist = $this->getPlaylist($playlist_id);
+		$nextVideo = $this->playlists->getNextVideo($playlist);
+
+		if($nextVideo) {
+			$this->redirect('show', $nextVideo->id, $playlist->id);
+		}
 
 
+		exit;
 	}
 
 	protected function createComponentPlaylists()
@@ -185,5 +193,20 @@ class VideoPresenter extends BasePresenter
 		}
 
 		return $video;
+	}
+
+	public function getPlaylist($id)
+	{
+		$playlist = $this->playlists->find($id);
+
+		if(!$playlist) {
+			throw new Nette\Application\BadRequestException;
+		}
+
+		if(!$this->user->isAllowed($playlist, 'show')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
+		return $playlist;
 	}
 }

@@ -65,8 +65,6 @@ $(document).ready(function() {
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		var el = $(e.target);
-		console.log(el[0]);
-		console.log(el.closest('ul').find('li:first a')[0]);
 
 		if(!el.is(el.closest('ul').find('li:first a'))) {
 			document.location.hash = $(e.target).attr('href');

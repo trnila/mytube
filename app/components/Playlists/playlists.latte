@@ -1,15 +1,17 @@
 <div id="playlists">
-	<h2><i class="fa fa-list"></i> Playlist</h2>
+	<h2><i class="fa fa-list"></i> Přidat do playlistu</h2>
 	<div id="playlists-list">
 		<ul class="list-group" n:snippet="list">
 			<li class="list-group-item" n:foreach="$playlists as $playlist">
 				<a n:href="add, $playlist->playlist->id, !$playlist->contained" class="ajax">
 					<i n:class="fa, $playlist->contained ? fa-check-square-o : fa-square-o"></i>
 					{$playlist->playlist->name}
+				</a>
 
-					<a n:href="delete $playlist->playlist->id" class="btn btn-xs btn-danger pull-right ajax" data-confirm="Opravdu smazat playlist {$playlist->playlist->name}?">
-						<i class="fa fa-trash-o"></i>
-					</a>
+				<a href="{plink Video:playlist, $playlist->playlist->id}"><i class="fa fa-play"></i></a>
+
+				<a n:href="delete $playlist->playlist->id" class="btn btn-xs btn-danger pull-right ajax" data-confirm="Opravdu smazat playlist {$playlist->playlist->name}?">
+					<i class="fa fa-trash-o"></i>
 				</a>
 			</li>
 		</ul>

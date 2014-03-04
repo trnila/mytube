@@ -89,5 +89,9 @@ class Authorizator extends Nette\Security\Permission
 		$this->allow($this::ALL, 'playlist', array('manage', 'delete'), function($acl) use($user) {
 			return $acl->queriedResource->user_id == $user->id;
 		});
+
+		$this->allow($this::ALL, 'playlist', 'show', function($acl) use ($user) {
+			return $acl->queriedResource->private === FALSE || $acl->queriedResource->user_id = $user->id;
+		});
 	}
 }

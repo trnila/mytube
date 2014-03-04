@@ -76,10 +76,33 @@
 							</ul>
 						</dd>
 					</dl>
-
-
 				</div>
-				<div class="tab-pane" id="playlists" n:if="$user->isLoggedIn()">
+				<div class="tab-pane" id="playlists" n:if="$user->isLoggedIn() || isset($playlist)">
+					{ifset $playlist}
+						<h2><i class="fa fa-play"></i> Přehrávaný playlist</h2>
+						<ul n:inner-foreach="$playlist as $vid" class="list-unstyled" id="playing-playlist">
+							<li n:class="$vid->id == $video->id ? active">
+								<a n:href="this, $vid->id">
+									<i class="fa fa-play" n:tag-if="$vid->id == $video->id"></i>
+									{$vid->title}
+								</a>
+							</li>
+						</ul>
+
+						<script>
+							$("video").on('ended', function() {
+								var next = $("ul#playing-playlist li.active").next('li').find('a');
+								if(next.length) {
+									document.location.href = next.attr('href');
+								}
+							});
+
+							if(document.location.hash == '') {
+								$("a[href=#playlists]").click();
+							}
+						</script>
+					{/ifset}
+
 					{control playlists}
 				</div>
 				<div class="tab-pane" id="share">

@@ -41,6 +41,16 @@ class Playlists extends Repository
 			->delete();
 	}
 
+	public function getNextVideo(Entity\Playlist $playlist)
+	{
+		$result = $this->getTable('playlist_videos')
+			->where('playlist_id', $playlist->id)
+			->order('added')
+			->fetch();
+
+		return $result ? Entity\Video::create($result->video) : NULL;
+	}
+
 	public function getAll($user_id, $video_id)
 	{
 		$rows = $this->getTable()
@@ -56,6 +66,18 @@ class Playlists extends Repository
 		}
 
 		return $playlists;
+	}
+
+	public function getVideos($playlist)
+	{
+		$rows = $this->getTable('playlist_videos')
+			->where('playlist_id', $playlist->id);
+
+		$videos = array();
+		foreach($rows as $row) {
+			$videos[] = Entity\Video::create($row->video);
+		}
+		return $videos;
 	}
 
 }
