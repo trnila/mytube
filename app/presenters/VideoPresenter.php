@@ -94,11 +94,7 @@ class VideoPresenter extends BasePresenter
 		$this['comments']->setVideo($video);
 		$this['playlists']->setVideo($video);
 
-		$videos = $this->videos->findAll()->limit(8)->order('RAND()');
-		$this->template->videos = [];
-		foreach($videos as $video) {
-			$this->template->videos[] = $video;
-		}
+		$this->template->videos = $this->videos->getRelated($video->id, 8);
 	}
 
 	public function actionPlaylist($playlist_id)

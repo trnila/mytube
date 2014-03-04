@@ -141,6 +141,24 @@ class Videos extends Repository
 
 	public function getLastVideos($limit = 10)
 	{
-		return $this->findAll()->order('created DESC');
+		$videos = array();
+		foreach($this->findAll()->order('created DESC') as $video) {
+			$videos[] = Entity\Video::create($video);
+		}
+		return $videos;
+	}
+
+	public function getRelated($video_id, $items = 8)
+	{
+		$rows = $this->findAll()
+			->where('id != ?', $video_id)
+			->order('RAND()')
+			->limit($items);
+
+		$videos = array();
+		foreach($rows as $row) {
+			$videos[] = Entity\Video::create($row);
+		}
+		return $videos;
 	}
 }

@@ -5,7 +5,7 @@
 		<div n:class="col-xs-9" n:capture="$thumbnail">
 			<div class="video-thumbnail">
 				{if $video->isvideo}
-					<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->related('thumbnails') as $thumbnail" alt="{$video->title}">
+					<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->thumbnails as $thumbnail" alt="{$video->title}">
 				{else}
 					<i class="fa fa-music" style='font-size: 90px; display: block'></i>
 				{/if}
@@ -16,8 +16,8 @@
 
 		<div class="col-xs-3">
 			<div class="video-ratings">
-				<div class="video-ratings-positive"><i class="fa fa-thumbs-up"></i> {$video->related('ratings')->where('positive', true)->count('*')}</div>
-				<div class="video-ratings-negative"><i class="fa fa-thumbs-down"></i> {$video->related('ratings')->where('positive', false)->count('*')}</div>
+				<div class="video-ratings-positive"><i class="fa fa-thumbs-up"></i> {$video->overallRating->positive}</div>
+				<div class="video-ratings-negative"><i class="fa fa-thumbs-down"></i> {$video->overallRating->negative}</div>
 			</div>
 
 			<div class="views" n:if="0/*TODO*/">
