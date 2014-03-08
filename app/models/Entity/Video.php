@@ -97,6 +97,11 @@ class Video extends Nette\Object implements Nette\Security\IResource
 		return $entity;
 	}
 
+	public function isConverted()
+	{
+		return $this->jobid === NULL;
+	}
+
 	public function getResourceId()
 	{
 		return 'video';

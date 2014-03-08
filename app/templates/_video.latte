@@ -4,10 +4,12 @@
 	<div class="row">
 		<div n:class="col-xs-9" n:capture="$thumbnail">
 			<div class="video-thumbnail">
-				{if !empty($video->thumbnails)}
+				{if !$video->isConverted()}
+					<i class="fa fa-spinner fa-spin"></i>
+				{elseif !empty($video->thumbnails)}
 					<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->thumbnails as $thumbnail" alt="{$video->title}">
 				{else}
-					<i class="fa fa-music" style='font-size: 90px; display: block'></i>
+					<i class="fa fa-music"></i>
 				{/if}
 			</div>
 		</div>

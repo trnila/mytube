@@ -63,7 +63,11 @@ class Videos extends Repository
 				// send video to queue
 				$client = new \GearmanClient;
 				$client->addServer();
-				$client->doBackground("processVideo", $video->id);
+				$jobId = $client->doBackground("processVideo", $video->id);
+
+				$this->update($row->id, array(
+					'jobid' => $jobId
+				));
 
 				return $row;
 			}

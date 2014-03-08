@@ -55,19 +55,19 @@ body {
   font-size: 15px;
 }
 /* line 48, ../sass/application.sass */
-.video .video-thumbnail img, .video .video-thumbnail .fa-music {
+.video .video-thumbnail img {
   float: left;
   margin-right: 5px;
   width: 100%;
 }
 /* line 53, ../sass/application.sass */
-.video .video-thumbnail img:not(:first-of-type), .video .video-thumbnail .fa-music:not(:first-of-type) {
+.video .video-thumbnail img:not(:first-of-type) {
   display: none;
 }
 /* line 56, ../sass/application.sass */
-.video .video-thumbnail .fa-music {
+.video .video-thumbnail .fa {
   display: block;
-  font-size: 150px;
+  font-size: 90px;
   text-align: center;
 }
 /* line 61, ../sass/application.sass */

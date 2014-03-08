@@ -30,12 +30,34 @@
 				<span n:tag-if="$canEdit" class="editable" data-type="text" data-pk="{$video->id}" data-url="{link edit!}" data-name="title">{$video->title}</span>
 			</h1>
 
-			<div class="container">
-				{if $video->isvideo}
-					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls autoplay></video>
+			<div class="container" n:snippet="video">
+				{if $video->isConverted()}
+					{if $video->isvideo}
+						<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls autoplay></video>
+					{else}
+						<canvas></canvas>
+						<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls></audio>
+					{/if}
 				{else}
-					<canvas></canvas>
-					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls></audio>
+					<p class="alert alert-info">
+						Toto video stále není připravene k přehrání, prosím počkejte.<br>
+						{ifset $queueStatus['percentage']}
+							{$queueStatus['percentage']}%
+						{/ifset}
+
+						{ifset $queueStatus['message']}
+							{$queueStatus['message']}
+						{/ifset}
+
+						<script>
+							setTimeout(function() {
+								$.nette.ajax({link getStatus! $video->id});
+							}, {? echo !isset($queueStatus) ? 0 : 3000});
+						</script>
+					</p>
+					<div style="text-align: center">
+						<i class="fa fa-spinner fa-spin" style="font-size: 130px"></i>
+					</div>
 				{/if}
 			</div>
 

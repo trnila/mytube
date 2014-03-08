@@ -106,8 +106,38 @@ class VideoPresenter extends BasePresenter
 			$this->redirect('show', $nextVideo->id, $playlist->id);
 		}
 
+		$this->terminate();
+	}
 
-		exit;
+	public function handleGetStatus($id)
+	{
+		$video = $this->getVideo($id);
+
+		$client = new \GearmanClient;
+		$client->addServer();
+
+		$queueStatus = array();
+
+		$status = $client->jobStatus($video->jobid);
+		if($status && $status[0] && $status[1]) {
+			switch($status[2]) {
+				case 1:
+					$queueStatus['message'] = 'Získávání metadat souboru';
+					break;
+
+				case 2:
+					$queueStatus['message'] = 'Generování náhledu';
+					break;
+
+				case 3:
+					$queueStatus['percentage'] = $status[3];
+					break;
+			}
+		}
+
+		$this->template->queueStatus = $queueStatus;
+
+		$this->invalidateControl('video');
 	}
 
 	protected function createComponentPlaylists()

@@ -71,13 +71,14 @@ class ProcessVideo extends Job
 		return $thumbnails;
 	}
 
-	protected function convertToWebm($video)
+	protected function convertToWebm($video, $job)
 	{
 		$ffmpeg = $this->ffmpeg->open($video->filePath);
 
 		$format = new FFMpeg\Format\Video\WebM();
-		$format->on('progress', function ($video, $format, $percentage) {
-			echo "$percentage % transcoded";
+		$format->on('progress', function ($video, $format, $percentage) use($job) {
+			$job->sendStatus(3, $percentage);
+			echo "$percentage%\r";
 		});
 
 		$ffmpeg->save($format, __DIR__ . "/../../www/videos/{$video->id}.webm");
@@ -100,16 +101,18 @@ class ProcessVideo extends Job
 		//$file = '/home/daniel/Downloads/LittleLight - Ring The Bells (Christmas Special).mp3';
 
 		// get meta data from video
+		$job->sendStatus(1, 0);
 		$this->extractMetadata($video);
 
 		$this->logger->info('Video: ' . ($video->isVideo ? 'true' : 'false'));
 		$this->logger->info("Duration: {$video->duration} seconds");
 
 		// generate thumbnails
+		$job->sendStatus(2, 0);
 		$video->thumbnails = $this->createthumbnails($video);
 
 		// convert to webm format
-		$this->convertToWebm($video);
+		$this->convertToWebm($video, $job);
 
 		$this->logger->info('Adding video to database');
 
