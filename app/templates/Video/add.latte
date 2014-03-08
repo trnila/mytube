@@ -103,6 +103,15 @@ uploader.bind('FileUploaded', function(up, file, info) {
 	}
 });
 
+uploader.bind('Error', function(up, error) {
+	var additionalMsg = '';
+	if(error && error['message']) {
+		additionalMsg = ': ' + error['message'];
+	}
+
+	alert("An error occured, please try again later" + additionalMsg);
+});
+
 uploader.bind('UploadProgress', function(up, file) {
 	container.find('.progress').show().find('.progress-bar').css('width', file.percent + '%');
 });
