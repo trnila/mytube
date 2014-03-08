@@ -38,6 +38,7 @@
 			</div>
 
 			<span class="btn btn-default" id="upload-choose-file"><i class="fa fa-level-up"></i> Vybrat video nebo hudbu...</span>
+			<strong id="upload-filename"></strong>
 
 			<div class="pull-right">
 				<button n:name="upload" class="btn btn-primary" disabled><i class="fa fa-upload"></i> Nahrát</button>
@@ -73,10 +74,15 @@ uploader.init();
 uploader.bind('FilesAdded', function(uploader, files) {
 	submitBtn.removeAttr('disabled');
 
-	var filename = files[0].name.split('.');
-	filename.pop();
+	// fill in file name if title is not provided
+	if(!form.find('[name=title]').val().length) {
+		var filename = files[0].name.split('.');
+		filename.pop();
 
-	form.find('[name=title]').val(filename.join('.'));
+		form.find('[name=title]').val(filename.join('.'));
+	}
+
+	$("#upload-filename").text(files[0].name);
 });
 
 uploader.bind('BeforeUpload', function(uploader, file) {
