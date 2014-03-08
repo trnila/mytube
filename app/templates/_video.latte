@@ -4,7 +4,7 @@
 	<div class="row">
 		<div n:class="col-xs-9" n:capture="$thumbnail">
 			<div class="video-thumbnail">
-				{if $video->isvideo}
+				{if !empty($video->thumbnails)}
 					<img src="{$basePath}/thumbnails/{$video->id}-{$thumbnail->number}.png" n:foreach="$video->thumbnails as $thumbnail" alt="{$video->title}">
 				{else}
 					<i class="fa fa-music" style='font-size: 90px; display: block'></i>

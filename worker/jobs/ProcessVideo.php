@@ -2,6 +2,7 @@
 namespace Worker\Job;
 use FFMpeg;
 use Nette;
+use Exception;
 
 class ProcessVideo extends Job
 {
@@ -42,33 +43,37 @@ class ProcessVideo extends Job
 			for($shot = 1; $shot <= $this->thumbnailsNum; $shot++) {
 				$time = $stepTime * $shot;
 
+				$temporaryName = $this->generateTemporaryFileName();
+
 				$ffmpeg->frame(FFMpeg\Coordinate\TimeCode::fromSeconds($time))
-					->save(__DIR__ . '/../../www/thumbnails/' . $video->id . "-" . $shot . ".png", TRUE);
+					->save($temporaryName, TRUE);
 
-				$thumbnails[] = array(
-					'num' => $shot,
-					'time' => $time
-				);
-		}
+				if($this->prepareThumbnail($temporaryName, __DIR__ . '/../../www/thumbnails/' . $video->id . "-" . $shot . ".png")) {
+					$thumbnails[] = array(
+						'num' => $shot,
+						'time' => $time
+					);
+				}
+			}
 		} else { // if not try to find image in audio
-			$thumb = __DIR__ . '/../../www/thumbnails/' . $video->id . '-1.png';
+			$temporaryName = $this->generateTemporaryFileName('.png');
 
-			`ffmpeg -v quiet -y -i {$video->filePath} -an -vcodec copy {$thumb}`;
+			`ffmpeg -v quiet -y -i {$video->filePath} -an -vcodec png {$temporaryName}`;
 
-			if(file_exists($thumb)) {
+			if($this->prepareThumbnail($temporaryName, __DIR__ . '/../../www/thumbnails/' . $video->id . '-1.png')) {
 				$thumbnails[] = array(
 					'num' => 1,
 					'time' => NULL
 				);
 			}
 		}
+
 		return $thumbnails;
 	}
 
 	protected function convertToWebm($video)
 	{
 		$ffmpeg = $this->ffmpeg->open($video->filePath);
-
 
 		$format = new FFMpeg\Format\Video\WebM();
 		$format->on('progress', function ($video, $format, $percentage) {
@@ -102,6 +107,8 @@ class ProcessVideo extends Job
 
 		// generate thumbnails
 		$video->thumbnails = $this->createthumbnails($video);
+
+		// convert to webm format
 		$this->convertToWebm($video);
 
 		$this->logger->info('Adding video to database');
@@ -125,6 +132,11 @@ class ProcessVideo extends Job
 		return 'tmp/';
 	}
 
+	protected function generateTemporaryFileName($extension = '')
+	{
+		return $this->getTempDirectory() . '/' . Nette\Utils\Strings::random() . ($extension ? '.' . $extension : '');
+	}
+
 	protected function extractMetadata($video)
 	{
 		$meta = $this->ffprobe->streams($video->filePath);
@@ -132,7 +144,7 @@ class ProcessVideo extends Job
 		$video->isVideo = FALSE;
 		// we need to find at least one stream that is not a png image
 		foreach($meta->videos() as $stream) {
-			if($stream->has('codec_name') && $stream->get('codec_name') !== 'png') {
+			if($stream->has('codec_name') && !in_array($stream->get('codec_name'), array('png', 'mjpeg'))) {
 				$video->isVideo = TRUE;
 				break;
 			}
@@ -166,6 +178,28 @@ class ProcessVideo extends Job
 			$duration += ((float) $result[3]);
 			return $duration;
 		}
+	}
+
+	protected function prepareThumbnail($temporaryName, $destination)
+	{
+		try {
+			if(!file_exists($temporaryName)) {
+				throw new Exception("Thumbnail '$temporaryName' does not exists!");
+			}
+
+			Nette\Image::fromFile($temporaryName)
+				->resize(185, 104)
+				->save($destination);
+
+			@unlink($temporaryName);
+
+			return TRUE;
+		} catch(Exception $e) {
+			@unlink($temporaryName);
+			$this->logger->error($e->getMessage());
+		}
+
+		return FALSE;
 	}
 }
 

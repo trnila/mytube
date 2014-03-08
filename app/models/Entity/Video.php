@@ -97,12 +97,6 @@ class Video extends Nette\Object implements Nette\Security\IResource
 		return $entity;
 	}
 
-	public function getCoverThumbnail()
-	{
-		$thumbnail = $this->related('video_thumbnails')->fetch();
-		return $thumbnail ? $thumbnail : NULL;
-	}
-
 	public function getResourceId()
 	{
 		return 'video';
