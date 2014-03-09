@@ -46,8 +46,6 @@ class Users extends Repository
 	 */
 	public function register(array $data)
 	{
-		$user = array();
-
 		// Validate
 		if(!Validators::isEmail($data['email'])) {
 			throw new ModelException('This is not email.');
@@ -56,7 +54,21 @@ class Users extends Repository
 		$data['password'] = $this->hash($data['username'], $data['password']);
 
 		try {
-			return $this->create($data);
+			$row = array();
+			foreach(array('username', 'firstname', 'lastname', 'email', 'password') as $item) {
+				$row[$item] = isset($data[$item]) ? $data[$item] : NULL;
+			}
+
+			$user = $this->create($row);
+
+			if(isset($data['fbId'])) {
+				$this->addIdentity($user->id, array(
+					'type' => 'facebook',
+					'identity' => $data['fbId']
+				));
+			}
+
+			return $user;
 		}
 		catch(DuplicateEntryException $e) {
 			$found = Strings::match($e->getMessage(), "#for key '([^']+)'#");
@@ -88,7 +100,7 @@ class Users extends Repository
 
 	public function addIdentity($user_id, $data)
 	{
-		$this->getTable('identities')
+		$this->getTable('users_identities')
 			->insert(array('user_id' => $user_id) + $data);
 	}
 

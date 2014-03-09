@@ -44,10 +44,10 @@ class SignPresenter extends BasePresenter
 			$form->addAdditionalData('fbId', $facebook['id']);
 
 			if(isset($facebook['username'])) {
-				$form['username']->setDefaultValue($facebook['username']);
+				$form['form']['username']->setDefaultValue($facebook['username']);
 			}
 
-			$form['email']->setValue($facebook['email'])
+			$form['form']['email']->setValue($facebook['email'])
 				->getControlPrototype()
 					->readonly(true);
 		}
@@ -55,7 +55,7 @@ class SignPresenter extends BasePresenter
 			$form = $this->getComponent('registration');
 			$form->addAdditionalData('identity', $openid['identity']);
 
-			$form['email']->setValue($openid['contact/email'])
+			$form['form']['email']->setValue($openid['contact/email'])
 				->getControlPrototype()
 					->readonly(true);
 		}

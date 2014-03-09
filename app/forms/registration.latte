@@ -1,0 +1,25 @@
+{include ../templates/components/form.latte, form => form}
+
+<script>
+	var form = $("#frm-registration-form");
+	var controls = {
+		email: form.find('[name=email]'),
+		username: form.find('[name=username]'),
+		firstname: form.find('[name=firstname]'),
+		lastname: form.find('[name=lastname]')
+	};
+
+	controls.email.change(function() {
+		$.post({link gravatar}, { email: controls.email.val()}, function(data) {
+			$.each(data, function(name, value) {
+				if(controls[name] && typeof(controls[name].val()) != 'undefined' && !controls[name].val().length) {
+					controls[name].val(value);
+				}
+			});
+		});
+	});
+
+	if(controls.email.is(':read-only')) {
+		controls.email.change();
+	}
+</script>
