@@ -16,9 +16,9 @@ class Password extends Authenticator
 
 	public function authenticate(array $credentials)
 	{
-		list($username, $password) = $credentials;
+		list($email, $password) = $credentials;
 
-		$user = $this->users->findBy(array('username' => $username))->fetch();
+		$user = $this->users->findBy(array('email' => $email))->fetch();
 		if(!$user || !Nette\Security\Passwords::verify($password, $user->password)) {
 			throw new AuthenticationException("Špatné uživatelské jméno nebo heslo.");
 		} elseif(Nette\Security\Passwords::needsRehash($user->password)) {
