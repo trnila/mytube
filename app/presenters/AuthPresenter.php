@@ -100,10 +100,10 @@ class SignPresenter extends BasePresenter
 				}
 				catch(\Model\Security\Authenticator\NeedLoginException $e) {
 					$this->flashMessage('Účet s tímto emailem už existuje. Pro spárování účtu se přihlašte.');
-					$this->redirect('in', array(
-						'identity' => $openid->identity,
-						'email' => $openid->getAttributes()['contact/email']
-					));
+
+					$this->getPersistentLogin()->{$openid->getAttributes()['contact/email']} = $openid->identity;
+
+					$this->redirect('in');
 				}
 				catch(\Model\Security\Authenticator\RegisterException $e) {
 					$storage = $this->getPersistentRegistration();
@@ -133,6 +133,12 @@ class SignPresenter extends BasePresenter
 	protected function getPersistentRegistration()
 	{
 		return $this->getSession('Registration')
+			->setExpiration('+15 minutes');
+	}
+
+	public function getPersistentLogin()
+	{
+		return $this->getSession('Login')
 			->setExpiration('+15 minutes');
 	}
 }
