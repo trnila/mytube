@@ -376,12 +376,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/nette.git",
-                "reference": "e72283993cedff6307ac26ce3b559c5d9cb4d5bd"
+                "reference": "de48acb9e4caf106c158215f314146b56ebbdefe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/nette/zipball/e72283993cedff6307ac26ce3b559c5d9cb4d5bd",
-                "reference": "e72283993cedff6307ac26ce3b559c5d9cb4d5bd",
+                "url": "https://api.github.com/repos/nette/nette/zipball/de48acb9e4caf106c158215f314146b56ebbdefe",
+                "reference": "de48acb9e4caf106c158215f314146b56ebbdefe",
                 "shasum": ""
             },
             "require": {
@@ -439,7 +439,7 @@
                 "mvc",
                 "templating"
             ],
-            "time": "2014-01-23 18:09:45"
+            "time": "2014-03-08 22:25:52"
         },
         {
             "name": "neutron/temporary-filesystem",

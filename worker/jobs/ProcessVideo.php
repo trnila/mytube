@@ -3,6 +3,7 @@ namespace Worker\Job;
 use FFMpeg;
 use Nette;
 use Exception;
+use Model;
 
 class ProcessVideo extends Job
 {
@@ -19,7 +20,7 @@ class ProcessVideo extends Job
 	public $ffprobe;
 
 	/**
-	 * @var Model\Videos
+	 * @var \Model\Videos
 	 * @inject
 	*/
 	public $videos;
