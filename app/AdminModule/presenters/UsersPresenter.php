@@ -123,7 +123,7 @@ class UsersPresenter extends BasePresenter
 		}
 
 		if(isset($values['password'])) {
-			$values['password'] = $this->users->hash($username, $values['password']);
+			$values['password'] = Nette\Security\Passwords::hash($values['password']);
 		}
 
 		unset($values['username']);

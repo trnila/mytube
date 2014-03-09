@@ -17,11 +17,14 @@ class Password extends Authenticator
 	public function authenticate(array $credentials)
 	{
 		list($username, $password) = $credentials;
-		$password = $this->users->hash($username, $password);
 
 		$user = $this->users->findBy(array('username' => $username))->fetch();
-		if(!$user || $user->password != $password) {
+		if(!$user || !Nette\Security\Passwords::verify($password, $user->password)) {
 			throw new AuthenticationException("Špatné uživatelské jméno nebo heslo.");
+		} elseif(Nette\Security\Passwords::needsRehash($user->password)) {
+			$this->users->update($user->id, array(
+				'password' => Nette\Utils\Passwords::hash($password)
+			));
 		}
 
 		return $this->getIdentity($user);

@@ -2,13 +2,11 @@
 namespace Model;
 use Nette\Utils\Validators;
 use Nette\Utils\Strings;
+use Nette;
 
 class Users extends Repository
 {
 	protected $tableName = 'users';
-
-	/** static password hashing salt */
-	const PASSWORD_SALT = 'ho5Dei3aLi';
 
 
 	/**
@@ -51,7 +49,7 @@ class Users extends Repository
 			throw new ModelException('This is not email.');
 		}
 
-		$data['password'] = $this->hash($data['username'], $data['password']);
+		$data['password'] = Nette\Security\Passwords::hash($data['password']);
 
 		try {
 			$row = array();
@@ -86,18 +84,6 @@ class Users extends Repository
 		}
 	}
 
-
-	/**
-	 * Hash a password
-	 * @param string $username
-	 * @param string $password
-	 * @return string
-	 */
-	public function hash($username, $password)
-	{
-		return hash('sha512', md5(self::PASSWORD_SALT . $username) . sha1($password . self::PASSWORD_SALT));
-	}
-
 	public function addIdentity($user_id, $data)
 	{
 		$this->getTable('users_identities')
@@ -106,15 +92,14 @@ class Users extends Repository
 
 	public function changePassword($username, $oldPassword, $newPassword)
 	{
-		$oldPassword = $this->hash($username, $oldPassword);
-		$newPassword = $this->hash($username, $newPassword);
-
 		$user = $this->find($username);
-		if($user->password != $oldPassword) {
+		if(!Nette\Security\Passwords::verify($oldPassword, $user->password)) {
 			throw new Exception("Aktuální heslo není správné.");
 		}
 
-		$user->update(array('password' => $newPassword));
+		$this->update($user, array(
+			'password' => Nette\Security\Passwords::hash($newPassword)
+		));
 	}
 
 	public function changeDetails($username, $data) {
