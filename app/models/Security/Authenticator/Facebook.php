@@ -30,18 +30,11 @@ class Facebook extends Authenticator
 			$user = $this->users
 						->find(array('email' => $credentials['email']));
 
-			// If user by email exists assign fbId if not already exists
 			if($user) {
-				if(empty($user->fbId)) {
-					$user->related('users_identities')
-						->insert(array(
-							'type' => 'facebook',
-							'identity' => $credentials['id']
-						));
-				}
-				else {
-					throw new Exception("Already exists for another facebook application id");
-				}
+				$this->users->addIdentity($user->id, array(
+					'type' => 'facebook',
+					'identity' => $credentials['id']
+				));
 			}
 			else {
 				if($this->autoRegister) {
