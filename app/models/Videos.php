@@ -165,4 +165,24 @@ class Videos extends Repository
 		}
 		return $videos;
 	}
+
+	public function search($query)
+	{
+		$result = $this->getTable('videoSearch')
+			->where("MATCH(title, description, tags) AGAINST (? IN BOOLEAN MODE)", $query)
+			->order("5 * MATCH(title) AGAINST (?) + MATCH(tags) AGAINST (?) + 2 * MATCH(description) AGAINST (?) DESC", $query, $query, $query);
+
+		$ids = array();
+		foreach($result as $row) {
+			$ids[] = $row->id;
+		}
+
+
+		$result = array();
+		foreach($this->findAll()->where('id', $ids) as $row) {
+			$result[] = Entity\Video::create($row);
+		}
+
+		return $result;
+	}
 }
