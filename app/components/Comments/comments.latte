@@ -5,26 +5,37 @@
 		<a class="close" data-dismiss="alert" href="#">&times;</a>
 	</div>
 
-	{snippet form}
-	{if $user->isLoggedIn()}
-		<form n:name="form" class="ajax form-horizontal">
-			<div class="form-group">
-				<textarea n:name="text" placeholder="Text komentáře..." class="form-control autogrow"></textarea>
+	{snippet comments}
+	<div class="comment media" n:snippet="form" n:if="$user->isLoggedIn()">
+		<form n:name="form" class="ajax">
+			<div class="pull-left">
+				{if $user->identity->avatar}
+					<img src="{$basePath}/{Model\Entity\User::formatAvatarLocation($user->id, $user->identity->avatar)}" width="45px">
+				{else}
+					<i class="fa fa-user" style="font-size: 35px"></i>
+				{/if}
 			</div>
-
-			<div class="form-group">
+			<div class="media-body" style="padding-left: 5px">
+				<textarea n:name="text" placeholder="Text komentáře..." class="form-control autogrow" rows="3"></textarea>
 				<button n:name="add" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> {$form['add']->caption}</button>
 			</div>
 		</form>
-	{/if}
-	{/snippet}
+	</div>
 
-	{snippet comments}
-	<div class="comment" n:foreach="$comments as $comment">
-		{$comment->text|escape|nl2br|noescape}
-		<div class="footer">
-			<a href="{plink Profile:show, $comment->user_id}">{$comment->user->username}</a> {$comment->created|timeAgo}
-			{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax"><i class="fa fa-trash-o"></i></a>{/if}
+	<div class="comment media" n:foreach="$comments as $comment">
+		<div class="pull-left">
+			{if $comment->user->avatar}
+				<img src="/{$comment->user->getAvatarLocation()}" width="45px">
+			{else}
+				<i class="fa fa-user" style="font-size: 35px"></i>
+			{/if}
+		</div>
+		<div class="media-body">
+			{$comment->text|escape|nl2br|noescape}
+			<div class="footer">
+				<a href="{plink Profile:show, $comment->user_id}">{$comment->user->username}</a> {$comment->created|timeAgo}
+				{if $user->isAllowed($comment, 'delete')} | <a n:href="delete!, id => $comment->id" class="ajax" data-confirm="Opravdu smazat komentář?"><i class="fa fa-trash-o"></i></a>{/if}
+			</div>
 		</div>
 	</div>
 
