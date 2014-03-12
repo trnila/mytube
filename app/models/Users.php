@@ -8,7 +8,6 @@ class Users extends Repository
 {
 	protected $tableName = 'users';
 
-
 	/**
 	 * Finds a user by identity
 	 * @param string $identity
@@ -105,5 +104,25 @@ class Users extends Repository
 	public function changeDetails($username, $data) {
 		$user = $this->find($username);
 		$user->update($data);
+	}
+
+	public function changeAvatar($user_id, Nette\Image $image = NULL)
+	{
+		$user = $this->find($user_id);
+
+		if($image) {
+			$hash = Nette\Utils\Strings::random();
+			$image->resize(160, 160)->save(Entity\User::formatAvatarLocation($user->id, $hash));
+
+			// set new avatar
+			$this->update($user, array('avatar' => $hash));
+		} else {
+			$this->update($user, array('avatar' => NULL));
+		}
+
+		// delete old hash if exists
+		if($user->avatar) {
+			@unlink(Entity\User::formatAvatarLocation($user->id, $user->avatar));
+		}
 	}
 }

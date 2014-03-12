@@ -50,6 +50,11 @@ class User extends Nette\Object implements Nette\Security\IResource
 	 */
 	public $admin;
 
+	/**
+	 * @var string
+	*/
+	public $avatar;
+
 
 	/**
 	 * Creates new instance from a row
@@ -58,7 +63,7 @@ class User extends Nette\Object implements Nette\Security\IResource
 	public static function create($row)
 	{
 		$user = new static;
-		foreach(array('id', 'username', 'firstname', 'lastname', 'email', 'password', 'active', 'aboutme', 'admin') as $column) {
+		foreach(array('id', 'username', 'firstname', 'lastname', 'email', 'password', 'active', 'aboutme', 'admin', 'avatar') as $column) {
 			$user->{$column} = $row[$column];
 		}
 
@@ -74,8 +79,23 @@ class User extends Nette\Object implements Nette\Security\IResource
 		return trim($this->firstname . ' ' . $this->lastname);
 	}
 
+	public function getAvatarLocation()
+	{
+		if($this->avatar) {
+			return self::formatAvatarLocation($this->id, $this->avatar);
+		}
+
+		return NULL;
+	}
+
 	public function getResourceId()
 	{
 		return 'user';
+	}
+
+
+	public static function formatAvatarLocation($user_id, $avatar)
+	{
+		return "avatars/{$user_id}-{$avatar}.png";
 	}
 }
