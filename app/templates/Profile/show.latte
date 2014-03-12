@@ -17,10 +17,10 @@
 			<div class="col-sm-10">
 				<div>
 					<span class="editable" data-pk="{$profile->id}" data-url="{link edit!}" data-name="firstname" data-emptyText="Firstname" n:tag-if="$canEdit">{$profile->firstname}</span>
-					<span class="editable" data-pk="{$profile->id}" data-url="{link edit!}" data-name="lastname" data-emptyText="Lastname" n:tag-if="$canEdit">{$profile->lastname}</span>
+					<span class="editable" data-pk="{$profile->id}" data-url="{link edit!}" data-name="lastname" data-emptyText="Lastname" n:tag-if="$canEdit"> {$profile->lastname}</span>
 				</div>
 
-				<div>
+				<div n:if="$user->id === $profile->id">
 					<i class="fa fa-envelope"></i>
 					<span class="editable" data-pk="{$profile->id}" data-url="{link edit!}" data-type="email" data-name="email" data-emptyText="E-mail" n:tag-if="$canEdit">{$profile->email}</span>
 				</div>
