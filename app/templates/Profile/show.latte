@@ -7,11 +7,13 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-sm-2" style="text-align: center">
-				{if $profile->getAvatarLocation()}
-					<img src="{$basePath}/{$profile->getAvatarLocation()}" style="width: 100%">
-				{else}
-				<i class="fa fa-user" style="font-size: 150px"></i>
-				{/if}
+				<a n:href="Account:changeAvatar" n:if="$canEdit">
+					{if $profile->getAvatarLocation()}
+						<img src="{$basePath}/{$profile->getAvatarLocation()}" style="width: 100%">
+					{else}
+					<i class="fa fa-user" style="font-size: 150px"></i>
+					{/if}
+				</a>
 			</div>
 
 			<div class="col-sm-10">
