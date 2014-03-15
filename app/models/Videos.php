@@ -174,6 +174,23 @@ class Videos extends Repository
 		return $this->createResultSet($this->findAll()->where('id', $ids));
 	}
 
+	public function getUserVideos($user_id)
+	{
+		$rows = $this->findAll()
+			->where('user_id', $user_id);
+
+		return $this->createResultSet($rows);
+	}
+
+	public function getRatedVideos($user_id, $limit = 30)
+	{
+		$rows = $this->findAll()
+			->where(':video_ratings.user_id', $user_id)
+			->order(':video_ratings.created DESC');
+
+		return $this->createResultSet($rows);
+	}
+
 	protected function createResultSet($rows)
 	{
 		$result = array();

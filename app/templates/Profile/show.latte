@@ -35,39 +35,42 @@
 	</div>
 </div>
 
-{dump $user->isAllowed($profile, 'edit')}
+<div class="row">
+	<div class="col-md-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-play"></i> Uživatelovi videa</h3>
+			</div>
+			<div class="panel-body">
+				{include ../_videos.latte, videos => $myVideos}
+			</div>
+		</div>
 
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-thumbs-up"></i> Poslední ohodnocena videa</h3>
+			</div>
+			<div class="panel-body">
+				{include ../_videos.latte, videos => $likedVideos}
+			</div>
+		</div>
+	</div>
 
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title"><i class="fa fa-play"></i> Uživatelovi videa</h3>
-	</div>
-	<div class="panel-body">
-		{include ../_videos.latte, videos => $myVideos}
-	</div>
-</div>
-
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title"><i class="fa fa-thumbs-up"></i> Pozitivně ohodnocena videa</h3>
-	</div>
-	<div class="panel-body">
-		{include ../_videos.latte, videos => $likedVideos}
-	</div>
-</div>
-
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title"><i class="fa fa-list"></i> Veřejné playlisty</h3>
-	</div>
-	<div class="panel-body">
-		<ol>
-			<li n:foreach="$playlists as $playlist">
-				<a n:href="Video:playlist, $playlist->playlist->id">
-					{$playlist->playlist->name}
-				</a>
-				<span class="text-muted">{$playlist->total} videi</span>
-			</li>
-		</ol>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-list"></i> Veřejné playlisty</h3>
+			</div>
+			<div class="panel-body">
+				<ol>
+					<li n:foreach="$playlists as $playlist">
+						<a n:href="Video:playlist, $playlist->playlist->id">
+							{$playlist->playlist->name}
+						</a>
+						<span class="text-muted">{$playlist->total} videi</span>
+					</li>
+				</ol>
+			</div>
+		</div>
 	</div>
 </div>
