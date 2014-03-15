@@ -31,7 +31,7 @@ $(document).on('click', '[data-confirm]', function() {
 });
 
 // Thumbnails changes
-$(document).on('mouseenter', '.video img', function() {
+$(document).on('mouseenter', '.video-thumbnail', function() {
 	var video = $(this).parent();
 
 	var timer = setInterval(function() {
