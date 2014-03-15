@@ -1,3 +1,5 @@
+{var $title => $profile->username}
+
 {block content}
 {var $canEdit => $user->isAllowed($profile, 'edit')}
 <div class="panel panel-default">
