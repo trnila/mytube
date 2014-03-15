@@ -1,0 +1,19 @@
+/* line 3, ../sass/admin.sass */
+table .editable form {
+  margin: 0px;
+  padding: 0px;
+  display: inherit;
+  width: 100%;
+  height: inherit;
+}
+/* line 10, ../sass/admin.sass */
+table .editable form input, table .editable form select {
+  height: inherit;
+  margin: inherit;
+  width: 100%;
+}
+
+/* line 17, ../sass/admin.sass */
+#admin-users-list tr td {
+  width: 20%;
+}

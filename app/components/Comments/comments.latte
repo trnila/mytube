@@ -10,7 +10,7 @@
 		<form n:name="form" class="ajax">
 			<div class="pull-left">
 				{if $user->identity->avatar}
-					<img src="{$basePath}/{Model\Entity\User::formatAvatarLocation($user->id, $user->identity->avatar)}" width="45px">
+					<img src="{$basePath}/{Model\Entity\User::formatAvatarLocation($user->id, $user->identity->avatar)}" width="45">
 				{else}
 					<i class="fa fa-user" style="font-size: 35px"></i>
 				{/if}
@@ -25,7 +25,7 @@
 	<div class="comment media" n:foreach="$comments as $comment">
 		<div class="pull-left">
 			{if $comment->user->avatar}
-				<img src="/{$comment->user->getAvatarLocation()}" width="45px">
+				<img src="/{$comment->user->getAvatarLocation()}" width="45" alt="{$comment->user->getFullName()}">
 			{else}
 				<i class="fa fa-user" style="font-size: 35px"></i>
 			{/if}

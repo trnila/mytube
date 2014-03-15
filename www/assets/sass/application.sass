@@ -83,32 +83,15 @@ body
 #video
 	position: relative
 
-	#video-detail
-		position: absolute
-		top: 0
+	.panel-body, .panel-heading
+		position: relative
 		z-index: 2
-		@extend #content
 
-		.container
-			width: 70%
-
-			video, audio
-				width: 100%
-
-
-		.ratings-interact
-			float: right
-
-		.tagit
-			border: none
-
-		canvas
-			width: 100%
-			border-bottom: 1px solid black
-			-webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255,255,255,0.25)))
+	.panel-body
+		background: white
 
 	#left-suggested-videos
-		position: relative
+		position: absolute
 		left: -100px
 
 	#right-suggested-videos

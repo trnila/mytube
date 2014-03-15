@@ -4,7 +4,7 @@ body {
 }
 
 /* line 7, ../sass/application.sass */
-#content, #video #video-detail {
+#content {
   background-color: white;
   padding: 10px;
   border: 1px solid #d5d5d5;
@@ -101,48 +101,29 @@ body {
   position: relative;
 }
 /* line 86, ../sass/application.sass */
-#video #video-detail {
-  position: absolute;
-  top: 0;
+#video .panel-body, #video .panel-heading {
+  position: relative;
   z-index: 2;
 }
-/* line 92, ../sass/application.sass */
-#video #video-detail .container {
-  width: 70%;
+/* line 90, ../sass/application.sass */
+#video .panel-body {
+  background: white;
 }
-/* line 95, ../sass/application.sass */
-#video #video-detail .container video, #video #video-detail .container audio {
-  width: 100%;
-}
-/* line 99, ../sass/application.sass */
-#video #video-detail .ratings-interact {
-  float: right;
-}
-/* line 102, ../sass/application.sass */
-#video #video-detail .tagit {
-  border: none;
-}
-/* line 105, ../sass/application.sass */
-#video #video-detail canvas {
-  width: 100%;
-  border-bottom: 1px solid black;
-  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, 0.25)));
-}
-/* line 110, ../sass/application.sass */
+/* line 93, ../sass/application.sass */
 #video #left-suggested-videos {
-  position: relative;
+  position: absolute;
   left: -100px;
 }
-/* line 114, ../sass/application.sass */
+/* line 97, ../sass/application.sass */
 #video #right-suggested-videos {
   position: absolute;
   right: -120px;
 }
-/* line 118, ../sass/application.sass */
+/* line 101, ../sass/application.sass */
 #video [id$=-suggested-videos] {
   top: 30px;
 }
-/* line 121, ../sass/application.sass */
+/* line 104, ../sass/application.sass */
 #video [id$=-suggested-videos] .video {
   position: relative;
   width: 300px;
@@ -152,33 +133,33 @@ body {
   -moz-box-shadow: 2px 2px 3px #eeeeee;
   box-shadow: 2px 2px 3px #eeeeee;
 }
-/* line 128, ../sass/application.sass */
+/* line 111, ../sass/application.sass */
 #video [id$=-suggested-videos] .video:hover {
   z-index: 3;
 }
 
 @media (max-width: 1200px) {
-  /* line 132, ../sass/application.sass */
+  /* line 115, ../sass/application.sass */
   #left-suggested-videos, #right-suggested-videos {
     display: none;
   }
 }
-/* line 137, ../sass/application.sass */
+/* line 120, ../sass/application.sass */
 #video-comments form textarea {
   height: 60px;
   width: 100%;
 }
-/* line 142, ../sass/application.sass */
+/* line 125, ../sass/application.sass */
 #video-comments .comment .footer {
   color: #999999;
   font-size: 11px;
 }
-/* line 146, ../sass/application.sass */
+/* line 129, ../sass/application.sass */
 #video-comments .comment .footer a {
   color: #999999;
 }
 
-/* line 149, ../sass/application.sass */
+/* line 132, ../sass/application.sass */
 #profile-informations {
   margin-bottom: 40px;
 }

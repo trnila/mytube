@@ -1,146 +1,160 @@
 {var $title => $video->title}
 {block content}
 {var $canEdit = $user->isAllowed($video, 'edit')}
-<div class="container">
-	<div id="video">
-		<div id="left-suggested-videos">
-			{for $x = 0; $x < 4; $x++}
-				{if isset($videos[$x])}
-					{include ../_video.latte, video => $videos[$x]}
-				{/if}
-			{/for}
-		</div>
 
-		<div id="right-suggested-videos">
-			{for ; $x < 8; $x++}
-				{if isset($videos[$x])}
-					{include ../_video.latte, video => $videos[$x], reversed => TRUE}
-				{/if}
-			{/for}
-		</div>
 
-		<div id="video-detail" class="container">
-			<a n:href="delete! $video->id" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?" class="pull-right btn btn-sm btn-danger">
+
+
+
+
+
+<div class="panel panel-default" id="video">
+	<div id="left-suggested-videos">
+	{for $x = 0; $x < 4; $x++}
+		{if isset($videos[$x])}
+			{include ../_video.latte, video => $videos[$x]}
+		{/if}
+	{/for}
+</div>
+
+<div id="right-suggested-videos">
+	{for ; $x < 8; $x++}
+		{if isset($videos[$x])}
+			{include ../_video.latte, video => $videos[$x], reversed => TRUE}
+		{/if}
+	{/for}
+</div>
+
+
+	<div class="panel-heading">
+		<div class="pull-right">
+			<a n:href="delete! $video->id" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?" class="btn btn-xs btn-danger">
 				<i class="fa fa-trash-o"></i>
 			</a>
-
-			<h1>
-				<span n:tag-if="$canEdit" class="editable" data-type="text" data-pk="{$video->id}" data-url="{link edit!}" data-name="title">{$video->title}</span>
-			</h1>
-
-			<div class="container" n:snippet="video">
-				{if $video->isConverted()}
-					{if $video->isvideo}
-						<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls autoplay></video>
-					{else}
-						<canvas></canvas>
-						<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls></audio>
-					{/if}
+		</div>
+		<h1 class="panel-title">
+			<span n:tag-if="$canEdit" class="editable" data-type="text" data-pk="{$video->id}" data-url="{link edit!}" data-name="title">{$video->title}</span>
+		</h1>
+	</div>
+	<div class="panel-body" id="video-detail">
+		<div n:snippet="video" style="text-align: center">
+			{if $video->isConverted()}
+				{if $video->isvideo}
+					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls autoplay></video>
 				{else}
-					<p class="alert alert-info">
-						Toto video stále není připravene k přehrání, prosím počkejte.<br>
-						{ifset $queueStatus['percentage']}
-							{$queueStatus['percentage']}%
-						{/ifset}
-
-						{ifset $queueStatus['message']}
-							{$queueStatus['message']}
-						{/ifset}
-
-						<script>
-							setTimeout(function() {
-								$.nette.ajax({link getStatus! $video->id});
-							}, {? echo !isset($queueStatus) ? 0 : 3000});
-						</script>
-					</p>
-					<div style="text-align: center">
-						<i class="fa fa-spinner fa-spin" style="font-size: 130px"></i>
-					</div>
+					<canvas></canvas>
+					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls></audio>
 				{/if}
-			</div>
-
-			<div class="row">
-				<div class="col-sm-10">
-					<ul class="nav nav-tabs">
-		  				<li class="active"><a href="#details" data-toggle="tab"><i class="fa fa-info"></i> Detaily</a></li>
-		  				<li><a href="#playlists" data-toggle="tab" n:if="$user->isLoggedIn()"><i class="fa fa-list"></i> Playlist</a></li>
-		  				<li><a href="#share" data-toggle="tab"><i class="fa fa-share"></i> Sdílet</a></li>
-		  				<li><a href="#comments" data-toggle="tab"><i class="fa fa-comments"></i> Komentáře</a></li>
-					</ul>
-				</div>
-
-				<div class="col-sm-2">
-					{control ratings}
-				</div>
-			</div>
-
-			<div class="tab-content well">
-				<div class="tab-pane active" id="details">
-					<h2><i class="fa fa-info"></i> Detaily</h2>
-					<dl class="dl-horizontal">
-						<dt>Nahrál:</dt>
-						<dd><a n:href="Profile:show, $video->user_id">{$video->user->username}</a></dd>
-
-						<dt>Datum nahráni</dt>
-						<dd>{$video->created}</dd>
-
-						<dt>Popis</dt>
-						<dd>
-							<p n:tag-if="$canEdit" class="editable" data-type="textarea" data-name="description" data-pk="{$video->id}" data-url="{link edit!}">{$video->description|escape|nl2br|noescape}</p>
-						</dd>
-
-						<dt>Tagy</dt>
-						<dd>
-							<span n:inner-foreach="$video->tags as $tag" id="tags" data-type="select2" data-pk="{$video->id}" data-url="{link edit!}">
-								{$tag->tag} {sep}, {/sep}
-							</span>
-						</dd>
-					</dl>
-				</div>
-				<div class="tab-pane" id="playlists" n:if="$user->isLoggedIn() || isset($playlist)">
-					{ifset $playlist}
-						<h2><i class="fa fa-play"></i> Přehrávaný playlist</h2>
-						<ul n:inner-foreach="$playlist as $vid" class="list-unstyled" id="playing-playlist">
-							<li n:class="$vid->id == $video->id ? active">
-								<a n:href="this, $vid->id">
-									<i class="fa fa-play" n:tag-if="$vid->id == $video->id"></i>
-									{$vid->title}
-								</a>
-							</li>
-						</ul>
-
-						<script>
-							$("video").on('ended', function() {
-								var next = $("ul#playing-playlist li.active").next('li').find('a');
-								if(next.length) {
-									document.location.href = next.attr('href');
-								}
-							});
-
-							if(document.location.hash == '') {
-								$("a[href=#playlists]").click();
-							}
-						</script>
+			{else}
+				<p class="alert alert-info">
+					Toto video stále není připravene k přehrání, prosím počkejte.<br>
+					{ifset $queueStatus['percentage']}
+						{$queueStatus['percentage']}%
 					{/ifset}
 
-					{control playlists}
-				</div>
-				<div class="tab-pane" id="share">
-					<h2><i class="fa fa-share"></i> Sdílet</h2>
-					<input readonly class="form-control" value="{link //this}">
+					{ifset $queueStatus['message']}
+						{$queueStatus['message']}
+					{/ifset}
+
 					<script>
-						$("#share input").click(function() {
-							$(this).select();
-						})
+						setTimeout(function() {
+							$.nette.ajax({link getStatus! $video->id});
+						}, {? echo !isset($queueStatus) ? 0 : 3000});
 					</script>
+				</p>
+				<div style="text-align: center">
+					<i class="fa fa-spinner fa-spin" style="font-size: 130px"></i>
 				</div>
-				<div class="tab-pane" id="comments">
-					{control comments}
-				</div>
+			{/if}
+		</div> {* / n:snippet=video *}
+
+
+		<div class="row">
+			<div class="col-sm-10">
+				<ul class="nav nav-tabs">
+	  				<li class="active"><a href="#details" data-toggle="tab"><i class="fa fa-info"></i> Detaily</a></li>
+	  				<li><a href="#playlists" data-toggle="tab" n:if="$user->isLoggedIn()"><i class="fa fa-list"></i> Playlist</a></li>
+	  				<li><a href="#share" data-toggle="tab"><i class="fa fa-share"></i> Sdílet</a></li>
+	  				<li><a href="#comments" data-toggle="tab"><i class="fa fa-comments"></i> Komentáře</a></li>
+				</ul>
+			</div>
+
+			<div class="col-sm-2">
+				{control ratings}
 			</div>
 		</div>
-	</div>
-</div>
+
+		<div class="tab-content well">
+			<div class="tab-pane active" id="details">
+				<h2><i class="fa fa-info"></i> Detaily</h2>
+				<dl class="dl-horizontal">
+					<dt>Nahrál:</dt>
+					<dd><a n:href="Profile:show, $video->user_id">{$video->user->username}</a></dd>
+
+					<dt>Datum nahráni</dt>
+					<dd>{$video->created}</dd>
+
+					<dt>Popis</dt>
+					<dd>
+						<p n:tag-if="$canEdit" class="editable" data-type="textarea" data-name="description" data-pk="{$video->id}" data-url="{link edit!}">{$video->description|escape|nl2br|noescape}</p>
+					</dd>
+
+					<dt>Tagy</dt>
+					<dd>
+						<span n:inner-foreach="$video->tags as $tag" id="tags" data-type="select2" data-pk="{$video->id}" data-url="{link edit!}">
+							{$tag->tag} {sep}, {/sep}
+						</span>
+					</dd>
+				</dl>
+			</div> {* / #details *}
+
+			<div class="tab-pane" id="playlists" n:if="$user->isLoggedIn() || isset($playlist)">
+				{ifset $playlist}
+					<h2><i class="fa fa-play"></i> Přehrávaný playlist</h2>
+					<ul n:inner-foreach="$playlist as $vid" class="list-unstyled" id="playing-playlist">
+						<li n:class="$vid->id == $video->id ? active">
+							<a n:href="this, $vid->id">
+								<i class="fa fa-play" n:tag-if="$vid->id == $video->id"></i>
+								{$vid->title}
+							</a>
+						</li>
+					</ul>
+
+					<script>
+						$("video").on('ended', function() {
+							var next = $("ul#playing-playlist li.active").next('li').find('a');
+							if(next.length) {
+								document.location.href = next.attr('href');
+							}
+						});
+
+						if(document.location.hash == '') {
+							$("a[href=#playlists]").click();
+						}
+					</script>
+				{/ifset}
+
+				{control playlists}
+			</div> {* / #playlists *}
+
+			<div class="tab-pane" id="share">
+				<h2><i class="fa fa-share"></i> Sdílet</h2>
+				<input readonly class="form-control" value="{link //this}">
+				<script>
+					$("#share input").click(function() {
+						$(this).select();
+					})
+				</script>
+			</div> {* / #share *}
+
+			<div class="tab-pane" id="comments">
+				{control comments}
+			</div> {* / #comments *}
+		</div>
+	</div>{* / .panel-body *}
+</div> {* / .panel *}
+
+
 
 <script>
 if(window.localStorage) {
