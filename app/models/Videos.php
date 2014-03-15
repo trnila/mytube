@@ -186,8 +186,10 @@ class Videos extends Repository
 			$ids[] = $row->id;
 		}
 
-
-		return $this->createResultSet($this->findAll()->where('id', $ids));
+		return (object) array(
+			'videos' => $this->createResultSet($this->findAll()->where('id', $ids)),
+			'total' => $result->count()
+		);
 	}
 
 	public function getUserVideos($user_id)

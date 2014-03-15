@@ -14,8 +14,11 @@ $(function() {
 		timer = setTimeout(function() {
 			self.addClass('loading');
 
-			$.nette.ajax({}, self.closest('form'), evt).done(function() {
+			$.nette.ajax({}, self.closest('form'), evt).done(function(response) {
 				self.removeClass('loading');
+				if(history && history.pushState) {
+					history.pushState({ajax: true}, document.title, response.url);
+				}
 			});
 
 		}, 100);
@@ -77,4 +80,11 @@ $(document).ready(function() {
 // .autogrow
 $(document).ready(function() {
 	$("textarea.autogrow").autoGrow();
+});
+
+$(window).bind("popstate", function(evt) {
+	var state = evt.originalEvent.state;
+	if(state && state.ajax) {
+		document.location.href = location.href;
+	}
 });

@@ -17,8 +17,8 @@ body {
 
 /* line 15, ../sass/application.sass */
 #video-search input.loading {
-  background-image: url('../images/loading-dd6b7b0bf5c3af22499abc0a9ee1e1b2.gif');
-  background-position: right center;
+  background-image: url('../images/loading.gif?1378309567');
+  background-position: right 3px center;
   background-repeat: no-repeat;
 }
 

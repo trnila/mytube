@@ -21,20 +21,3 @@ relative_assets = true
 
 
 preferred_syntax = :sass
-
-def hashFile(file)
-	Digest::MD5.hexdigest(File.read(file))
-end
-
-def assetPath(pathname, hash)
-	"%s/%s-%s%s" % [pathname.dirname, pathname.basename(pathname.extname), hash, pathname.extname]
-end
-
-asset_cache_buster do |pathname, real_path|
-	if File.exists?(real_path)
-		pathname = Pathname.new(pathname)
-		new_path = assetPath(pathname, hashFile(real_path))
-
-		{:path => new_path, :query => nil}
-	end
-end
