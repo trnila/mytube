@@ -1,12 +1,14 @@
 {snippet}
 <div class="ratings-interact">
-	{if $user->isLoggedIn()}
-		<a n:href="rate!, positive => true, takeBack => $positiveRate" n:class="like, btn, btn-sm, btn-default, $positiveRate ? active"><i class="fa fa-thumbs-up"></i> like</a>
-		<a n:href="rate!, positive => false, takeBack => $negativeRate" n:class="dislike, btn, btn-sm, btn-default, pull-right, $negativeRate ? active"><i class="fa fa-thumbs-down"></i> dislike</a>
-	{else}
-		<span class="like btn btn-sm btn-default disabled"><i class="fa fa-thumbs-up"></i> like</span>
-		<span class="dislike btn btn-sm btn-default pull-right disabled"><i class="fa fa-thumbs-down"></i> dislike</span>
-	{/if}
+	<div style="text-align: center">
+		{if $user->isLoggedIn()}
+			<a n:href="rate!, positive => true, takeBack => $positiveRate" n:class="like, btn, btn-sm, btn-default, $positiveRate ? active"><i class="fa fa-thumbs-up"></i> like</a>
+			<a n:href="rate!, positive => false, takeBack => $negativeRate" n:class="dislike, btn, btn-sm, btn-default, $negativeRate ? active"><i class="fa fa-thumbs-down"></i> dislike</a>
+		{else}
+			<span class="like btn btn-sm btn-default disabled"><i class="fa fa-thumbs-up"></i> like</span>
+			<span class="dislike btn btn-sm btn-default disabled"><i class="fa fa-thumbs-down"></i> dislike</span>
+		{/if}
+	</div>
 
 	<div class="progress">
 		{if $total > 0}
