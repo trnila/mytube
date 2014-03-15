@@ -7,12 +7,20 @@ class ProfilePresenter extends BasePresenter
 	*/
 	public $users;
 
+	/**
+	 * @var Model\Playlists
+	 * @inject
+	 */
+	public $playlists;
+
 	public function renderShow($username)
 	{
 		$user = $this->template->profile = $this->users->find($username);
 
 		$this->template->myVideos = [];//$user->related('videos');
 		$this->template->likedVideos = [];//$user->related('videos')->where(':ratings.user_id = ? AND :ratings.positive = 1', $this->user->id)->order('created DESC');
+
+		$this->template->playlists = $this->playlists->getPublic($user->id);
 	}
 
 	public function handleEdit()

@@ -10,7 +10,7 @@ class SearchPresenter extends BasePresenter
 
 	public function renderDefault($query)
 	{
-		$query .= '*'; // to enable searching of non-completely typed words
+		$query = '*' . $query . '*'; // to enable searching of non-completely typed words
 
 
 

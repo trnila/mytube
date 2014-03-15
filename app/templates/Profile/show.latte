@@ -1,6 +1,6 @@
 {block content}
 {var $canEdit => $user->isAllowed($profile, 'edit')}
-<div class="panel panel-default" id="upload">
+<div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title"><i class="fa fa-user"></i> {$profile->username}</h3>
 	</div>
@@ -38,8 +38,36 @@
 {dump $user->isAllowed($profile, 'edit')}
 
 
-<h2>Uživatelovy videa</h2>
-{include ../_videos.latte, videos => $myVideos}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-play"></i> Uživatelovi videa</h3>
+	</div>
+	<div class="panel-body">
+		{include ../_videos.latte, videos => $myVideos}
+	</div>
+</div>
 
-<h2>Lajknuta videa</h2>
-{include ../_videos.latte, videos => $likedVideos}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-thumbs-up"></i> Pozitivně ohodnocena videa</h3>
+	</div>
+	<div class="panel-body">
+		{include ../_videos.latte, videos => $likedVideos}
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-list"></i> Veřejné playlisty</h3>
+	</div>
+	<div class="panel-body">
+		<ol>
+			<li n:foreach="$playlists as $playlist">
+				<a n:href="Video:playlist, $playlist->playlist->id">
+					{$playlist->playlist->name}
+				</a>
+				<span class="text-muted">{$playlist->total} videi</span>
+			</li>
+		</ol>
+	</div>
+</div>

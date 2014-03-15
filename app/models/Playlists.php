@@ -80,4 +80,24 @@ class Playlists extends Repository
 		return $videos;
 	}
 
+	public function getPublic($user_id)
+	{
+		$rows = $this->findAll()
+			->select('playlists.*, COUNT(:playlist_videos.video_id) AS total')
+			->where('user_id', $user_id)
+			->where('private', false)
+			->group('playlists.id')
+			->order('COUNT(:playlist_videos.video_id)');
+
+		$result = array();
+		foreach($rows as $row) {
+			$result[] = (object) array(
+				'total' => (int) $row->total,
+				'playlist' => Entity\Playlist::create($row)
+			);
+		}
+
+		return $result;
+	}
+
 }
