@@ -114,11 +114,17 @@ uploader.bind('BeforeUpload', function(uploader, file) {
 
 uploader.bind('FileUploaded', function(up, file, info) {
 	var json = jQuery.parseJSON(info.response);
-	if(json && json['redirect']) {
-		document.location.href = json['redirect'];
-	} else {
-		alert("An error occured, try it again please");
+	if(json) {
+		if(json['redirect']) {
+			document.location.href = json['redirect'];
+			return;
+		} else if(json['error']) {
+			alert(json['error']);
+			return;
+		}
 	}
+
+	alert("An error occured, try it again please");
 });
 
 uploader.bind('Error', function(up, error) {

@@ -166,11 +166,21 @@ class VideoPresenter extends BasePresenter
 		$form->addText('tags', 'Tagy');
 
 		$form->addUpload('file')
+			->addRule(function($file) {
+				return Nette\Utils\Strings::startsWith($file->value->contentType, 'video/') || Nette\Utils\Strings::startsWith($file->value->contentType, 'audio/');
+			}, 'Soubor musí být video nebo audio!')
 			->setRequired();
 
 		$form->addSubmit('upload', 'Nahrát');
 		$form->addProtection();
 		$form->onSuccess[] = array($this, 'addVideo');
+		$form->onError[] = function($form) {
+			if($this->isAjax()) {
+				$errors = $form->getErrors();
+				$this->payload->error = $errors[0];
+				$this->terminate();
+			}
+		};
 
 		return $form;
 	}
