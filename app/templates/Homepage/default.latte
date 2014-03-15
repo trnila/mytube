@@ -1,6 +1,11 @@
 {var $title => 'Hlavní strana'}
 
 {block #content}
-<h1>Nejnovější videa</h1>
-
-{include ../_videos.latte}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Nejnovější videa</h3>
+	</div>
+	<div class="panel-body">
+		{include ../_videos.latte}
+	</div>
+</div>
