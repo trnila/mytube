@@ -97,6 +97,22 @@ class Videos extends Repository
 	public function update($id, $data)
 	{
 		$video = parent::find($id);
+
+		if(isset($data['tags'])) {
+			$tags = $video->related('video_tags')->delete();
+
+			$position = 0;
+			foreach($data['tags'] as $tag) {
+				$video->related('video_tags')->insert(array(
+					'position' => $position,
+					'tag' => $tag
+				));
+			}
+
+			unset($data['tags']);
+		}
+
+
 		$video->update($data);
 	}
 

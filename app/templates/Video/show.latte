@@ -20,8 +20,6 @@
 		</div>
 
 		<div id="video-detail" class="container">
-			<div class="alert" n:if="0 /** TODO **/ && !$video->processed">Toto video neni stále zkonvertováno.</div>
-
 			<a n:href="delete! $video->id" n:if="$user->isAllowed($video, 'delete')" data-confirm="Opravdu smazat video {$video->title}?" class="pull-right btn btn-sm btn-danger">
 				<i class="fa fa-trash-o"></i>
 			</a>
@@ -93,9 +91,9 @@
 
 						<dt>Tagy</dt>
 						<dd>
-							<ul n:inner-foreach="$video->tags as $tag">
+							<span n:inner-foreach="$video->tags as $tag" id="tags" data-type="select2" data-pk="{$video->id}" data-url="{link edit!}">
 								{$tag->tag} {sep}, {/sep}
-							</ul>
+							</span>
 						</dd>
 					</dl>
 				</div>
@@ -168,7 +166,15 @@ if(window.localStorage) {
 	});
 }
 
-//$.fn.editable.defaults.mode = 'inline';
-$(".editable").editable();
-
+$("#tags").editable({
+	select2: {
+		tags: true
+	}
+}).on('shown', function() {
+	$("#tags").next().find('.select2-container').select2('container').find("ul.select2-choices").sortable({
+		containment: 'parent',
+		start: function() { $("#tags").select2("onSortStart"); },
+		update: function() { $("#tags").select2("onSortEnd"); }
+	});
+});
 </script>
