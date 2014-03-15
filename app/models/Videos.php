@@ -145,11 +145,8 @@ class Videos extends Repository
 
 	public function getLastVideos($limit = 10)
 	{
-		$videos = array();
-		foreach($this->findAll()->order('created DESC') as $video) {
-			$videos[] = Entity\Video::create($video);
-		}
-		return $videos;
+		$rows = $this->findAll()->order('created DESC')->limit($limit);
+		return $this->createResultSet($rows);
 	}
 
 	public function getRelated($video_id, $items = 8)
@@ -159,11 +156,7 @@ class Videos extends Repository
 			->order('RAND()')
 			->limit($items);
 
-		$videos = array();
-		foreach($rows as $row) {
-			$videos[] = Entity\Video::create($row);
-		}
-		return $videos;
+		return $this->createResultSet($rows);
 	}
 
 	public function search($query)
@@ -178,11 +171,15 @@ class Videos extends Repository
 		}
 
 
+		return $this->createResultSet($this->findAll()->where('id', $ids));
+	}
+
+	protected function createResultSet($rows)
+	{
 		$result = array();
-		foreach($this->findAll()->where('id', $ids) as $row) {
+		foreach($rows as $row) {
 			$result[] = Entity\Video::create($row);
 		}
-
 		return $result;
 	}
 }
