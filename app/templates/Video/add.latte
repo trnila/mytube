@@ -52,6 +52,7 @@ var container = $("#upload");
 var form = container.find('form');
 var submitBtn = container.find('button[name=upload]');
 var tags = container.find("[name=tags]");
+var MIME_TYPE_ERROR = 'mime_type_error';
 
 tags.select2({ tags: []})
 	.select2("container").find("ul.select2-choices").sortable({
@@ -60,13 +61,30 @@ tags.select2({ tags: []})
 		update: function() { $("#e15").select2("onSortEnd"); }
 	});
 
+
+plupload.addFileFilter('mimetypes', function(types, file, cb) {
+	for(var i in types) {
+		if(file.type.match(types[i])) {
+			cb(true);
+			return;
+		}
+	}
+
+	this.trigger('Error', {
+		code : MIME_TYPE_ERROR,
+		message : plupload.translate('Vybraný soubor není hudba nebo video.'),
+		file : file
+	});
+
+	cb(false);
+});
+
 var uploader = new plupload.Uploader({
 	browse_button: 'upload-choose-file',
 	url: {link this},
-	filters: [
-		{ title: 'Videa', extensions: 'avi,wmv,mp4,ogg,webm,m4v'},
-		{ title: 'Hudba', extensions: 'mp3,ogg,webm,flac'}
-	],
+	filters: {
+		mimetypes: ["video/", "audio/"]
+	},
 	headers: {'X-Requested-With': 'XMLHttpRequest'}
 });
 
@@ -104,12 +122,16 @@ uploader.bind('FileUploaded', function(up, file, info) {
 });
 
 uploader.bind('Error', function(up, error) {
-	var additionalMsg = '';
-	if(error && error['message']) {
-		additionalMsg = ': ' + error['message'];
-	}
+	if(error['code'] == MIME_TYPE_ERROR) {
+		alert(error['message']);
+	} else {
+		var additionalMsg = '';
+		if(error && error['message']) {
+			additionalMsg = ': ' + error['message'];
+		}
 
-	alert("An error occured, please try again later" + additionalMsg);
+		alert("An error occured, please try again later" + additionalMsg);
+	}
 });
 
 uploader.bind('UploadProgress', function(up, file) {
