@@ -10,9 +10,7 @@ class SearchPresenter extends BasePresenter
 
 	public function renderDefault($query)
 	{
-		$query = '*' . $query . '*'; // to enable searching of non-completely typed words
-
-
+		$query = $query . '*'; // to enable searching of non-completely typed words
 
 		$result = $this->context->getByType('Nette\Database\Context')->table('videoSearch')
 			->where("MATCH(title, description, tags) AGAINST (? IN BOOLEAN MODE)", $query)
