@@ -106,7 +106,8 @@ class VideoPresenter extends BasePresenter
 			$this->redirect('show', $nextVideo->id, $playlist->id);
 		}
 
-		$this->terminate();
+		$this->flashMessage('Playlist neobsahuje žádná videa', 'info');
+		$this->redirect('Homepage:');
 	}
 
 	public function handleGetStatus($id)
