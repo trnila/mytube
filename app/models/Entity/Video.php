@@ -83,7 +83,6 @@ class Video extends Nette\Object implements Nette\Security\IResource
 		$ratings = new OverallRating;
 		$ratings->positive = $data->related('ratings')->where('positive', TRUE)->count('user_id');
 		$ratings->negative = $data->related('ratings')->where('positive', FALSE)->count('user_id');
-		$ratings->total = $ratings->positive + $ratings->negative;
 		$entity->overallRating = $ratings;
 
 		// map thumbnails
@@ -120,8 +119,8 @@ class OverallRating extends Nette\Object
 	 */
 	public $negative;
 
-	/**
-	 * @var int
-	 */
-	public $total;
+	public function getTotal()
+	{
+		return $this->positive + $this->negative;
+	}
 }

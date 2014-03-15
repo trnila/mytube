@@ -30,16 +30,7 @@ class Ratings extends Component\BaseControl
 			throw new ForbiddenRequestException;
 		}
 
-		$this->ratings->rate($this->video->id, $this->presenter->user->id, $positive, $takeBack);
-
-		// compute actual ratings
-		//TODO: get new stats from database rather!
-		if($positive) {
-			$this->video->overallRating->positive += $takeBack ? -1 : 1;
-		} else {
-			$this->video->overallRating->negative += $takeBack ? -1 : 1;
-		}
-		$this->video->overallRating->total = $this->video->overallRating->positive + $this->video->overallRating->negative;
+		$this->video->overallRating = $this->ratings->rate($this->video->id, $this->presenter->user->id, $positive, $takeBack);
 
 		if($this->presenter->isAjax()) {
 			$this->invalidateControl();

@@ -48,5 +48,11 @@ class Ratings extends Repository
 				'created' => new DateTime
 			));
 		}
+
+		$result = new Entity\OverallRating;
+		$result->positive = $this->findAll()->where('video_id', $video_id)->where('positive', TRUE)->count();
+		$result->negative = $this->findAll()->where('video_id', $video_id)->where('positive', FALSE)->count();
+
+		return $result;
 	}
 }
