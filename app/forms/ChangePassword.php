@@ -27,11 +27,13 @@ class ChangePassword extends BaseForm
 		}
 
 		$this->addPassword('password', 'Nové heslo')
-				->addRule($this::MIN_LENGTH, NULL, 5);
+			->setRequired()
+			->addRule($this::MIN_LENGTH, NULL, 5);
 
 		$this->addPassword('passwordCheck', 'Nové heslo pro kontrolu')
-				->addConditionOn($this['password'], $this::VALID)
-					->addRule($this::EQUAL, NULL, $this['password']);
+			->setRequired()
+			->addConditionOn($this['password'], $this::VALID)
+				->addRule($this::EQUAL, 'Hesla se neshodují.', $this['password']);
 
 		$this->addPrimary('change', 'Změnit heslo');
 		$this->onSuccess[] = callback($this, 'changePassword');

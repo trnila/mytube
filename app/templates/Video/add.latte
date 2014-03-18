@@ -18,7 +18,7 @@
 				<li n:foreach="$form->ownErrors as $error">{$error}</li>
 			</ul>
 
-			<div class="form-group">
+			<div class="form-group form-group-required">
 				<label n:name="title">{$form['title']->caption}</label>
 				<div>
 					<input n:name="title" class="form-control" placeholder="{$form['title']->caption}">
