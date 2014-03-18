@@ -3,7 +3,7 @@
 		<li n:foreach="$form->ownErrors as $error">{$error}</li>
 	</ul>
 
-	<div n:foreach="$form->controls as $input" n:class="form-group, $input->error ? has-error">
+	<div n:foreach="$form->controls as $input" n:class="form-group, $input->error ? has-error, $input->isRequired() ? form-group-required">
 		{label $input, class => control-label /}
 		{if $input instanceof Nette\Forms\Controls\SubmitButton}
 			<input n:name="$input" class="btn btn-primary">

@@ -163,3 +163,10 @@ body {
 #profile-informations {
   margin-bottom: 40px;
 }
+
+/* line 135, ../sass/application.sass */
+.form-group-required label:after {
+  color: red;
+  margin-left: 2px;
+  content: "*";
+}
