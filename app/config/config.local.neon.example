@@ -1,22 +1,14 @@
+nette:
+	database:
+		dsn: 'mysql://host=localhost;dbname=mytube_development'
+		user: mytube
+		password: mytube
+
 parameters:
-	productionMode: TRUE
+	productionMode: false
 
 	host: youtube.local
-
-	database:
-		driver: mysql
-		host: localhost
-		dbname: youtube
-		user: user
-		password: pass
 
 	facebook:
 		appId: 0
 		secret: 0
-
-	workqueue:
-		host: localhost
-		port: 5672
-		user: user
-		password: pass
-		domain: domain
