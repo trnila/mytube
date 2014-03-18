@@ -31,7 +31,7 @@ class Login extends BaseForm
 			$presenter->user->login($form['username']->value, $form['password']->value);
 
 			$persistentLogin = $this->presenter->getPersistentLogin();
-			if(isset($persistentLogin[$presenter->user->identity->email])) {
+			if(isset($persistentLogin[$form['username']->value])) {
 				$this->users->addIdentity($presenter->user->id, array(
 					'type' => 'openid',
 					'identity' => $persistentLogin[$presenter->user->identity->email]

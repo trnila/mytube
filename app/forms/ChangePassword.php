@@ -1,26 +1,36 @@
 <?php
 namespace Form;
 use Nette;
+use Model;
 
 class ChangePassword extends BaseForm
 {
 	/**
-	 * @var \Model\Repository\Users
+	 * @var Nette\Security\User
+	 * @inject
+	*/
+	public $user;
+
+	/**
+	 * @var Model\Users
+	 * @inject
 	 */
-	protected $users;
+	public $users;
 
-	public function __construct(\Model\Users $users)
+	public function init()
 	{
-		parent::__construct();
-		$this->users = $users;
+		$user = $this->users->find($this->user->id);
 
-		$this->addPassword('oldPassword', 'Staré heslo');
+		if($user->password) {
+			$this->addPassword('oldPassword', 'Staré heslo')
+				->setRequired();
+		}
 
 		$this->addPassword('password', 'Nové heslo')
 				->addRule($this::MIN_LENGTH, NULL, 5);
 
 		$this->addPassword('passwordCheck', 'Nové heslo pro kontrolu')
-				->addConditionOn($this['oldPassword'], $this::VALID)
+				->addConditionOn($this['password'], $this::VALID)
 					->addRule($this::EQUAL, NULL, $this['password']);
 
 		$this->addPrimary('change', 'Změnit heslo');
@@ -31,7 +41,7 @@ class ChangePassword extends BaseForm
 	{
 		$values = $form->values;
 		try {
-			$this->users->changePassword($this->presenter->user->id, $values->oldPassword, $values->password);
+			$this->users->changePassword($this->user->id, isset($values->oldPassword) ? $values->oldPassword : NULL, $values->password);
 			$this->presenter->flashMessage('Heslo bylo změněno.', 'success');
 			$this->presenter->redirectHome();
 		}

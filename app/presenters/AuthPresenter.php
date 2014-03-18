@@ -19,11 +19,45 @@ class SignPresenter extends BasePresenter
 	*/
 	public $registrationFactory;
 
+	/**
+	 * @var Model\Users
+	 * @inject
+	*/
+	public $users;
+
+	/**
+	 * @var Nette\Mail\IMailer
+	 * @inject
+	*/
+	public $mailer;
+
 	public function actionOut()
 	{
 		$this->user->logout(TRUE);
 		$this->flashMessage('Byl jste úspěšně odhlášen.', $this::FLASH_SUCCESS);
 		$this->redirectHome();
+	}
+
+	public function actionRecovery($email, $token)
+	{
+		$storage = $this->getPersistentReset();
+		if(!isset($storage->{$email}) || $storage->{$email} != $token) {
+			$this->flashMessage('Odkaz pro obnovu ztraceného hesla vypršel nebo je neplatný. Požadejte o obnovu znovu.', 'danger');
+			$this->redirect('reset');
+		}
+
+		$user = $this->users->findByEmail($email);
+		if(!$user) {
+			$this->flashMessage('Uživatel již neexistuje', 'error');
+			$this->redirect('Homepage:');
+		}
+
+		unset($storage->{$email});
+		$this->users->removePassword($user->id);
+
+		$this->user->login(new Nette\Security\Identity($user->id));
+		$this->flashMessage('Nyní si můžete změnit své heslo.', 'success');
+		$this->redirect('Account:changePassword');
 	}
 
 	public function renderIn()
@@ -130,6 +164,55 @@ class SignPresenter extends BasePresenter
 		return $this->registrationFactory->create();
 	}
 
+	protected function createComponentResetPassword()
+	{
+		$form = new Nette\Application\UI\Form;
+
+		$form->addText('email', 'Email')
+			->setRequired();
+
+		$form->addSubmit('submit', 'Resetovat');
+		$form->onSuccess[] = $this->processResetPassword;
+
+		return $form;
+	}
+
+	public function processResetPassword($form)
+	{
+		$email = $form['email']->value;
+		$user = $this->users->findByEmail($email);
+		if(!$user) {
+			$form['email']->addError('Uživatel s tímto emailem neexistuje.');
+			return;
+		}
+
+		$storage = $this->getPersistentReset();
+		if(isset($storage->{$email})) {
+			$form['email']->addError('Již byl poslán email pro obnovu, zkontrolujte email.');
+			return;
+		}
+
+		$hash = Nette\Utils\Strings::random(32);
+		$storage->{$email} = $hash;
+
+		$message = new Nette\Mail\Message;
+		$message->addTo($email);
+		$message->setSubject('Obnova ztraceného hesla');
+
+		$template = $this->createTemplate();
+		$template->setFile(__DIR__ . '/../emails/password-recovery.latte');
+		$template->u = $user;
+		$template->link = $this->link('//recovery', array('email' => $email, 'token' => $hash));
+
+		$message->setHtmlBody($template);
+
+		$this->mailer->send($message);
+
+
+		$this->flashMessage('Na váš email byl odeslán email s informacemi jak postupovat při obnově hesla.', 'info');
+		$this->redirect('this');
+	}
+
 	protected function getPersistentRegistration()
 	{
 		return $this->getSession('Registration')
@@ -139,6 +222,12 @@ class SignPresenter extends BasePresenter
 	public function getPersistentLogin()
 	{
 		return $this->getSession('Login')
+			->setExpiration('+15 minutes');
+	}
+
+	public function getPersistentReset()
+	{
+		return $this->getSession('ResetPassword')
 			->setExpiration('+15 minutes');
 	}
 }

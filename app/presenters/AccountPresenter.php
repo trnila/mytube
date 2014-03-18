@@ -16,7 +16,9 @@ class AccountPresenter extends BasePresenter
 
 	public function createComponentChangePassword()
 	{
-		return $this->changePasswordFactory->create();
+		$form = $this->changePasswordFactory->create();
+		$form->init();
+		return $form;
 	}
 
 	public function createComponentChangeAvatar()

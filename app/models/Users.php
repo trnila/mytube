@@ -28,6 +28,12 @@ class Users extends Repository
 		return $row ? Entity\User::create($row) : NULL;
 	}
 
+	public function findByEmail($email)
+	{
+		$row = $this->getTable()->where('email', $email)->fetch();
+		return $row ? Entity\User::create($row) : NULL;
+	}
+
 	/**
 	 * @param $user Entity\User
 	 * @param $data array
@@ -89,15 +95,22 @@ class Users extends Repository
 			->insert(array('user_id' => $user_id) + $data);
 	}
 
-	public function changePassword($username, $oldPassword, $newPassword)
+	public function changePassword($id, $oldPassword, $newPassword)
 	{
-		$user = $this->find($username);
-		if(!Nette\Security\Passwords::verify($oldPassword, $user->password)) {
+		$user = $this->find($id);
+		if($user->password != NULL && !Nette\Security\Passwords::verify($oldPassword, $user->password)) {
 			throw new Exception("Aktuální heslo není správné.");
 		}
 
 		$this->update($user, array(
 			'password' => Nette\Security\Passwords::hash($newPassword)
+		));
+	}
+
+	public function removePassword($id)
+	{
+		$this->getTable()->wherePrimary($id)->update(array(
+			'password' => NULL
 		));
 	}
 
