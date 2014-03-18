@@ -67,6 +67,26 @@ class Playlists extends Component\BaseControl
 		}
 	}
 
+	public function handleSetPrivate($playlist_id, $private = TRUE)
+	{
+		$playlist = $this->playlists->find($playlist_id);
+		if(!$playlist) {
+			throw new Nette\Application\BadRequestException;
+		}
+
+		if(!$this->presenter->user->isAllowed($playlist, 'manage')) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+
+		$this->playlists->setPrivate($playlist->id, $private);
+
+		if($this->presenter->isAjax()) {
+			$this->invalidateControl('list');
+		} else {
+			$this->redirect('this');
+		}
+	}
+
 	public function render()
 	{
 		$template = $this->createTemplate();

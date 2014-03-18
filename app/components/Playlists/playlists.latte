@@ -5,10 +5,14 @@
 			<li class="list-group-item" n:foreach="$playlists as $playlist">
 				<a n:href="add, $playlist->playlist->id, !$playlist->contained" class="ajax">
 					<i n:class="fa, $playlist->contained ? fa-check-square-o : fa-square-o"></i>
-					{$playlist->playlist->name}
+				</a>
+				<a href="{plink Video:playlist, $playlist->playlist->id}" title="Přehrát playlist"><i class="fa fa-play"></i></a>
+
+				<a n:href="setPrivate, $playlist->playlist->id, !$playlist->playlist->private" class="ajax">
+					<i n:class="fa, fa-key, !$playlist->playlist->private ? text-muted"></i>
 				</a>
 
-				<a href="{plink Video:playlist, $playlist->playlist->id}"><i class="fa fa-play"></i></a>
+					{$playlist->playlist->name}
 
 				<a n:href="delete $playlist->playlist->id" class="btn btn-xs btn-danger pull-right ajax" data-confirm="Opravdu smazat playlist {$playlist->playlist->name}?">
 					<i class="fa fa-trash-o"></i>

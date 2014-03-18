@@ -26,6 +26,15 @@ class Playlists extends Repository
 			));
 	}
 
+	public function setPrivate($playlist_id, $private = TRUE)
+	{
+		$this->getTable()
+			->wherePrimary($playlist_id)
+			->update(array(
+				'private' => $private
+			));
+	}
+
 	public function removeVideo($playlist_id, $video_id)
 	{
 		$this->getTable('playlist_videos')
