@@ -152,7 +152,8 @@ class SignPresenter extends BasePresenter
 				}
 			}
 			else {
-				echo 'Error';
+				$this->flashMessage('Nastala chyba při přihlášení.', 'danger');
+				$this->redirectHome();
 			}
 		}
 	}
