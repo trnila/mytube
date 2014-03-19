@@ -84,6 +84,9 @@ class SignPresenter extends BasePresenter
 			$form['form']['email']->setValue($facebook['email'])
 				->getControlPrototype()
 					->readonly(true);
+
+			$form['form']['password']->setRequired(FALSE);
+			$form['form']['passwordCheck']->setRequired(FALSE);
 		}
 		elseif($openid = $this->getPersistentRegistration()->openid) {
 			$form = $this->getComponent('registration');

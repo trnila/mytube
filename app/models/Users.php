@@ -54,7 +54,11 @@ class Users extends Repository
 			throw new ModelException('This is not email.');
 		}
 
-		$data['password'] = Nette\Security\Passwords::hash($data['password']);
+		if(!empty($data['password'])) {
+			$data['password'] = Nette\Security\Passwords::hash($data['password']);
+		} else {
+			$data['password'] = NULL;
+		}
 
 		try {
 			$row = array();

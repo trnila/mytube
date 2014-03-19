@@ -41,7 +41,8 @@ class Registration extends Nette\Application\UI\Control
 
 		$form->addPassword('password', 'Heslo')
 				->setRequired()
-				->addRule($form::MIN_LENGTH, 'Minimální delka hesla je %d znaků', 5);
+				->addCondition($form::FILLED)
+					->addRule($form::MIN_LENGTH, 'Minimální delka hesla je %d znaků', 5);
 
 		$form->addPassword('passwordCheck', 'Heslo znovu')
 				->setRequired()
