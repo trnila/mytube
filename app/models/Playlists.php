@@ -16,14 +16,19 @@ class Playlists extends Repository
 
 	public function addVideo($playlist_id, $video_id)
 	{
-		//TODO: fix unique constraint checking
-
-		$row = parent::find($playlist_id);
-		$row->related('playlist_videos')
-			->insert(array(
-				'video_id' => $video_id,
-				'added' => new DateTime
-			));
+		try {
+			$row = parent::find($playlist_id);
+			$row->related('playlist_videos')
+				->insert(array(
+					'video_id' => $video_id,
+					'added' => new DateTime
+				));
+		} catch(\PDOException $e) {
+			// if its not duplicate entry exception - rethrow
+			if(!($e->getCode() == 23000 && $e->errorInfo[1] == 1062)) {
+				throw $e;
+			}
+		}
 	}
 
 	public function setPrivate($playlist_id, $private = TRUE)
