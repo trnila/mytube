@@ -1,9 +1,0 @@
-[submodule "www/assets/javascripts/libraries/nette.ajax.js"]
-	path = www/assets/javascripts/libraries/nette.ajax.js
-	url = https://github.com/vojtech-dobes/nette.ajax.js
-[submodule "www/assets/javascripts/libraries/jquery_jeditable"]
-	path = www/assets/javascripts/libraries/jquery_jeditable
-	url = https://github.com/tuupola/jquery_jeditable.git
-[submodule "www/assets/javascripts/libraries/Widen-Jquery-Tagit"]
-	path = www/assets/javascripts/libraries/Widen-Jquery-Tagit
-	url = https://github.com/Widen/jQuery-Tagit.git
