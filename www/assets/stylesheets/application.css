@@ -137,45 +137,49 @@ body {
 #video [id$=-suggested-videos] .video:hover {
   z-index: 3;
 }
+/* line 114, ../sass/application.sass */
+#video video, #video audio {
+  width: 100%;
+}
 
 @media (max-width: 1200px) {
-  /* line 115, ../sass/application.sass */
+  /* line 118, ../sass/application.sass */
   #left-suggested-videos, #right-suggested-videos {
     display: none;
   }
 }
-/* line 120, ../sass/application.sass */
+/* line 123, ../sass/application.sass */
 #video-comments form textarea {
   height: 60px;
   width: 100%;
 }
-/* line 125, ../sass/application.sass */
+/* line 128, ../sass/application.sass */
 #video-comments .comment .footer {
   color: #999999;
   font-size: 11px;
 }
-/* line 129, ../sass/application.sass */
+/* line 132, ../sass/application.sass */
 #video-comments .comment .footer a {
   color: #999999;
 }
 
-/* line 132, ../sass/application.sass */
+/* line 135, ../sass/application.sass */
 #profile-informations {
   margin-bottom: 40px;
 }
 
-/* line 135, ../sass/application.sass */
+/* line 138, ../sass/application.sass */
 .form-group-required label:after {
   color: red;
   margin-left: 2px;
   content: "*";
 }
 
-/* line 140, ../sass/application.sass */
+/* line 143, ../sass/application.sass */
 #error-page {
   text-align: center;
 }
-/* line 143, ../sass/application.sass */
+/* line 146, ../sass/application.sass */
 #error-page h1 {
   color: #acacac;
   font-size: 300px;
