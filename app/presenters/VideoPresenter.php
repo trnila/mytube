@@ -33,6 +33,13 @@ class VideoPresenter extends BasePresenter
 	 */
 	public $commentsComponentFactory;
 
+	public function actionAdd()
+	{
+		if(!$this->user->isLoggedIn()) {
+			throw new Nette\Application\ForbiddenRequestException;
+		}
+	}
+
 	public function handleEdit()
 	{
 		$id = $this->getHttpRequest()->getPost('pk');

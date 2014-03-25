@@ -1,0 +1,12 @@
+{block head}
+	<meta name="robots" content="noindex, nofollow">
+{/block}
+
+{block content}
+<div id="error-page">
+	<h1>403</h1>
+	<h2>Přístup zakázán.</h2>
+	<p n:if="!$user->isLoggedIn()">
+		Zkuste se <a n:href="Sign:in">přihlásit</a>.
+	</p>
+</div>

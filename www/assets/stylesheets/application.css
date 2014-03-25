@@ -170,3 +170,14 @@ body {
   margin-left: 2px;
   content: "*";
 }
+
+/* line 140, ../sass/application.sass */
+#error-page {
+  text-align: center;
+}
+/* line 143, ../sass/application.sass */
+#error-page h1 {
+  color: #acacac;
+  font-size: 300px;
+  text-shadow: 2px 2px 3px #5e5e5e;
+}

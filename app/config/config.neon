@@ -10,6 +10,10 @@ nette:
 		debugger: true
 		expiration: +7 days
 
+	application:
+		errorPresenter: Error
+		catchExceptions: %productionMode%
+
 services:
 	-
 		class: Monolog\Handler\StreamHandler('php://stdout')
