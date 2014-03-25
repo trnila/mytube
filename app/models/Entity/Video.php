@@ -101,6 +101,11 @@ class Video extends Nette\Object implements Nette\Security\IResource
 		return $this->jobid === NULL;
 	}
 
+	public function getLocation()
+	{
+		return '/videos/' . $this->id . '.webm';
+	}
+
 	public function getResourceId()
 	{
 		return 'video';

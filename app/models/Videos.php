@@ -9,11 +9,8 @@ class Videos extends Repository
 	/** @var string location of incoming videos waiting for process */
 	public $incomingDir;
 
-	/** @var string location of videos directory */
-	public $videosDir;
-
-	/** @var string location of thumbnails directory */
-	public $thumbnailsDir;
+	/** @var string location of media directory containing videos/ and thumbnails/ directory */
+	public $mediaDir;
 
 	/** @var string table name */
 	protected $tableName = 'videos';
@@ -138,25 +135,20 @@ class Videos extends Repository
 
 	public function deleteVideo(Entity\Video $video)
 	{
-		// get copy of all thumbnails
-		$thumbnails = $video->thumbnails;
-
 		// delete file in database
 		$this->getTable()->wherePrimary($video->id)->delete();
 
-		//TODO: reimplement this
-/*		// Remove a video
-		if(!file_exists($file = $this->videosDir . '/' . $video->path) || !unlink($file)) {
+		$file = $this->mediaDir . '/' . $video->getLocation();
+		if(!file_exists($file) || !@unlink($file)) {
 			trigger_error("Video could not be removed: " . $file, E_USER_NOTICE);
 		}
 
-		// Remove thumbnails
-		foreach($thumbnails as $thumbnail) {
-			if(file_exists($file = $this->thumbnailsDir . '/' . $thumbnail) || unlink($file)) {
-				trigger_error("Thumbnail could not be removed: " . $file, E_USER_NOTICE);
+		foreach($video->thumbnails as $thumbnail) {
+			$file = $this->mediaDir . '/' . $thumbnail->getLocation();
+			if(!file_exists($file) || !@unlink($file)) {
+				trigger_error("Video could not be removed: " . $file, E_USER_NOTICE);
 			}
 		}
-		*/
 	}
 
 	public function getLastVideos($limit = 10)

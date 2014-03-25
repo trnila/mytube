@@ -8,8 +8,7 @@ services:
 		class: Model\Videos
 		setup:
 			- $incomingDir(%appDir%/../incoming/)
-			- $videosDir(%wwwDir%/videos/)
-			- $thumbnailsDir(%wwwDir%/thumbnails/)
+			- $mediaDir(%wwwDir%)
 
 	# component factories
 	- Component\Playlists\IFactory

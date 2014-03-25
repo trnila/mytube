@@ -28,4 +28,9 @@ class Thumbnail extends Nette\Object
 
 		return $entity;
 	}
+
+	public function getLocation()
+	{
+		return '/thumbnails/' . $this->video_id . '-' . $this->number . '.png';
+	}
 }

@@ -2,29 +2,22 @@
 {block content}
 {var $canEdit = $user->isAllowed($video, 'edit')}
 
-
-
-
-
-
-
 <div class="panel panel-default" id="video">
 	<div id="left-suggested-videos">
-	{for $x = 0; $x < 4; $x++}
-		{if isset($videos[$x])}
-			{include ../_video.latte, video => $videos[$x]}
-		{/if}
-	{/for}
-</div>
+		{for $x = 0; $x < 4; $x++}
+			{if isset($videos[$x])}
+				{include ../_video.latte, video => $videos[$x]}
+			{/if}
+		{/for}
+	</div>
 
-<div id="right-suggested-videos">
-	{for ; $x < 8; $x++}
-		{if isset($videos[$x])}
-			{include ../_video.latte, video => $videos[$x], reversed => TRUE}
-		{/if}
-	{/for}
-</div>
-
+	<div id="right-suggested-videos">
+		{for ; $x < 8; $x++}
+			{if isset($videos[$x])}
+				{include ../_video.latte, video => $videos[$x], reversed => TRUE}
+			{/if}
+		{/for}
+	</div>
 
 	<div class="panel-heading">
 		<div class="pull-right">
@@ -40,10 +33,10 @@
 		<div n:snippet="video" style="text-align: center">
 			{if $video->isConverted()}
 				{if $video->isvideo}
-					<video data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls autoplay></video>
+					<video data-video-id="{$video->id}" src="{$basePath}{$video->getLocation()}" controls autoplay></video>
 				{else}
 					<canvas></canvas>
-					<audio id="music" data-video-id="{$video->id}" src="{$basePath}/videos/{$video->id}.webm" controls></audio>
+					<audio id="music" data-video-id="{$video->id}" src="{$basePath}{$video->getLocation()}" controls></audio>
 				{/if}
 			{else}
 				<p class="alert alert-info">
