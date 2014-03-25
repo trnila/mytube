@@ -94,7 +94,7 @@
 
 					<dt>Tagy</dt>
 					<dd>
-						<span n:inner-foreach="$video->tags as $tag" id="tags" data-type="select2" data-pk="{$video->id}" data-url="{link edit!}">
+						<span n:inner-foreach="$video->tags as $tag" id="tags" data-type="select2" data-pk="{$video->id}" data-url="{link edit!}" n:tag-if="$canEdit">
 							{$tag->tag} {sep}, {/sep}
 						</span>
 					</dd>
