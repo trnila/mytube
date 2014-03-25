@@ -128,6 +128,9 @@ class ProcessVideo extends Job
 			$this->videos->addThumbnail($row, $thumbnail['num'], $thumbnail['time']);
 		}
 
+		// remove video from incoming folder
+		@unlink($video->filePath);
+
 		$this->logger->info('Video successfully converted');
 	}
 
