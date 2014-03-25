@@ -40,7 +40,8 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li n:class="$control->isLinkCurrent(':Homepage:') ? active"><a n:href=":Homepage:">Home</a></li>
+					<li n:class="$control->isLinkCurrent(':Homepage:') ? active"><a n:href=":Homepage:">Videa</a></li>
+					<li n:if="$user->isLoggedIn()" n:class="$control->isLinkCurrent(':Profile:show', $user->id) ? active"><a n:href=":Profile:show, $user->id">Můj profil</a></li>
 					<li n:class="$presenter->isLinkCurrent(':Admin:Users:list') ? active" n:if="$user->isAllowed('user', 'list')"><a n:href=":Admin:Users:list">Uživatelé</a></li>
 				</ul>
 
