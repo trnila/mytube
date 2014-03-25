@@ -175,7 +175,8 @@ if(window.localStorage) {
 
 $("#tags").editable({
 	select2: {
-		tags: true
+		tags: true,
+		dropdownCssClass: 'hidden'
 	}
 }).on('shown', function() {
 	$("#tags").next().find('.select2-container').select2('container').find("ul.select2-choices").sortable({

@@ -56,7 +56,7 @@ var submitBtn = container.find('button[name=upload]');
 var tags = container.find("[name=tags]");
 var MIME_TYPE_ERROR = 'mime_type_error';
 
-tags.select2({ tags: []})
+tags.select2({ tags: [], dropdownCssClass: 'hidden'})
 	.select2("container").find("ul.select2-choices").sortable({
 		containment: 'parent',
 		start: function() { $("#e15").select2("onSortStart"); },
