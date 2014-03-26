@@ -104,6 +104,7 @@ class Videos extends Repository
 					'position' => $position,
 					'tag' => $tag
 				));
+				$position++;
 			}
 
 			unset($data['tags']);

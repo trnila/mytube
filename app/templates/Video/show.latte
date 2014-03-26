@@ -181,8 +181,8 @@ $("#tags").editable({
 }).on('shown', function() {
 	$("#tags").next().find('.select2-container').select2('container').find("ul.select2-choices").sortable({
 		containment: 'parent',
-		start: function() { $("#tags").select2("onSortStart"); },
-		update: function() { $("#tags").select2("onSortEnd"); }
+		start: function() { $("#tags").next().find('.select2-container').select2("onSortStart"); },
+		update: function() { $("#tags").next().find('.select2-container').select2("onSortEnd"); }
 	});
 });
 </script>

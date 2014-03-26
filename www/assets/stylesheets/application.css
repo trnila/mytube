@@ -141,45 +141,49 @@ body {
 #video video, #video audio {
   width: 100%;
 }
+/* line 117, ../sass/application.sass */
+#video #tags + .popover input {
+  min-width: 100px;
+}
 
 @media (max-width: 1200px) {
-  /* line 118, ../sass/application.sass */
+  /* line 121, ../sass/application.sass */
   #left-suggested-videos, #right-suggested-videos {
     display: none;
   }
 }
-/* line 123, ../sass/application.sass */
+/* line 126, ../sass/application.sass */
 #video-comments form textarea {
   height: 60px;
   width: 100%;
 }
-/* line 128, ../sass/application.sass */
+/* line 131, ../sass/application.sass */
 #video-comments .comment .footer {
   color: #999999;
   font-size: 11px;
 }
-/* line 132, ../sass/application.sass */
+/* line 135, ../sass/application.sass */
 #video-comments .comment .footer a {
   color: #999999;
 }
 
-/* line 135, ../sass/application.sass */
+/* line 138, ../sass/application.sass */
 #profile-informations {
   margin-bottom: 40px;
 }
 
-/* line 138, ../sass/application.sass */
+/* line 141, ../sass/application.sass */
 .form-group-required label:after {
   color: red;
   margin-left: 2px;
   content: "*";
 }
 
-/* line 143, ../sass/application.sass */
+/* line 146, ../sass/application.sass */
 #error-page {
   text-align: center;
 }
-/* line 146, ../sass/application.sass */
+/* line 149, ../sass/application.sass */
 #error-page h1 {
   color: #acacac;
   font-size: 300px;

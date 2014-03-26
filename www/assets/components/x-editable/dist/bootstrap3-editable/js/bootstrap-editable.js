@@ -3800,8 +3800,6 @@ $(function(){
        },
 
        value2input: function(value) {
-            console.log(value);
-
            // if value array => join it anyway
            if($.isArray(value)) {
               value = value.join(this.getSeparator());
