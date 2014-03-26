@@ -19,11 +19,22 @@ class ProfilePresenter extends BasePresenter
 	*/
 	public $videos;
 
+	/**
+	 * @var Component\Videos\IFactory
+	 * @inject
+	*/
+	public $videosFactory;
+
 	public function renderShow($username)
 	{
 		$user = $this->template->profile = $this->users->find($username);
 
-		$this->template->myVideos = $this->videos->getUserVideos($user->id);
+
+		$ownedVideos = $this['ownedVideos'];
+		$myVideos = $this->videos->getUserVideos($user->id, $ownedVideos['paginator']->paginator->page, $ownedVideos['paginator']->paginator->itemsPerPage);
+		$ownedVideos['paginator']->paginator->itemCount = $myVideos->total;
+		$ownedVideos->videos = $myVideos->videos;
+
 		$this->template->likedVideos = $this->videos->getRatedVideos($user->id);
 
 		$this->template->playlists = $this->playlists->getPublic($user->id);
@@ -62,5 +73,13 @@ class ProfilePresenter extends BasePresenter
 		));
 
 		$this->terminate();
+	}
+
+	protected function createComponentOwnedVideos()
+	{
+		$component = $this->videosFactory->create();
+		$component['paginator']->paginator->itemsPerPage = 12;
+
+		return $component;
 	}
 }

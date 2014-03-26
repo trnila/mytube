@@ -14,6 +14,7 @@ services:
 	- Component\Playlists\IFactory
 	- Component\Comments\IFactory
 	- Component\Ratings\IFactory
+	- Component\Videos\IFactory
 
 	# forms
 	- Form\ILoginFactory

@@ -8,8 +8,27 @@ class HomepagePresenter extends BasePresenter
 	*/
 	public $videos;
 
+	/**
+	 * @var Component\Videos\IFactory
+	 * @inject
+	*/
+	public $videosFactory;
+
 	public function renderDefault()
 	{
-		$this->template->videos = $this->videos->getLastVideos();
+		$component = $this['videos'];
+		$paginator = $component['paginator']->paginator;
+		$videos = $this->videos->getLastVideos($paginator->page, $paginator->itemsPerPage);
+		$paginator->itemCount = $videos->total;
+		$component->videos = $videos->videos;
+	}
+
+
+	protected function createComponentVideos()
+	{
+		$component = $this->videosFactory->create();
+		$component['paginator']->paginator->itemsPerPage = 12;
+
+		return $component;
 	}
 }

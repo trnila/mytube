@@ -152,10 +152,20 @@ class Videos extends Repository
 		}
 	}
 
-	public function getLastVideos($limit = 10)
+	public function getLastVideos($page = NULL, $itemsPerPage = NULL)
 	{
-		$rows = $this->findAll()->order('created DESC')->limit($limit);
-		return $this->createResultSet($rows);
+		$rows = $this->findAll()->order('created DESC');
+
+		$total = $rows->count('*');
+
+		if($page && $itemsPerPage) {
+			$rows->page($page, $itemsPerPage);
+		}
+
+		return (object) array(
+			'videos' => $this->createResultSet($rows),
+			'total' => $total
+		);
 	}
 
 	public function getRelated($video_id, $items = 8)
@@ -185,12 +195,21 @@ class Videos extends Repository
 		);
 	}
 
-	public function getUserVideos($user_id)
+	public function getUserVideos($user_id, $page = NULL, $itemsPerPage = NULL)
 	{
 		$rows = $this->findAll()
 			->where('user_id', $user_id);
 
-		return $this->createResultSet($rows);
+		$total = $rows->count('*');
+
+		if($page && $itemsPerPage) {
+			$rows->page($page, $itemsPerPage);
+		}
+
+		return (object) array(
+			'videos' => $this->createResultSet($rows),
+			'total' => $total
+		);
 	}
 
 	public function getRatedVideos($user_id, $limit = 30)

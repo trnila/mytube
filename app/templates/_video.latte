@@ -1,6 +1,6 @@
-<a n:href="Video:show, $video->id" class="video{ifset $reversed} reversed{/ifset}">
-		<span class="video-duration">{$video->duration|duration}</span>
-		<span class="video-title">{$video->title}</span>
+<a href="{plink Video:show, $video->id}" class="video{ifset $reversed} reversed{/ifset}">
+	<span class="video-duration">{$video->duration|duration}</span>
+	<span class="video-title">{$video->title}</span>
 	<div class="row">
 		<div n:class="col-xs-9" n:capture="$thumbnail">
 			<div class="video-thumbnail">

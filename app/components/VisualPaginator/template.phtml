@@ -1,0 +1,22 @@
+<ul class="pagination" n:if="$paginator->pageCount > 1">
+	{if $paginator->isFirst()}
+		<li class="prev disabled"><a>&lt;</a></li>
+	{else}
+		<li class="prev"><a n:href="this, page => $paginator->page - 1">&lt;</a></li>
+	{/if}
+
+	{foreach $steps as $step}
+		{if $step == $paginator->page}
+			<li class="active"><a>{$step}</a></li>
+		{else}
+			<li><a n:href="this, page => $step">{$step}</a></li>
+		{/if}
+		{if $iterator->nextValue > $step + 1}<li class="disabled"><a>…</a></li>{/if}
+	{/foreach}
+
+	{if $paginator->isLast()}
+		<li class="next disabled"><a>&gt;</a></li>
+	{else}
+		<li class="next"><a n:href="this, page => $paginator->page + 1">&gt;</a></li>
+	{/if}
+</ul>
