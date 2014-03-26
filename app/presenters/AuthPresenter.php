@@ -111,11 +111,12 @@ class SignPresenter extends BasePresenter
 		catch(\Model\Security\Authenticator\RegisterException $e) {
 			$data = $this->setRegistrationData($me);
 
-			if(isset($data['email'], $data['id'])) {
-				$this->pairIdentity($data['email'], 'facebook', $data['id']);
-
+			if(isset($data['email'], $me['id'])) {
+				$this->pairIdentity($data['email'], 'facebook', $me['id']);
 
 				$this->redirect('registration', array('email' => $data['email']));
+			} else {
+				$this->flashMessage('Účet se nepodařilo spárovat.', 'danger');
 			}
 
 			$this->redirect('registration');
