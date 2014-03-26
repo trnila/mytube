@@ -18,12 +18,6 @@ class Registration extends Nette\Application\UI\Control
 	*/
 	public $httpRequest;
 
-	/**
-	 * Additional data about user, from facebook for example.
-	 * @var array
-	 */
-	protected $additionalData = array();
-
 	public function createComponentForm()
 	{
 		$form = new Nette\Application\UI\Form;
@@ -57,12 +51,7 @@ class Registration extends Nette\Application\UI\Control
 
 	public function register($form)
 	{
-		if(isset($this->additionalData['identity'])) {
-			$identity = $this->additionalData['identity'];
-			unset($this->additionalData['identity']);
-		}
-
-		$values = array_merge($this->additionalData, (array) $form->values);
+		$values = (array) $form->values;
 
 		try {
 			$user = $this->users->register($values);
@@ -79,27 +68,21 @@ class Registration extends Nette\Application\UI\Control
 		}
 
 		// Add openid identity if any
-		if(isset($identity)) {
-			$this->users->addIdentity($user->id, array('type' => 'openid', 'identity' => $identity));
+		$identity = $this->presenter->getPairedIdentity($form['email']->value);
+		if($identity) {
+			$this->users->addIdentity($user->id, array(
+				'type' => $identity['type'],
+				'identity' => $identity['identity']
+			));
 		}
 
 		$identity = new \Nette\Security\Identity($user->id, NULL, $user);
 		$this->presenter->user->login($identity);
 
+		$this->presenter->clearPersistents();
+
 		$this->presenter->flashMessage('Registrace dokončena.', 'success');
 		$this->presenter->redirectHome();
-	}
-
-	public function addAdditionalData($key, $data = NULL)
-	{
-		if($data == NULL) {
-			foreach($key as $k => $value) {
-				$this->additionalData[$k] = $value;
-			}
-		}
-		else {
-			$this->additionalData[$key] = $data;
-		}
 	}
 
 	public function handleGravatar()

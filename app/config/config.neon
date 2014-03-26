@@ -33,7 +33,6 @@ services:
 	openid: LightOpenID(http://%host%)
 	facebookAuthenticator:
 		class: Model\Security\Authenticator\Facebook
-		autowired: false
 	openIDAuthenticator:
 		class: Model\Security\Authenticator\OpenID
 		autowired: false

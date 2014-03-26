@@ -67,34 +67,32 @@ class SignPresenter extends BasePresenter
 			'redirect_uri' => $this->link('//facebook')
 		));
 
-		$this['login']['username']->setDefaultValue($this->getParameter('username'));
+		$this['login']['email']->setDefaultValue($this->getParameter('email'));
 	}
 
-	public function actionRegistration()
+	public function actionRegistration($email = NULL)
 	{
-		// Fill data from facebook
-		if($facebook = $this->getPersistentRegistration()->facebook) {
-			$form = $this->getComponent('registration');
-			$form->addAdditionalData('fbId', $facebook['id']);
+		if($email) {
+			$form = $this['registration']['form'];
+			$data = $this->getRegistrationData($email);
 
-			if(isset($facebook['username'])) {
-				$form['form']['username']->setDefaultValue($facebook['username']);
+			// fill optional values
+			foreach($data as $field => $value) {
+				if(isset($form[$field])) {
+					$form[$field]->setDefaultValue($value);
+				}
 			}
 
-			$form['form']['email']->setValue($facebook['email'])
-				->getControlPrototype()
-					->readonly(true);
+			// fill non-changeable email
+			if(isset($data['email'])) {
+				$form['email']->setValue($data['email'])
+					->getControlPrototype()
+						->readonly(true);
+			}
 
-			$form['form']['password']->setRequired(FALSE);
-			$form['form']['passwordCheck']->setRequired(FALSE);
-		}
-		elseif($openid = $this->getPersistentRegistration()->openid) {
-			$form = $this->getComponent('registration');
-			$form->addAdditionalData('identity', $openid['identity']);
-
-			$form['form']['email']->setValue($openid['contact/email'])
-				->getControlPrototype()
-					->readonly(true);
+			// when signed in via openid, fb - we don't require password
+			$form['password']->setRequired(FALSE);
+			$form['passwordCheck']->setRequired(FALSE);
 		}
 	}
 
@@ -106,13 +104,19 @@ class SignPresenter extends BasePresenter
 			$identity = $this->context->getService('facebookAuthenticator')->authenticate($me);
 			$this->user->login($identity);
 
+			$this->clearPersistents();
 			$this->flashMessage('Úspěšně přihlášeno.', $this::FLASH_SUCCESS);
 			$this->redirectHome();
 		}
 		catch(\Model\Security\Authenticator\RegisterException $e) {
-			$storage = $this->getPersistentRegistration();
-			unset($storage->openid);
-			$storage->facebook = $me;
+			$data = $this->setRegistrationData($me);
+
+			if(isset($data['email'], $data['id'])) {
+				$this->pairIdentity($data['email'], 'facebook', $data['id']);
+
+
+				$this->redirect('registration', array('email' => $data['email']));
+			}
 
 			$this->redirect('registration');
 		}
@@ -133,20 +137,22 @@ class SignPresenter extends BasePresenter
 					$identity = $this->context->getService('openIDAuthenticator')->authenticate(array($openid->identity, $openid->getAttributes()));
 					$this->user->login($identity);
 
+					$this->clearPersistents();
 					$this->redirectHome();
 				}
 				catch(\Model\Security\Authenticator\NeedLoginException $e) {
 					$this->flashMessage('Účet s tímto emailem už existuje. Pro spárování účtu se přihlašte.');
 
-					$this->getPersistentLogin()->{$openid->getAttributes()['contact/email']} = $openid->identity;
-
+					$this->pairIdentity($openid->getAttributes()['contact/email'], 'openid', $openid->identity);
 					$this->redirect('in');
 				}
 				catch(\Model\Security\Authenticator\RegisterException $e) {
-					$storage = $this->getPersistentRegistration();
-					unset($storage->facebook);
-					$storage->openid = $openid->getAttributes();
-					$storage->openid['identity'] = $openid->identity;
+					$data = $this->setRegistrationData($openid->getAttributes());
+					if(isset($data['email'])) {
+						$this->pairIdentity($data['email'], 'openid', $openid->openid);
+
+						$this->redirect('registration', array('email' => $data['email']));
+					}
 
 					$this->redirect('registration');
 				}
@@ -217,21 +223,53 @@ class SignPresenter extends BasePresenter
 		$this->redirect('this');
 	}
 
-	protected function getPersistentRegistration()
+	public function getPairedIdentity()
 	{
-		return $this->getSession('Registration')
-			->setExpiration('+15 minutes');
+		return $identities = $this->getSession('Auth.PairedIdentities')->identity;
 	}
 
-	public function getPersistentLogin()
+	public function pairIdentity($email, $type, $identity)
 	{
-		return $this->getSession('Login')
-			->setExpiration('+15 minutes');
+		$this->getSession('Auth.PairedIdentities')->identity = array(
+			'email' => $email,
+			'type' => $type,
+			'identity' => $identity
+		);
+	}
+
+	public function getRegistrationData($email)
+	{
+		return $this->getSession('Auth.Registration')->{$email};
+	}
+
+	public function setRegistrationData($data)
+	{
+		$toSave = array();
+		foreach($data as $key => $value) {
+			$key = strToLower($key);
+			$key = str_replace('_', '', $key);
+			$key = str_replace('contact/', '', $key);
+
+			if(in_array($key, array('email', 'firstname', 'lastname')) && !empty($value)) {
+				$toSave[$key] = $value;
+			}
+		}
+
+		if(isset($toSave['email'])) {
+			$this->getSession('Auth.Registration')->{$toSave['email']} = $toSave;
+			return $toSave;
+		}
 	}
 
 	public function getPersistentReset()
 	{
 		return $this->getSession('ResetPassword')
 			->setExpiration('+15 minutes');
+	}
+
+	public function clearPersistents()
+	{
+		$this->getSession('Auth.Registration')->remove();
+		$this->getSession('Auth.PairedIdentities')->remove();
 	}
 }

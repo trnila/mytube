@@ -14,7 +14,7 @@ class Login extends BaseForm
 	public function __construct(Nette\ComponentModel\IContainer $parent = NULL,  $name = NULL)
 	{
 		parent::__construct($parent, $name);
-		$this->addText('username', 'E-mail')
+		$this->addText('email', 'E-mail')
 			->setRequired();
 
 		$this->addPassword('password', 'Heslo')
@@ -28,17 +28,19 @@ class Login extends BaseForm
 	{
 		try {
 			$presenter = $this->presenter;
-			$presenter->user->login($form['username']->value, $form['password']->value);
+			$presenter->user->login($form['email']->value, $form['password']->value);
 
-			$persistentLogin = $this->presenter->getPersistentLogin();
-			if(isset($persistentLogin[$form['username']->value])) {
-				$this->users->addIdentity($presenter->user->id, array(
-					'type' => 'openid',
-					'identity' => $persistentLogin[$presenter->user->identity->email]
+			$user = $this->users->findByEmail($form['email']->value);
+
+			$identity = $this->presenter->getPairedIdentity($form['email']->value);
+			if($identity) {
+				$this->users->addIdentity($user->id, array(
+					'type' => $identity['type'],
+					'identity' => $identity['identity']
 				));
 			}
 
-
+			$presenter->clearPersistents();
 			$presenter->flashMessage('Byl jste přihlášen.', $presenter::FLASH_SUCCESS);
 			$presenter->redirectHome();
 		}
